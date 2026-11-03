@@ -3,122 +3,135 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MIROIR</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MIROIR — The Party Mirror</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Italiana&display=swap');
-
+:root{--pink:#f3a9c1;--rose:#bd6684;--glass:#21151dcc;--line:#ffffff35}
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;overflow:hidden}
-body{background:#160f14;color:#fff;font-family:'DM Sans',sans-serif}
-#mirror{position:relative;width:100vw;height:100dvh;overflow:hidden;background:radial-gradient(ellipse at 50% 10%,#63394c,#160f14 65%)}
+body{background:#100b10;color:#fff;font-family:'DM Sans',sans-serif}
+button{font:inherit;color:inherit;cursor:pointer}
+#mirror{position:relative;width:100vw;height:100dvh;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#54303f,#160e15 75%)}
 #camera{position:absolute;width:100%;height:100%;object-fit:cover;transform:scaleX(-1);display:none}
 canvas{position:absolute;inset:0;width:100%;height:100%}
 #lipstick{pointer-events:none;touch-action:none}
-#mirror.drawing #lipstick{pointer-events:auto;cursor:crosshair}
-
-header{position:absolute;top:22px;left:26px;right:26px;display:flex;justify-content:space-between;align-items:center;z-index:5}
+#mirror.drawing #lipstick{pointer-events:none}
+#ring{position:absolute;inset:12px;border:2px solid rgba(245,171,198,.45);border-radius:28px;pointer-events:none;z-index:2;box-shadow:inset 0 0 18px rgba(255,151,190,.12),0 0 18px rgba(255,151,190,.3),0 0 45px rgba(255,151,190,.12);transition:.4s}
+#ring:after{content:"";position:absolute;inset:5px;border:1px solid rgba(255,255,255,.08);border-radius:23px}
+#ringGlow{position:absolute;inset:-4px;border-radius:32px;box-shadow:0 0 25px var(--pink),inset 0 0 25px var(--pink);opacity:.25;pointer-events:none}
+header{position:absolute;top:23px;left:30px;right:30px;display:flex;justify-content:space-between;align-items:center;z-index:6;pointer-events:none}
 .logo{font:30px Italiana,serif;letter-spacing:5px}
-.logo small{display:block;font:9px 'DM Sans';letter-spacing:3px;color:#e9afc2}
-.status{font-size:10px;letter-spacing:2px;color:#ffc1d3}
-
-.welcome{position:absolute;inset:0;display:grid;place-items:center;text-align:center;z-index:4;background:#160f145c}
-.welcome h1{font:80px Italiana;margin:10px}
-.welcome p{font-size:12px;color:#e4cbd5;line-height:1.8;max-width:320px}
-button{cursor:pointer;font-family:inherit;color:white}
-.start{border:1px solid #e9a5bd;background:#b75d7c;padding:13px 25px;border-radius:30px;margin-top:15px}
-
-.tools{position:absolute;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:12px;z-index:6}
-.left{left:20px}.right{right:20px}
-.tool{width:44px;height:44px;border-radius:50%;border:1px solid #ffffff45;background:#21151dc9;backdrop-filter:blur(15px);font-size:17px}
-.tool:hover,.tool.active{background:#b85e7d}
-
-nav{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:5px;padding:7px;background:#21151dcc;border:1px solid #ffffff35;border-radius:40px;z-index:7;backdrop-filter:blur(20px)}
-nav button{border:0;background:none;padding:10px 13px;border-radius:25px;font-size:10px;color:#dfcbd3}
-nav button.active,nav button:hover{background:#b85e7d;color:white}
-
-.panel{position:absolute;z-index:8;top:50%;transform:translateY(-50%);width:280px;max-height:65vh;overflow:auto;padding:20px;background:#21151de8;backdrop-filter:blur(25px);border:1px solid #ffffff35;border-radius:18px;display:none}
+.logo small{display:block;font:9px 'DM Sans';letter-spacing:3px;color:var(--pink)}
+.status{font-size:9px;letter-spacing:2px;color:#ffd2e0}
+.welcome{position:absolute;inset:0;z-index:5;display:grid;place-items:center;text-align:center;background:#130d13a8}
+.welcome h1{font:86px Italiana;margin:12px}
+.welcome p{font-size:12px;line-height:1.9;color:#e6ccd5;max-width:330px;margin:auto}
+.start{margin-top:24px;background:#b75d7c;border:1px solid #f3a9c1;padding:14px 25px;border-radius:30px;letter-spacing:1px;font-size:10px}
+.tools{position:absolute;top:45%;transform:translateY(-50%);display:flex;flex-direction:column;gap:11px;z-index:7}
+.left{left:25px}.right{right:25px}
+.tool{width:43px;height:43px;border-radius:50%;border:1px solid var(--line);background:#21151ddd;backdrop-filter:blur(15px);font-size:17px}
+.tool.active,.tool:hover{background:#b85e7d}
+nav{position:absolute;bottom:100px;left:50%;transform:translateX(-50%);display:flex;gap:4px;padding:6px;background:#21151de8;border:1px solid var(--line);border-radius:35px;z-index:8;backdrop-filter:blur(20px)}
+nav button{border:0;background:none;padding:10px 14px;border-radius:25px;font-size:10px;color:#e5cbd4}
+nav button.active{background:#b85e7d;color:white}
+#message{position:absolute;bottom:145px;left:50%;transform:translateX(-50%);font-size:9px;letter-spacing:2px;color:#ffc1d3;z-index:6;white-space:nowrap}
+#profileBar{position:absolute;bottom:15px;left:50%;transform:translateX(-50%);width:min(850px,94vw);display:flex;justify-content:center;gap:5px;z-index:7;padding:9px;background:#21151de8;border:1px solid var(--line);border-radius:17px;backdrop-filter:blur(20px)}
+.feature{background:transparent;border:0;border-radius:10px;padding:7px 9px;min-width:0;flex:1;text-align:center}
+.feature:hover,.feature.active{background:#b85e7d}
+.feature strong{display:block;font-size:9px;font-weight:500;white-space:nowrap}
+.feature span{display:block;font-size:8px;color:#e6b8c9;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.panel{position:absolute;z-index:10;top:50%;transform:translateY(-50%);width:290px;max-height:66vh;overflow:auto;padding:20px;background:#21151df2;backdrop-filter:blur(25px);border:1px solid var(--line);border-radius:18px;display:none;box-shadow:0 15px 60px #0008}
 .panel.open{display:block}
-#leftPanel{left:78px}#rightPanel{right:78px}
-.panel h2{font:25px Italiana;margin:0 0 15px}
-.panel p{font-size:11px;line-height:1.8;color:#d9c5cd}
+#leftPanel{left:82px}#rightPanel{right:82px}
+.panel h2{font:25px Italiana;margin:0 0 13px}
+.panel p{font-size:11px;line-height:1.8;color:#dfcbd3}
 .close{float:right;background:none;border:0;font-size:20px}
-.option{padding:10px 13px;border:1px solid #ffffff35;background:#ffffff0c;border-radius:25px;margin:4px;font-size:10px}
+.option{padding:9px 12px;border:1px solid var(--line);background:#ffffff0c;border-radius:22px;margin:4px;font-size:10px}
 .option.active{background:#b85e7d}
-.swatches{display:flex;gap:9px;margin:15px 0}
+.swatches{display:flex;gap:9px;margin:14px 0}
 .swatch{width:28px;height:28px;border-radius:50%;border:1px solid #ffffff70}
-#message{position:absolute;bottom:85px;left:50%;transform:translateX(-50%);font-size:9px;letter-spacing:2px;color:#ffc1d3;z-index:5;white-space:nowrap}
-@media(max-width:600px){
-header{left:14px;right:14px;top:14px}
-.logo{font-size:23px}
-.tool{width:38px;height:38px}
-.left{left:8px}.right{right:8px}
-nav{bottom:10px;gap:0}
-nav button{padding:9px 8px;font-size:9px}
-#leftPanel{left:53px}#rightPanel{right:53px}
+.meter{height:3px;background:#ffffff20;border-radius:5px;margin-top:7px}
+.meter i{display:block;height:100%;background:#f0a5bf;border-radius:5px}
+#handStatus{font-size:9px;color:#ffc1d3;letter-spacing:1px}
+#guideLabel{position:absolute;top:80px;left:50%;transform:translateX(-50%);z-index:6;font-size:10px;letter-spacing:2px;color:#ffd0df;pointer-events:none}
+@media(max-width:650px){
+ header{left:20px;right:20px;top:20px}.logo{font-size:23px}
+ .left{left:9px}.right{right:9px}.tool{width:37px;height:37px}
+ nav{bottom:103px;width:max-content;max-width:94vw}
+ nav button{padding:9px 10px;font-size:9px}
+ #profileBar{gap:1px;padding:5px;bottom:8px}
+ .feature{padding:7px 3px}.feature strong{font-size:8px}.feature span{font-size:7px}
+ #leftPanel{left:52px}#rightPanel{right:52px}
+ #ring{inset:7px}
 }
 </style>
 </head>
 <body>
 <div id="mirror">
-
 <video id="camera" autoplay muted playsinline></video>
 <canvas id="face"></canvas>
 <canvas id="lipstick"></canvas>
+<div id="ring"><div id="ringGlow"></div></div>
 
 <header>
-<div class="logo">MIROIR<small>THE PARTY BATHROOM MIRROR</small></div>
-<div class="status" id="status">MIRROR STANDBY</div>
+ <div class="logo">MIROIR<small>THE PARTY BATHROOM MIRROR</small></div>
+ <div class="status" id="status">MIRROR STANDBY</div>
 </header>
 
 <div class="welcome" id="welcome">
-<div>
-<div style="letter-spacing:4px;font-size:10px;color:#e9afc2">A LITTLE GLAMOUR, A LITTLE MISCHIEF</div>
-<h1>MIROIR</h1>
-<p>Your personal party-bathroom mirror. Get ready, explore makeup, experiment with colour and leave a little lipstick art on the glass.</p>
-<button class="start" id="start">STEP UP TO THE MIRROR</button>
-</div>
+ <div>
+  <div style="letter-spacing:4px;font-size:10px;color:#e9afc2">A LITTLE GLAMOUR, A LITTLE MISCHIEF</div>
+  <h1>MIROIR</h1>
+  <p>Your reflection. Your features. Your makeup guide. Step up to the mirror and let us get ready.</p>
+  <button class="start" id="start">STEP UP TO THE MIRROR</button>
+ </div>
 </div>
 
 <div class="tools left">
-<button class="tool" id="lighting" title="Lighting">☼</button>
-<button class="tool" id="mesh" title="Face mesh">⌘</button>
-<button class="tool" id="guides" title="Makeup guides">✧</button>
+ <button class="tool" id="lighting" title="Lighting">☼</button>
+ <button class="tool" id="mesh" title="Face mesh">⌘</button>
+ <button class="tool" id="guides" title="Makeup guides">✧</button>
+</div>
+<div class="tools right">
+ <button class="tool" id="profile">♡</button>
+ <button class="tool" id="tutorial">☷</button>
+ <button class="tool" id="draw">♥</button>
 </div>
 
-<div class="tools right">
-<button class="tool" id="profile">♡</button>
-<button class="tool" id="tutorial">☷</button>
-<button class="tool" id="draw">♥</button>
-</div>
+<div id="guideLabel"></div>
+<div id="message">NATURAL LIGHT · MIRROR READY</div>
 
 <section class="panel" id="leftPanel">
-<button class="close" data-close="leftPanel">×</button>
-<h2 id="leftTitle">The mirror</h2>
-<div id="leftContent"></div>
+ <button class="close" data-close="leftPanel">×</button>
+ <h2 id="leftTitle">The mirror</h2><div id="leftContent"></div>
 </section>
-
 <section class="panel" id="rightPanel">
-<button class="close" data-close="rightPanel">×</button>
-<h2 id="rightTitle">Your mirror notes</h2>
-<div id="rightContent"></div>
+ <button class="close" data-close="rightPanel">×</button>
+ <h2 id="rightTitle">Your mirror notes</h2><div id="rightContent"></div>
 </section>
-
-<div id="message">NATURAL LIGHT</div>
 
 <nav>
-<button class="active" data-mode="mirror">Mirror</button>
-<button data-mode="makeup">Makeup</button>
-<button data-mode="colour">Colour</button>
-<button data-mode="hair">Hair</button>
-<button data-mode="inspo">Inspo</button>
+ <button class="active" data-mode="mirror">Mirror</button>
+ <button data-mode="makeup">Makeup</button>
+ <button data-mode="colour">Colour</button>
+ <button data-mode="hair">Hair</button>
+ <button data-mode="inspo">Inspo</button>
 </nav>
+
+<div id="profileBar">
+ <button class="feature" data-feature="face"><strong>FACE</strong><span id="faceVal">Scanning...</span></button>
+ <button class="feature" data-feature="nose"><strong>NOSE</strong><span id="noseVal">Scanning...</span></button>
+ <button class="feature" data-feature="brow"><strong>BROWS</strong><span id="browVal">Scanning...</span></button>
+ <button class="feature" data-feature="eyes"><strong>EYES</strong><span id="eyesVal">Scanning...</span></button>
+ <button class="feature" data-feature="lips"><strong>LIPS</strong><span id="lipsVal">Scanning...</span></button>
+ <button class="feature" data-feature="colour"><strong>COLOUR</strong><span id="colourVal">Lighting needed</span></button>
+</div>
 </div>
 
 <script type="module">
 import {
- FaceLandmarker,
- FilesetResolver
+ FaceLandmarker,HandLandmarker,FilesetResolver
 } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14";
 
 const $=id=>document.getElementById(id);
@@ -126,21 +139,21 @@ const video=$("camera"),mirror=$("mirror");
 const faceCanvas=$("face"),ctx=faceCanvas.getContext("2d");
 const lipstick=$("lipstick"),lip=lipstick.getContext("2d");
 
-let tracker,landmarks=null,meshOn=true,guidesOn=true;
-let drawing=false,strokes=[],current=null;
-let lightingMode="Natural",brushColor="#c94f75",brushSize=15;
+let faceTracker,handTracker,landmarks=null,handPoints=null;
+let meshOn=true,guidesOn=true,lightingMode="Natural";
+let strokes=[],current=null,brushColor="#c94f75",brushSize=15;
+let handDrawing=false,lastHandPoint=null,profile={};
+let activeGuide="blush",tutorialStep=0;
 
 function resize(){
  const d=Math.min(devicePixelRatio||1,2);
  [faceCanvas,lipstick].forEach(c=>{
- c.width=innerWidth*d;c.height=innerHeight*d;
- c.style.width="100%";c.style.height="100%";
- c.getContext("2d").setTransform(d,0,0,d,0,0);
+  c.width=innerWidth*d;c.height=innerHeight*d;
+  c.getContext("2d").setTransform(d,0,0,d,0,0);
  });
- renderFace();
+ renderFace();redraw();
 }
-window.addEventListener("resize",resize);
-resize();
+window.addEventListener("resize",resize);resize();
 
 function showPanel(side,title,html){
  $("leftPanel").classList.remove("open");
@@ -149,217 +162,300 @@ function showPanel(side,title,html){
  $(side+"Content").innerHTML=html;
  $(side+"Panel").classList.add("open");
 }
-document.querySelectorAll("[data-close]").forEach(b=>{
- b.onclick=()=>$(b.dataset.close).classList.remove("open");
-});
+document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>$(b.dataset.close).classList.remove("open"));
 
 $("start").onclick=async()=>{
  try{
- $("status").textContent="CONNECTING";
- const stream=await navigator.mediaDevices.getUserMedia({
- video:{facingMode:"user",width:1280,height:720},
- audio:false
- });
- video.srcObject=stream;
- await video.play();
- video.style.display="block";
- $("welcome").style.display="none";
- $("status").textContent="LOADING FACE TRACKING";
+  $("status").textContent="CONNECTING TO MIRROR";
+  const stream=await navigator.mediaDevices.getUserMedia({
+   video:{facingMode:"user",width:1280,height:720},audio:false
+  });
+  video.srcObject=stream;await video.play();
+  video.style.display="block";$("welcome").style.display="none";
+  $("status").textContent="LOADING FACE AND HAND TRACKING";
 
- const vision=await FilesetResolver.forVisionTasks(
- "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm"
- );
- tracker=await FaceLandmarker.createFromOptions(vision,{
- baseOptions:{
- modelAssetPath:"https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
- delegate:"GPU"
- },
- runningMode:"VIDEO",
- numFaces:1
- });
- $("status").textContent="FACE TRACKING ON";
- requestAnimationFrame(loop);
+  const vision=await FilesetResolver.forVisionTasks(
+   "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm"
+  );
+  const model="https://storage.googleapis.com/mediapipe-models/";
+  faceTracker=await FaceLandmarker.createFromOptions(vision,{
+   baseOptions:{modelAssetPath:model+"face_landmarker/face_landmarker/float16/1/face_landmarker.task",delegate:"GPU"},
+   runningMode:"VIDEO",numFaces:1
+  });
+  handTracker=await HandLandmarker.createFromOptions(vision,{
+   baseOptions:{modelAssetPath:model+"hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",delegate:"GPU"},
+   runningMode:"VIDEO",numHands:1
+  });
+  $("status").textContent="MIROIR IS LIVE";
+  requestAnimationFrame(loop);
  }catch(e){
- console.error(e);
- $("status").textContent="CAMERA UNAVAILABLE";
- alert("Please allow camera access and reload MIROIR.");
+  console.error(e);$("status").textContent="CAMERA OR MODEL ERROR";
+  alert("Allow camera access and check your internet connection. MediaPipe models load from Google's servers.");
  }
 };
 
 function loop(){
- if(tracker&&video.readyState>=2){
- const result=tracker.detectForVideo(video,performance.now());
- landmarks=result.faceLandmarks?.[0]||null;
- $("status").textContent=landmarks?"FACE TRACKING ON":"LOOKING FOR FACE";
- renderFace();
+ if(video.readyState>=2&&faceTracker&&handTracker){
+  const now=performance.now();
+  const f=faceTracker.detectForVideo(video,now);
+  const h=handTracker.detectForVideo(video,now);
+  landmarks=f.faceLandmarks?.[0]||null;
+  handPoints=h.landmarks?.[0]||null;
+  if(landmarks){updateProfile();renderFace()}
+  else{
+   ctx.clearRect(0,0,innerWidth,innerHeight);
+   $("status").textContent="LOOKING FOR FACE";
+  }
+  processHand();
  }
  requestAnimationFrame(loop);
 }
 
-function xy(p){return{x:(1-p.x)*innerWidth,y:p.y*innerHeight}}
+function point(p){
+ const vw=video.videoWidth,vh=video.videoHeight;
+ const scale=Math.max(innerWidth/vw,innerHeight/vh);
+ const ox=(innerWidth-vw*scale)/2,oy=(innerHeight-vh*scale)/2;
+ return{x:innerWidth-(p.x*vw*scale+ox),y:p.y*vh*scale+oy};
+}
+function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y)}
+function mid(a,b){return{x:(a.x+b.x)/2,y:(a.y+b.y)/2}}
+
+function updateProfile(){
+ const L=landmarks;
+ const faceWidth=dist(L[234],L[454]);
+ const faceHeight=dist(L[10],L[152]);
+ const ratio=faceWidth/faceHeight;
+ let shape=ratio>.82?"Broad outline":ratio<.70?"Longer outline":"Balanced outline";
+ // Jaw-to-cheek ratio helps distinguish broad outline tendencies.
+ const jaw=dist(L[172],L[397]);
+ if(jaw/faceWidth<.68&&ratio<.8)shape="Tapered outline";
+ const noseWidth=dist(L[129],L[358]);
+ const eyeWidth=(dist(L[33],L[133])+dist(L[362],L[263]))/2;
+ const eyeGap=dist(L[133],L[362]);
+ const eyeRatio=eyeGap/Math.max(eyeWidth,1);
+ const lipWidth=dist(L[61],L[291]);
+ const lipHeight=dist(L[13],L[14]);
+ const browY=(L[105].y+L[334].y)/2;
+ const eyeY=(L[159].y+L[386].y)/2;
+ profile={
+  face:shape,
+  nose:noseWidth/faceWidth<.24?"Narrower visible base":noseWidth/faceWidth>.31?"Wider visible base":"Moderate visible base",
+  brow:browY<eyeY?"Higher brow position":"Lower brow position",
+  eyes:eyeGap/Math.max(eyeWidth,1)>1.05?"Wide-set appearance":eyeGap/Math.max(eyeWidth,1)<.8?"Closer-set appearance":"Balanced spacing",
+  lips:lipWidth/Math.max(faceWidth,1)>.38?"Wider lip outline":lipHeight/Math.max(lipWidth,1)>.28?"Fuller vertical outline":"Defined lip outline"
+ };
+ for(const k of ["face","nose","brow","eyes","lips"]){
+  $(k==="face"?"faceVal":k==="nose"?"noseVal":k==="brow"?"browVal":k==="eyes"?"eyesVal":"lipsVal").textContent=profile[k];
+ }
+ $("colourVal").textContent="Needs neutral light";
+}
 function renderFace(){
  ctx.clearRect(0,0,innerWidth,innerHeight);
  if(!landmarks)return;
-
  if(meshOn){
- ctx.strokeStyle="rgba(255,190,211,.25)";
- ctx.lineWidth=.6;
- for(const edge of FaceLandmarker.FACE_LANDMARKS_TESSELATION){
- const a=xy(landmarks[edge.start]);
- const b=xy(landmarks[edge.end]);
- ctx.beginPath();
- ctx.moveTo(a.x,a.y);
- ctx.lineTo(b.x,b.y);
- ctx.stroke();
+  ctx.strokeStyle="rgba(255,190,211,.22)";ctx.lineWidth=.65;
+  for(const edge of FaceLandmarker.FACE_LANDMARKS_TESSELATION){
+   const a=point(landmarks[edge.start]),b=point(landmarks[edge.end]);
+   ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+  }
  }
- }
- if(guidesOn){
- drawGuides();
- }
+ if(guidesOn)drawGuides();
 }
-
+function path(ids,color="#ff9fbd",width=2){
+ ctx.beginPath();
+ ids.forEach((id,i)=>{const p=point(landmarks[id]);i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y)});
+ ctx.strokeStyle=color;ctx.lineWidth=width;ctx.setLineDash([5,4]);ctx.stroke();ctx.setLineDash([]);
+}
 function drawGuides(){
- const line=ids=>{
- ctx.beginPath();
- ids.forEach((id,i)=>{
- const p=xy(landmarks[id]);
- i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y);
- });
- ctx.strokeStyle="#ff9fbd";
- ctx.lineWidth=2;
- ctx.setLineDash([5,4]);
- ctx.stroke();
- ctx.setLineDash([]);
- };
- line([50,101,118,117,123]);
- line([280,330,347,346,352]);
- line([33,160,158,133]);
- line([362,385,387,263]);
-
- ctx.fillStyle="#ffb4ca";
- ctx.font="11px DM Sans";
- let a=xy(landmarks[50]),b=xy(landmarks[280]);
- ctx.fillText("BLUSH",a.x-15,a.y-12);
- ctx.fillText("BLUSH",b.x-15,b.y-12);
+ if(activeGuide==="blush"){
+  path([50,101,118,117,123]);path([280,330,347,346,352]);
+  const a=point(landmarks[50]),b=point(landmarks[280]);
+  ctx.fillStyle="#ffc0d3";ctx.font="11px DM Sans";
+  ctx.fillText("BLUSH",a.x-14,a.y-13);ctx.fillText("BLUSH",b.x-14,b.y-13);
+ }else if(activeGuide==="eyes"){
+  path([33,160,158,133]);path([362,385,387,263]);
+ }else if(activeGuide==="brows"){
+  path([70,63,105,66,107]);path([336,296,334,293,300]);
+ }else if(activeGuide==="lips"){
+  path([61,185,40,0,267,291,409,270,0,37,39,61]);
+ }
 }
+$("mesh").onclick=()=>{meshOn=!meshOn;$("mesh").classList.toggle("active",meshOn);renderFace()};
+$("guides").onclick=()=>{guidesOn=!guidesOn;$("guides").classList.toggle("active",guidesOn);renderFace()};
 
+const lights={
+ "Natural":{ring:"#f3d7df",glow:.25,filter:"none"},
+ "Warm":{ring:"#ffb36c",glow:.55,filter:"sepia(.08)"},
+ "Cool":{ring:"#b8d9ff",glow:.45,filter:"none"},
+ "Soft":{ring:"#ffd5e3",glow:.35,filter:"brightness(1.04)"},
+ "Studio":{ring:"#fff0f5",glow:.8,filter:"brightness(1.06) contrast(1.03)"},
+ "Flash":{ring:"#ffffff",glow:1,filter:"brightness(1.1) contrast(1.06)"}
+};
 $("lighting").onclick=()=>{
- const choices=["Natural","Warm","Cool","Flash","Soft"];
- showPanel("left","The lighting",
- `<p>Choose your mirror lighting.</p>
- ${choices.map(x=>`<button class="option ${x===lightingMode?"active":""}" data-light="${x}">${x}</button>`).join("")}`);
- document.querySelectorAll("[data-light]").forEach(b=>{
- b.onclick=()=>{
- lightingMode=b.dataset.light;
- const filters={
- Natural:"none",
- Warm:"sepia(.2) saturate(1.1)",
- Cool:"hue-rotate(9deg) saturate(.9)",
- Flash:"brightness(1.2) contrast(1.1)",
- Soft:"brightness(1.12) contrast(.9)"
- };
- video.style.filter=filters[lightingMode];
- $("message").textContent=lightingMode.toUpperCase()+" LIGHT";
- document.querySelectorAll("[data-light]").forEach(x=>x.classList.toggle("active",x===b));
- };
+ showPanel("left","The light ring",
+ `<p>Adjust the light surrounding your mirror. These modes simulate illumination visually; they cannot change your physical room lighting.</p>
+ <div>${Object.keys(lights).map(x=>`<button class="option ${x===lightingMode?"active":""}" data-light="${x}">${x}</button>`).join("")}</div>
+ <p>Ring brightness</p><input id="brightness" type="range" min="10" max="100" value="45">`);
+ document.querySelectorAll("[data-light]").forEach(b=>b.onclick=()=>{
+  lightingMode=b.dataset.light;applyLight();
+  document.querySelectorAll("[data-light]").forEach(x=>x.classList.toggle("active",x===b));
  });
+ $("brightness").oninput=e=>setBrightness(+e.target.value);
 };
-
-$("mesh").onclick=()=>{
- meshOn=!meshOn;
- $("mesh").classList.toggle("active",meshOn);
- renderFace();
-};
-$("guides").onclick=()=>{
- guidesOn=!guidesOn;
- $("guides").classList.toggle("active",guidesOn);
- renderFace();
-};
-
-$("profile").onclick=()=>{
- if(!landmarks){alert("Step in front of the mirror first.");return}
- const width=Math.abs(landmarks[234].x-landmarks[454].x);
- const height=Math.abs(landmarks[10].y-landmarks[152].y);
- const ratio=width/height;
- const shape=ratio>.86?"Wider outline":ratio<.7?"Longer outline":"Balanced outline";
- showPanel("right","Your feature notes",
- `<p><b>Face outline</b><br>${shape}</p>
- <p>Live facial landmarks are tracking your face.</p>
- <p style="color:#cbb9c1">This is a rough 2D estimate, not a definitive face-shape or bone-structure diagnosis. Camera angle can affect it.</p>
- <button class="option" onclick="location.reload()">Rescan</button>`);
-};
-
-const tutorialSteps=[
- ["CHEEKS","Use the cheekbone area as a starting point for blush. Blend gently upward toward your temples."],
- ["EYES","Follow your natural eye contour. Experiment with a soft line near the outer corner."],
- ["LIPS","Start at the centre of your lips and work outward with your chosen lip colour."],
- ["FINISH","Add a little highlight wherever you personally enjoy it. Check it in natural light."]
-];
-let step=0;
-function tutorial(){
- showPanel("right","Get ready with me",
- `<p style="color:#f2a6bf">STEP ${step+1} OF 4 · ${tutorialSteps[step][0]}</p>
- <p>${tutorialSteps[step][1]}</p>
- <button class="option" id="next">NEXT STEP →</button>
- <button class="option" id="back">BACK</button>`);
- $("next").onclick=()=>{step=(step+1)%4;tutorial()};
- $("back").onclick=()=>{step=(step+3)%4;tutorial()};
+let ringBrightness=45;
+function setBrightness(v){
+ ringBrightness=v;
+ $("ring").style.borderColor=lights[lightingMode].ring;
+ $("ring").style.boxShadow=`inset 0 0 ${v/2}px ${lights[lightingMode].ring}44,0 0 ${v/2}px ${lights[lightingMode].ring}88,0 0 ${v}px ${lights[lightingMode].ring}44`;
+ $("ringGlow").style.opacity=v/100;
 }
-$("tutorial").onclick=tutorial;
+function applyLight(){
+ video.style.filter=lights[lightingMode].filter;
+ $("ring").style.borderColor=lights[lightingMode].ring;
+ setBrightness(ringBrightness);
+ $("message").textContent=lightingMode.toUpperCase()+" LIGHT";
+}
 
-const modeContent={
- mirror:["The mirror","Your reflection stays centre stage. Use the floating controls to explore the mirror."],
- makeup:["Makeup placement","Pink dotted guides show approximate blush and eye placement. They are guides only. MIROIR never applies makeup to your reflection."],
- colour:["Colour corner","Try rose, berry, mauve, peach and soft brown shades. Webcam lighting changes colour, so treat these as inspiration rather than a definitive undertone analysis."],
- hair:["Hair inspiration","Experiment with soft face-framing layers, a polished bun, a side part or a soft fringe. Your taste and hair texture matter more than a webcam estimate."],
- inspo:["Party inspiration","Romantic editorial: rosy cheeks and blurred lips. 90s party glam: brown-rose lips and softly defined eyes. Ballet-inspired: delicate pink tones and a tidy bun."]
-};
-document.querySelectorAll("[data-mode]").forEach(b=>{
- b.onclick=()=>{
- document.querySelectorAll("[data-mode]").forEach(x=>x.classList.toggle("active",x===b));
- const [title,content]=modeContent[b.dataset.mode];
- showPanel("left",title,`<p>${content}</p>`);
+function featurePanel(name){
+ if(!profile.face){return}
+ const info={
+ face:["Face shape",profile.face,"Your visible face outline is estimated from cheek, jaw and forehead landmarks. This is a 2D estimate, not a measurement of bone structure."],
+ nose:["Nose shape",profile.nose,"This describes the visible width of the nose base relative to the face. It does not classify every detail of nose shape."],
+ brow:["Brow position",profile.brow,"The camera estimates brow height relative to eye position. It cannot reliably determine every brow characteristic."],
+ eyes:["Eye spacing",profile.eyes,"Estimated from the distance between the inner eye corners and visible eye width."],
+ lips:["Lip outline",profile.lips,"Estimated from visible lip width and height. Lighting and expression affect this result."],
+ colour:["Colour analysis","Lighting-dependent","For useful colour suggestions, use neutral daylight, keep the camera exposure steady and avoid coloured lighting. A webcam cannot reliably determine undertone by itself."]
  };
+ const [title,value,desc]=info[name];
+ showPanel("right",title,`<p style="color:var(--pink);font-size:14px">${value}</p><p>${desc}</p><p>MIROIR uses this profile when choosing its suggestions and tutorial placements.</p>`);
+}
+document.querySelectorAll("[data-feature]").forEach(b=>b.onclick=()=>{
+ document.querySelectorAll(".feature").forEach(x=>x.classList.toggle("active",x===b));
+ featurePanel(b.dataset.feature);
 });
 
-// Lipstick-on-glass drawing mode.
-$("draw").onclick=()=>{
- drawing=!drawing;
- mirror.classList.toggle("drawing",drawing);
- $("draw").classList.toggle("active",drawing);
- if(drawing){
- showPanel("left","Lipstick on glass",
- `<p>Leave little lipstick marks on the mirror, just like the party bathroom.</p>
- <div class="swatches">
- ${["#c94f75","#e987a8","#b94b68","#9c4661","#f3c2ce","#ffffff"].map(c=>`<button class="swatch" data-colour="${c}" style="background:${c}"></button>`).join("")}
- </div>
- <p>Smudge size</p><input id="brush" type="range" min="5" max="35" value="15">
- <p><button class="option" id="undo">UNDO</button>
- <button class="option" id="wipe">WIPE MIRROR</button>
- <button class="option" id="done">DONE</button></p>`);
- document.querySelectorAll("[data-colour]").forEach(b=>b.onclick=()=>brushColor=b.dataset.colour);
- $("brush").oninput=e=>brushSize=+e.target.value;
- $("undo").onclick=undo;
- $("wipe").onclick=()=>{strokes=[];redraw()};
- $("done").onclick=()=>$("draw").click();
- }else{
- $("leftPanel").classList.remove("open");
- }
+$("profile").onclick=()=>{
+ if(!landmarks)return;
+ showPanel("right","Your face profile",
+ `<p style="color:var(--pink)">LIVE PROFILE · AUTOMATICALLY UPDATED</p>
+ ${Object.entries(profile).map(([k,v])=>`<p><b>${k.toUpperCase()}</b><br>${v}</p>`).join("")}
+ <p>Estimates can change with camera angle, expression and lighting.</p>`);
 };
 
+const tutorials={
+ blush:[
+  ["Find the cheek area","Your cheek area is located from the visible cheek landmarks. The guide follows that area instead of using a fixed screen position."],
+  ["Choose the direction","For this outline, start with a soft placement near the outer cheek and blend gently toward the temple. Keep the result subtle and adjustable."],
+  ["Check both sides","The guide mirrors the placement on the other cheek. Facial symmetry is not assumed, so check each side in the reflection."]
+ ],
+ eyes:[
+  ["Follow your eye contour","The guide follows the visible eye contours rather than placing a generic wing on the screen."],
+  ["Choose a finish","Try a short soft line at the outer corner first. Adjust it to your preferred look."],
+  ["Compare both eyes","The guide tracks each eye independently. Natural differences between eyes are normal."]
+ ],
+ brows:[
+  ["Follow your brow line","The guide uses your visible brow landmarks as a starting point."],
+  ["Keep the natural shape","Use small strokes along the existing direction instead of forcing a different arch."],
+  ["Check the balance","Compare both sides and adjust manually to your taste."]
+ ],
+ lips:[
+  ["Follow your lip outline","The guide traces your visible lip border."],
+  ["Start at the centre","Apply colour gradually, then work toward the corners."],
+  ["Refine the edges","Use the outline as a guide, not a rule. Your preferred finish matters."]
+ ]
+};
+function openTutorial(){
+ const steps=tutorials[activeGuide]||tutorials.blush;
+ const [title,desc]=steps[tutorialStep%steps.length];
+ showPanel("right","Your personal tutorial",
+ `<p style="color:var(--pink)">STEP ${tutorialStep%steps.length+1} OF ${steps.length} · ${activeGuide.toUpperCase()}</p>
+ <p><b>${title}</b></p><p>${desc}</p>
+ <p style="color:#d5aabb">The pink guide is anchored to the face landmarks detected by your camera.</p>
+ <button class="option" id="prev">← BACK</button>
+ <button class="option active" id="next">NEXT STEP →</button>`);
+ $("next").onclick=()=>{tutorialStep=(tutorialStep+1)%steps.length;openTutorial()};
+ $("prev").onclick=()=>{tutorialStep=(tutorialStep+steps.length-1)%steps.length;openTutorial()};
+}
+$("tutorial").onclick=openTutorial;
+
+function makeupPanel(){
+ showPanel("left","Makeup studio",
+ `<p>Your guides are chosen from your live profile. Choose what you want to work on.</p>
+ <button class="option" data-guide="blush">Blush</button>
+ <button class="option" data-guide="eyes">Eyes</button>
+ <button class="option" data-guide="brows">Brows</button>
+ <button class="option" data-guide="lips">Lips</button>
+ <p id="guideExplanation">Select a feature to see its guide.</p>
+ <button class="option active" id="startLesson">STEP-BY-STEP GUIDE →</button>`);
+ document.querySelectorAll("[data-guide]").forEach(b=>b.onclick=()=>{
+  activeGuide=b.dataset.guide;tutorialStep=0;guidesOn=true;renderFace();
+  document.querySelectorAll("[data-guide]").forEach(x=>x.classList.toggle("active",x===b));
+  const descriptions={
+   blush:"The blush guide follows your cheek landmarks. Placement is a starting suggestion, not a rule.",
+   eyes:"The eye guide follows each visible eye contour. The tutorial adapts to the detected spacing.",
+   brows:"The brow guide follows your own brow landmarks instead of imposing a standard arch.",
+   lips:"The lip guide follows your visible lip border and width."
+  };
+  $("guideExplanation").textContent=descriptions[activeGuide];
+ });
+ $("startLesson").onclick=openTutorial;
+}
+
+const modeContent={
+ mirror:["The mirror","Your reflection stays centre stage. Your profile updates automatically while face tracking is active."],
+ makeup:["Makeup studio","Choose a feature to see face-tracked placement guides and a personalized tutorial."],
+ colour:["Colour corner","Explore rose, berry, mauve, peach and soft brown palettes. Use neutral light for better colour observations."],
+ hair:["Hair inspiration","Use your face outline as one consideration. Try soft layers, a side part, a bun or a fringe according to your own hair texture and preferences."],
+ inspo:["Party inspiration","Romantic editorial, soft 90s glam, ballet-inspired or classic rose looks. These are style directions, not rules about what suits you."]
+};
+document.querySelectorAll("[data-mode]").forEach(b=>b.onclick=()=>{
+ document.querySelectorAll("[data-mode]").forEach(x=>x.classList.toggle("active",x===b));
+ const [title,content]=modeContent[b.dataset.mode];
+ if(b.dataset.mode==="makeup"){makeupPanel();return}
+ if(b.dataset.mode==="colour"){
+  showPanel("left",title,`<p>${content}</p>
+  <div class="swatches">${["#b45a72","#d68b9e","#8c5367","#d9a17d","#9c7898","#ead0c2"].map(c=>`<span class="swatch" style="display:block;background:${c}"></span>`).join("")}</div>
+  <p>These are exploratory palettes, not a confirmed personal colour season. Check shades in neutral daylight.</p>`);return;
+ }
+ showPanel("left",title,`<p>${content}</p>`);
+});
+
+// Hand tracking: pinch thumb and index finger to draw.
+function processHand(){
+ if(!handPoints){
+  if(handDrawing)endHandStroke();
+  $("handStatus")?.replaceChildren(document.createTextNode("NO HAND DETECTED"));
+  return;
+ }
+ const thumb=handPoints[4],index=handPoints[8];
+ const pinch= Math.hypot(thumb.x-index.x,thumb.y-index.y)<.055;
+ const p=point(mid(thumb,index));
+ if(pinch){
+  if(!handDrawing){
+   handDrawing=true;
+   current={points:[p],color:brushColor,size:brushSize};
+   strokes.push(current);
+  }else{
+   const previous=current.points[current.points.length-1];
+   current.points.push(p);paint([previous,p],current.color,current.size);
+  }
+  $("message").textContent="PINCH DETECTED · DRAWING";
+ }else{
+  if(handDrawing)endHandStroke();
+  $("message").textContent="HAND TRACKING · PINCH TO DRAW";
+ }
+}
+function endHandStroke(){handDrawing=false;current=null}
 function paint(points,color,size){
  if(!points.length)return;
- lip.save();
- lip.lineCap="round";lip.lineJoin="round";
- lip.strokeStyle=color;lip.fillStyle=color;
- lip.globalAlpha=.65;lip.shadowColor=color;lip.shadowBlur=size;
- lip.lineWidth=size;
+ lip.save();lip.lineCap="round";lip.lineJoin="round";
+ lip.strokeStyle=color;lip.fillStyle=color;lip.globalAlpha=.68;
+ lip.shadowColor=color;lip.shadowBlur=size*.7;lip.lineWidth=size;
  if(points.length===1){
- lip.beginPath();lip.arc(points[0].x,points[0].y,size/2,0,Math.PI*2);lip.fill();
+  lip.beginPath();lip.arc(points[0].x,points[0].y,size/2,0,Math.PI*2);lip.fill();
  }else{
- lip.beginPath();lip.moveTo(points[0].x,points[0].y);
- points.slice(1).forEach(p=>lip.lineTo(p.x,p.y));
- lip.stroke();
+  lip.beginPath();lip.moveTo(points[0].x,points[0].y);
+  points.slice(1).forEach(p=>lip.lineTo(p.x,p.y));lip.stroke();
  }
  lip.restore();
 }
@@ -367,23 +463,23 @@ function redraw(){
  lip.clearRect(0,0,innerWidth,innerHeight);
  strokes.forEach(s=>paint(s.points,s.color,s.size));
 }
-function undo(){strokes.pop();redraw()}
-function pos(e){return{x:e.clientX,y:e.clientY}}
-lipstick.addEventListener("pointerdown",e=>{
- if(!drawing)return;
- lipstick.setPointerCapture(e.pointerId);
- current={points:[pos(e)],color:brushColor,size:brushSize};
- strokes.push(current);paint(current.points,current.color,current.size);
-});
-lipstick.addEventListener("pointermove",e=>{
- if(!current)return;
- const p=pos(e),previous=current.points[current.points.length-1];
- current.points.push(p);paint([previous,p],current.color,current.size);
-});
-function finish(){current=null}
-lipstick.addEventListener("pointerup",finish);
-lipstick.addEventListener("pointercancel",finish);
+$("draw").onclick=()=>{
+ showPanel("left","Lipstick on glass",
+ `<p>Hold your hand in view. Pinch your thumb and index finger together to draw. Release to stop.</p>
+ <p id="handStatus">WAITING FOR HAND TRACKING</p>
+ <div class="swatches">${["#c94f75","#e987a8","#b94b68","#9c4661","#f3c2ce","#fff"].map(c=>`<button class="swatch" data-colour="${c}" style="background:${c}"></button>`).join("")}</div>
+ <p>Stroke size</p><input id="brush" type="range" min="5" max="35" value="15">
+ <button class="option" id="undo">UNDO</button>
+ <button class="option" id="wipe">WIPE GLASS</button>`);
+ document.querySelectorAll("[data-colour]").forEach(b=>b.onclick=()=>brushColor=b.dataset.colour);
+ $("brush").oninput=e=>brushSize=+e.target.value;
+ $("undo").onclick=()=>{strokes.pop();redraw()};
+ $("wipe").onclick=()=>{strokes=[];redraw()};
+};
 
+window.addEventListener("beforeunload",()=>{
+ if(video.srcObject)video.srcObject.getTracks().forEach(t=>t.stop());
+});
 </script>
 </body>
 </html>
