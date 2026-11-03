@@ -3,50 +3,41 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MIROIR — Your Beauty Studio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MIROIR | Face Tracking Studio</title>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap');
 
 :root {
-  --pink:#d99caf;
-  --pink-dark:#b97991;
-  --pale:#f9eaf0;
-  --lavender:#eae5f3;
-  --cream:#fffaf6;
-  --ink:#483c43;
-  --muted:#a18e98;
-  --line:#f0e1e7;
-  --white:#fff;
+  --pink:#d99bb1;
+  --pale:#f8e9ef;
+  --purple:#b4a5d1;
+  --ink:#493c45;
+  --muted:#a28e99;
+  --cream:#fffaf7;
 }
 
-* { box-sizing:border-box; }
+* {box-sizing:border-box}
 
 body {
   margin:0;
   background:
-    radial-gradient(ellipse at 5% 5%,#f8e7ec 0%,transparent 35%),
-    radial-gradient(ellipse at 95% 35%,#eee8f5 0%,transparent 35%),
+    radial-gradient(circle at 10% 10%,#f6e3eb,transparent 35%),
+    radial-gradient(circle at 90% 50%,#ece7f5,transparent 35%),
     var(--cream);
-  color:var(--ink);
   font-family:'DM Sans',sans-serif;
+  color:var(--ink);
 }
 
-button,select { font:inherit; }
-button { cursor:pointer; }
-
 header {
-  position:sticky;
-  top:0;
-  z-index:20;
-  background:#fffaf5eF;
-  backdrop-filter:blur(15px);
-  border-bottom:1px solid var(--line);
-  padding:15px 5%;
+  padding:20px 6%;
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid #f0e2e8;
+  background:#fffaf5dd;
+  backdrop-filter:blur(15px);
 }
 
 .logo {
@@ -54,114 +45,75 @@ header {
   letter-spacing:4px;
 }
 
-.logo span { color:var(--pink); }
+.logo span {color:var(--pink)}
 
-.header-right {
-  font-size:9px;
+header small {
+  color:var(--muted);
   letter-spacing:2px;
-  color:var(--muted);
+  font-size:9px;
 }
-
-nav {
-  display:flex;
-  gap:22px;
-}
-
-nav a {
-  text-decoration:none;
-  font-size:10px;
-  color:var(--muted);
-  letter-spacing:1px;
-}
-
-nav a:hover { color:var(--pink-dark); }
 
 main {
-  max-width:1350px;
+  max-width:1100px;
+  padding:35px 18px 70px;
   margin:auto;
-  padding:36px 22px 70px;
 }
 
-.hero {
-  text-align:center;
-  padding:35px 10px 32px;
-}
+.hero {text-align:center;margin-bottom:25px}
 
 .eyebrow {
-  color:var(--pink-dark);
+  color:#b77d96;
   font-size:9px;
   font-weight:700;
-  letter-spacing:3px;
-  text-transform:uppercase;
+  letter-spacing:2.5px;
 }
 
-.hero h1 {
-  font:500 clamp(42px,7vw,76px) 'Playfair Display',serif;
-  margin:13px 0;
-  line-height:1.1;
+h1 {
+  font:500 clamp(38px,6vw,62px) 'Playfair Display',serif;
+  margin:10px 0;
 }
 
-.hero h1 em {
-  color:var(--pink-dark);
-  font-weight:500;
-}
+h1 em {color:var(--pink)}
 
 .hero p {
+  color:var(--muted);
   font-size:12px;
-  line-height:1.9;
-  color:var(--muted);
+  line-height:1.8;
 }
 
-.section-heading {
-  display:flex;
-  align-items:end;
-  justify-content:space-between;
-  gap:15px;
-  margin:34px 0 15px;
-}
-
-.section-heading h2 {
-  font:500 27px 'Playfair Display',serif;
-  margin:5px 0 0;
-}
-
-.section-heading p {
-  color:var(--muted);
-  font-size:10px;
-  line-height:1.7;
+.workspace {
+  display:grid;
+  grid-template-columns:1fr 290px;
+  gap:16px;
 }
 
 .panel {
-  background:#ffffffdc;
+  background:#ffffffdb;
   border:1px solid white;
-  border-radius:21px;
-  padding:21px;
-  box-shadow:0 12px 40px #79546b0b;
+  border-radius:20px;
+  padding:19px;
+  box-shadow:0 12px 40px #76516b0b;
   min-width:0;
-}
-
-.main-grid {
-  display:grid;
-  grid-template-columns:1.15fr .85fr;
-  gap:17px;
 }
 
 .camera {
   position:relative;
   width:100%;
   aspect-ratio:4/3;
-  background:linear-gradient(140deg,#f3dce6,#e8e1f1);
   overflow:hidden;
-  border-radius:17px;
-  margin-top:15px;
+  background:linear-gradient(135deg,#f5e0e9,#eae4f4);
+  border-radius:16px;
+  margin-top:14px;
 }
 
 video {
+  position:absolute;
+  inset:0;
   width:100%;
   height:100%;
   object-fit:cover;
-  display:none;
   transform:scaleX(-1);
+  display:none;
 }
 
 canvas {
@@ -169,6 +121,7 @@ canvas {
   inset:0;
   width:100%;
   height:100%;
+  object-fit:cover;
   transform:scaleX(-1);
   pointer-events:none;
 }
@@ -177,39 +130,38 @@ canvas {
   position:absolute;
   inset:0;
   display:flex;
-  flex-direction:column;
   align-items:center;
   justify-content:center;
+  flex-direction:column;
   text-align:center;
   padding:20px;
-  color:#936e82;
+  color:#97768a;
 }
 
-.mirror-icon { font-size:55px; }
+.placeholder .mirror {font-size:53px}
 
 .placeholder b {
-  font:500 21px 'Playfair Display',serif;
-  margin:12px 0 4px;
+  font:500 22px 'Playfair Display',serif;
+  margin-top:12px;
 }
 
 .placeholder p {
   font-size:11px;
+  line-height:1.7;
   max-width:260px;
-  line-height:1.8;
 }
 
-.camera-corner {
+.camera-tag {
   position:absolute;
-  top:13px;
-  left:13px;
-  z-index:2;
+  top:12px;
+  left:12px;
   background:#fff9;
-  backdrop-filter:blur(8px);
-  border-radius:30px;
   padding:8px 12px;
+  border-radius:30px;
+  z-index:2;
+  color:#81596d;
   font-size:9px;
   letter-spacing:1px;
-  color:#81596d;
 }
 
 .camera-tip {
@@ -217,372 +169,192 @@ canvas {
   bottom:12px;
   left:50%;
   transform:translateX(-50%);
-  width:max-content;
-  max-width:90%;
-  text-align:center;
   background:#fff9;
-  padding:9px 13px;
+  padding:9px 14px;
   border-radius:30px;
   font-size:10px;
-  color:#795b6e;
+  white-space:nowrap;
   z-index:2;
+  color:#795b6e;
 }
 
-.button-row {
+button,select {font:inherit}
+
+button {
+  border:0;
+  border-radius:10px;
+  padding:12px 15px;
+  background:var(--pink);
+  color:white;
+  font-size:10px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.2s;
+}
+
+button:hover {transform:translateY(-2px)}
+
+button.secondary {
+  background:var(--pale);
+  color:#895e73;
+}
+
+button:disabled {opacity:.5;cursor:not-allowed}
+
+.buttons {
   display:flex;
   gap:9px;
   flex-wrap:wrap;
   margin-top:13px;
 }
 
-.btn {
-  border:0;
-  border-radius:11px;
-  padding:12px 16px;
-  background:var(--pink);
-  color:white;
-  font-size:10px;
-  font-weight:700;
-  letter-spacing:.5px;
-  transition:.2s;
-}
+.control {margin-top:17px}
 
-.btn:hover { transform:translateY(-2px); }
-
-.btn.secondary {
-  background:var(--pale);
-  color:#895e73;
-}
-
-.btn.lavender {
-  background:var(--lavender);
-  color:#796b91;
-}
-
-.btn:disabled {
-  opacity:.45;
-  cursor:not-allowed;
-  transform:none;
-}
-
-.control-label {
+label {
+  display:block;
   font-size:9px;
   color:var(--muted);
-  letter-spacing:1.5px;
-  text-transform:uppercase;
-  display:block;
+  letter-spacing:1.4px;
   margin-bottom:7px;
+  text-transform:uppercase;
 }
-
-.control-group { margin-top:15px; }
 
 select {
   width:100%;
-  border:1px solid var(--line);
-  background:#fff9fb;
   padding:12px;
-  border-radius:11px;
+  border:1px solid #f0e1e8;
+  border-radius:10px;
+  background:#fff9fb;
   color:var(--ink);
   font-size:11px;
   outline:none;
 }
 
 .status {
-  margin-top:13px;
-  font-size:10px;
   color:var(--muted);
+  font-size:10px;
   line-height:1.7;
+  margin-top:12px;
   min-height:18px;
 }
 
-.status.active { color:#718f79; }
+.status.active {color:#638e73}
 
-.scan-progress {
-  display:flex;
-  gap:7px;
-  margin-top:14px;
-}
-
-.scan-step {
-  flex:1;
-  text-align:center;
-  padding:10px 5px;
-  background:#faf2f5;
-  border:1px solid var(--line);
-  border-radius:10px;
-  font-size:9px;
-  color:var(--muted);
-}
-
-.scan-step.done {
-  background:#eee9f5;
-  color:#78658d;
-}
-
-.scan-step.current {
-  background:#f5dfe8;
-  border-color:var(--pink);
-  color:#895d73;
-}
-
-.result {
-  background:linear-gradient(130deg,#faeaf0,#f0eaf7);
-  padding:17px;
-  border-radius:15px;
-  margin-top:13px;
-}
-
-.result small {
-  font-size:9px;
-  letter-spacing:1.5px;
-  color:#a0788e;
-  font-weight:700;
-}
-
-.result h3 {
-  font:500 25px 'Playfair Display',serif;
-  margin:7px 0;
-}
-
-.result p {
-  color:#8e7784;
-  font-size:11px;
-  line-height:1.8;
-  margin:0;
-}
-
-.metrics {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-top:12px;
+.side-title {
+  font:500 23px 'Playfair Display',serif;
+  margin:7px 0 13px;
 }
 
 .metric {
-  background:white;
-  border:1px solid var(--line);
-  border-radius:13px;
+  background:#fff;
+  border:1px solid #f0e2e8;
+  border-radius:12px;
   padding:13px;
-  min-height:90px;
+  margin-top:9px;
 }
 
 .metric b {
-  display:block;
   font-size:10px;
-  margin-bottom:7px;
+  display:block;
+  margin-bottom:6px;
 }
 
 .metric span {
   font-size:11px;
+  color:var(--muted);
   line-height:1.6;
-  color:var(--muted);
 }
 
-.metric small {
-  display:block;
-  margin-top:5px;
-  color:#b39ca9;
-  font-size:8px;
-}
-
-.feature-list {
-  margin-top:13px;
+.options {
   display:grid;
-  gap:9px;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
 }
 
-.feature {
-  padding:12px;
-  border:1px solid var(--line);
-  border-radius:12px;
+.option {
+  border:1px solid #f0e1e8;
   background:#fff;
-}
-
-.feature b {
+  padding:12px 7px;
+  border-radius:11px;
+  color:#806778;
   font-size:10px;
-  display:block;
-  margin-bottom:5px;
+  cursor:pointer;
 }
 
-.feature p {
-  font-size:10px;
-  color:var(--muted);
-  line-height:1.7;
-  margin:0;
-}
-
-.progress {
-  height:5px;
-  background:#eadfe7;
-  border-radius:10px;
-  overflow:hidden;
-  margin-top:10px;
-}
-
-.progress div {
-  height:100%;
-  width:0;
-  background:linear-gradient(90deg,var(--pink),#b4a4d2);
-  transition:width .3s;
-}
-
-.look-grid {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-}
-
-.look {
-  background:white;
-  border:1px solid var(--line);
-  border-radius:15px;
-  overflow:hidden;
-  transition:.2s;
-}
-
-.look:hover { transform:translateY(-3px); }
-
-.look-visual {
-  height:125px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:38px;
-  position:relative;
-}
-
-.look-visual span {
-  position:absolute;
-  bottom:9px;
-  right:10px;
-  font-size:9px;
-  letter-spacing:1px;
-  color:#806578;
-}
-
-.look-body { padding:13px; }
-
-.look-body h3 {
-  font:500 18px 'Playfair Display',serif;
-  margin:0 0 7px;
-}
-
-.look-body p {
-  font-size:10px;
-  line-height:1.7;
-  color:var(--muted);
-  margin:0 0 10px;
-}
-
-.look-body button {
-  width:100%;
-  padding:9px;
-  border:0;
-  border-radius:9px;
-  background:var(--pale);
-  color:#855d72;
-  font-size:9px;
-  font-weight:700;
-}
-
-.look.selected {
-  border:1px solid var(--pink-dark);
-  box-shadow:0 0 0 2px #e8c3d1;
+.option.selected {
+  background:#f5dfe8;
+  border-color:#d99bb1;
 }
 
 .palette {
   display:flex;
-  gap:13px;
+  gap:10px;
   flex-wrap:wrap;
-  margin:16px 0;
-}
-
-.swatch-wrap {
-  text-align:center;
-  font-size:9px;
-  color:var(--muted);
+  margin-top:13px;
 }
 
 .swatch {
-  width:52px;
-  height:52px;
+  width:34px;
+  height:34px;
   border-radius:50%;
-  border:4px solid white;
-  box-shadow:0 0 0 1px var(--line);
-  margin-bottom:6px;
+  border:3px solid white;
+  box-shadow:0 0 0 1px #e8dce3;
+  cursor:pointer;
 }
 
-.advice-grid {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
+.section {margin-top:24px}
+
+.section h2 {
+  font:500 26px 'Playfair Display',serif;
+  margin:6px 0;
 }
 
-.advice {
-  padding:17px;
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:14px;
-}
-
-.advice .icon { font-size:24px; }
-
-.advice h3 {
-  font:500 17px 'Playfair Display',serif;
-  margin:9px 0 6px;
-}
-
-.advice p {
+.section p {
   color:var(--muted);
-  font-size:10px;
-  line-height:1.8;
-  margin:0;
-}
-
-.journal {
-  background:linear-gradient(130deg,#f8e9ef,#eee9f6);
-  border-radius:18px;
-  padding:23px;
-}
-
-.journal h2 {
-  font:500 27px 'Playfair Display',serif;
-  margin:6px 0 10px;
-}
-
-.journal p {
   font-size:11px;
   line-height:1.8;
-  color:#887382;
 }
 
-.disclaimer {
-  font-size:9px;
-  line-height:1.8;
-  color:#a38f9b;
-  margin-top:13px;
+.looks {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:11px;
+}
+
+.look {
+  background:white;
+  border:1px solid #f0e2e8;
+  border-radius:14px;
+  padding:14px;
+}
+
+.look div {font-size:25px}
+
+.look b {
+  display:block;
+  font:500 17px 'Playfair Display',serif;
+  margin:7px 0;
+}
+
+.look p {
+  font-size:10px;
+  color:var(--muted);
+  line-height:1.6;
 }
 
 footer {
   text-align:center;
-  padding:35px 15px;
-  color:#a38e9b;
+  padding:30px;
   font-size:9px;
-  line-height:2;
+  color:var(--muted);
+  line-height:1.8;
 }
 
-@media(max-width:850px) {
-  .main-grid { grid-template-columns:1fr; }
-  nav { display:none; }
+@media(max-width:760px) {
+  .workspace {grid-template-columns:1fr}
+  .looks {grid-template-columns:1fr 1fr}
 }
 
-@media(max-width:580px) {
-  main { padding:20px 12px 50px; }
-  .panel { padding:14px; }
-  .look-grid { grid-template-columns:1fr 1fr; }
-  .advice-grid { grid-template-columns:1fr; }
-  .section-heading h2 { font-size:23px; }
-}
 </style>
 </head>
 
@@ -590,378 +362,185 @@ footer {
 
 <header>
   <div class="logo">MIROIR<span>.</span></div>
-  <nav>
-    <a href="#mirror">THE MIRROR</a>
-    <a href="#analysis">ANALYSIS</a>
-    <a href="#looks">MAKEUP LOOKS</a>
-    <a href="#journal">BEAUTY JOURNAL</a>
-  </nav>
-  <div class="header-right">YOUR PERSONAL BEAUTY STUDIO</div>
+  <small>YOUR DIGITAL BEAUTY STUDIO</small>
 </header>
 
 <main>
 
-<section class="hero">
-  <div class="eyebrow">A LITTLE BEAUTY, A LITTLE MAGIC</div>
-  <h1>Your face. Your art.<br><em>Your own beauty story.</em></h1>
-  <p>
-    An interactive beauty studio for discovering makeup,
-    exploring your features and finding your signature style.
-  </p>
-</section>
+<div class="hero">
+  <div class="eyebrow">THE FACE TRACKING EXPERIENCE</div>
+  <h1>Beauty in <em>motion.</em></h1>
+  <p>Your reflection, enhanced with interactive makeup guides.<br>
+  Move, experiment and discover your own style.</p>
+</div>
 
-<div class="main-grid">
+<div class="workspace">
 
-<section class="panel" id="mirror">
-  <div class="eyebrow">01 — THE INTERACTIVE MIRROR</div>
-  <h2 style="font:500 25px 'Playfair Display',serif;margin:7px 0">
-    Meet your reflection.
-  </h2>
+<section class="panel">
+
+  <div class="eyebrow">01 — LIVE FACE TRACKING</div>
+  <h2 class="side-title">Your mirror</h2>
+
   <div class="camera">
-    <div class="camera-corner" id="cameraLabel">MIRROR MODE</div>
+    <div class="camera-tag" id="tag">WAITING FOR CAMERA</div>
+
     <video id="video" autoplay muted playsinline></video>
-    <canvas id="overlay"></canvas>
+    <canvas id="canvas"></canvas>
+
     <div class="placeholder" id="placeholder">
-      <div class="mirror-icon">🪞</div>
-      <b>Your mirror awaits.</b>
-      <p>Activate your camera to begin your personal beauty analysis.</p>
+      <div class="mirror">🪞</div>
+      <b>Look into your mirror.</b>
+      <p>Activate your camera to see live facial tracking and makeup previews.</p>
     </div>
-    <div class="camera-tip" id="cameraTip">Your reflection will appear here</div>
+
+    <div class="camera-tip" id="tip">
+      Your reflection will appear here
+    </div>
   </div>
 
-  <div class="button-row">
-    <button class="btn" id="start">Activate mirror ✨</button>
-    <button class="btn secondary" id="stop">Turn off</button>
-    <button class="btn lavender" id="takePhoto">Capture reflection</button>
+  <div class="buttons">
+    <button id="start">Activate camera ✨</button>
+    <button class="secondary" id="stop">Turn off</button>
   </div>
 
-  <div class="control-group">
-    <label class="control-label" for="makeupMode">Virtual makeup preview</label>
-    <select id="makeupMode">
-      <option value="off">Natural reflection</option>
-      <option value="blush">Blush placement guide</option>
-      <option value="liner">Eyeliner preview</option>
-      <option value="lips">Lip colour preview</option>
+  <div class="status" id="status">
+    Waiting for camera permission.
+  </div>
+
+  <div class="control">
+    <label>Tracking display</label>
+    <div class="options">
+      <button class="option selected" data-tracking="makeup">Makeup preview</button>
+      <button class="option" data-tracking="mesh">Face mesh</button>
+      <button class="option" data-tracking="points">Landmarks</button>
+      <button class="option" data-tracking="contours">Contours</button>
+    </div>
+  </div>
+
+  <div class="control">
+    <label>Choose your makeup preview</label>
+    <select id="makeup">
+      <option value="none">Natural reflection</option>
+      <option value="blush">Blush placement</option>
+      <option value="lips">Lip colour</option>
+      <option value="liner">Eyeliner</option>
       <option value="full">Full makeup preview</option>
     </select>
   </div>
 
-  <div class="control-group">
-    <label class="control-label" for="makeupStyle">Choose your makeup aesthetic</label>
-    <select id="makeupStyle">
+  <div class="control">
+    <label>Choose your Pinterest aesthetic</label>
+    <select id="aesthetic">
       <option value="coquette">Coquette rose 🎀</option>
       <option value="douyin">Douyin inspired ✨</option>
       <option value="latte">Latte makeup ☕</option>
+      <option value="berry">Berry romantic 🍒</option>
       <option value="soft">Soft glam</option>
-      <option value="berry">Berry romantic</option>
-      <option value="peach">Peachy natural</option>
+      <option value="peach">Peachy natural 🍑</option>
     </select>
   </div>
 
-  <div class="status" id="status">
-    Camera is inactive. Your camera will only start when you press the button.
-  </div>
-
-  <div class="eyebrow" style="margin-top:23px">THE THREE-ANGLE SCAN</div>
-  <p class="disclaimer">
-    Keep your face comfortably visible. Capture each angle when the camera detects it.
-  </p>
-
-  <div class="scan-progress">
-    <div class="scan-step" id="frontStep">01<br>FRONT</div>
-    <div class="scan-step" id="sideAStep">02<br>SIDE A</div>
-    <div class="scan-step" id="sideBStep">03<br>SIDE B</div>
-  </div>
-
-  <div class="button-row">
-    <button class="btn secondary" id="captureFront" disabled>Capture front</button>
-    <button class="btn secondary" id="captureSideA" disabled>Capture side A</button>
-    <button class="btn secondary" id="captureSideB" disabled>Capture side B</button>
-  </div>
-
-  <div class="status" id="angleStatus">
-    Start your camera to begin the scan.
-  </div>
 </section>
 
-<section class="panel" id="analysis">
-  <div class="eyebrow">02 — YOUR FACIAL PROFILE</div>
-  <h2 style="font:500 25px 'Playfair Display',serif;margin:7px 0">
-    The little details.
-  </h2>
+<aside class="panel">
+  <div class="eyebrow">02 — LIVE ANALYSIS</div>
+  <h2 class="side-title">Your features.</h2>
 
-  <div class="result">
-    <small>ESTIMATED FACE SHAPE</small>
-    <h3 id="faceShape">Awaiting scan</h3>
-    <p id="faceDescription">
-      Your facial proportions will appear here after your front scan.
-    </p>
+  <div class="metric">
+    <b>Face detection</b>
+    <span id="detection">Waiting for face...</span>
   </div>
 
-  <div class="metrics">
-    <div class="metric">
-      <b>Face proportions</b>
-      <span id="faceRatio">Waiting for scan...</span>
-      <small>Length compared with width</small>
-    </div>
-    <div class="metric">
-      <b>Forehead & jaw</b>
-      <span id="jawRatio">Waiting for scan...</span>
-      <small>Relative proportions</small>
-    </div>
-    <div class="metric">
-      <b>Eye spacing</b>
-      <span id="eyeRatio">Waiting for scan...</span>
-      <small>Approximate spacing</small>
-    </div>
-    <div class="metric">
-      <b>Nose width</b>
-      <span id="noseRatio">Waiting for scan...</span>
-      <small>Relative to cheek width</small>
-    </div>
-    <div class="metric">
-      <b>Head position</b>
-      <span id="headPosition">Waiting...</span>
-      <small>Live orientation estimate</small>
-    </div>
-    <div class="metric">
-      <b>Scan progress</b>
-      <span id="scanCount">0 of 3 angles</span>
-      <small>Front and two side angles</small>
-    </div>
+  <div class="metric">
+    <b>Tracking landmarks</b>
+    <span id="landmarkCount">0 detected</span>
   </div>
 
-  <div class="result">
-    <small>YOUR FACE PROFILE</small>
-    <h3 id="profileTitle">A new discovery.</h3>
-    <p id="profileText">
-      Your personalized feature notes will appear here.
-    </p>
+  <div class="metric">
+    <b>Head orientation</b>
+    <span id="orientation">Waiting...</span>
   </div>
 
-  <div class="eyebrow" style="margin-top:23px">PERSONALIZED PLACEMENT IDEAS</div>
-  <div class="feature-list" id="featureAdvice">
-    <div class="feature">
-      <b>Blush placement</b>
-      <p>Complete your scan to receive suggestions.</p>
-    </div>
-    <div class="feature">
-      <b>Eye makeup</b>
-      <p>Complete your scan to receive suggestions.</p>
-    </div>
-    <div class="feature">
-      <b>Contour placement</b>
-      <p>Complete your scan to receive suggestions.</p>
-    </div>
+  <div class="metric">
+    <b>Face proportions</b>
+    <span id="shape">Waiting...</span>
   </div>
-</section>
+
+  <div class="metric">
+    <b>Nose proportions</b>
+    <span id="nose">Waiting...</span>
+  </div>
+
+  <div class="metric">
+    <b>Eye spacing</b>
+    <span id="eyes">Waiting...</span>
+  </div>
+
+  <div class="metric">
+    <b>Camera performance</b>
+    <span id="fps">Waiting...</span>
+  </div>
+
+  <div class="metric">
+    <b>Selected makeup</b>
+    <span id="selected">Natural reflection</span>
+  </div>
+</aside>
 
 </div>
 
-<section id="looks">
-  <div class="section-heading">
-    <div>
-      <div class="eyebrow">03 — THE PINTEREST BEAUTY BOARD</div>
-      <h2>Find your makeup aesthetic.</h2>
+<section class="section">
+  <div class="eyebrow">03 — THE BEAUTY BOARD</div>
+  <h2>Choose your look.</h2>
+  <p>Explore different makeup aesthetics and experiment with their colour stories.</p>
+
+  <div class="looks">
+    <div class="look">
+      <div>🎀</div>
+      <b>Coquette</b>
+      <p>Petal pink, rosy cheeks and soft romantic details.</p>
     </div>
-    <p>Choose a look to preview<br>its placement and colours.</p>
-  </div>
-
-  <div class="look-grid" id="lookGrid">
-
-    <article class="look selected" data-style="coquette">
-      <div class="look-visual" style="background:#f7e2e9">🎀<span>01</span></div>
-      <div class="look-body">
-        <h3>Coquette</h3>
-        <p>Rosy cheeks, soft lashes, delicate pink lips and romantic details.</p>
-        <button onclick="chooseStyle('coquette')">EXPLORE LOOK</button>
-      </div>
-    </article>
-
-    <article class="look" data-style="douyin">
-      <div class="look-visual" style="background:#f1e7ef">✨<span>02</span></div>
-      <div class="look-body">
-        <h3>Douyin</h3>
-        <p>Soft shimmer, glossy lips, delicate eye definition and luminous finishes.</p>
-        <button onclick="chooseStyle('douyin')">EXPLORE LOOK</button>
-      </div>
-    </article>
-
-    <article class="look" data-style="latte">
-      <div class="look-visual" style="background:#eee1d4">☕<span>03</span></div>
-      <div class="look-body">
-        <h3>Latte</h3>
-        <p>Warm browns, bronze tones, soft definition and caramel-inspired colours.</p>
-        <button onclick="chooseStyle('latte')">EXPLORE LOOK</button>
-      </div>
-    </article>
-
-    <article class="look" data-style="soft">
-      <div class="look-visual" style="background:#f4e9e7">🕯️<span>04</span></div>
-      <div class="look-body">
-        <h3>Soft glam</h3>
-        <p>Blended eyes, soft definition, rosy nude lips and polished details.</p>
-        <button onclick="chooseStyle('soft')">EXPLORE LOOK</button>
-      </div>
-    </article>
-
-    <article class="look" data-style="berry">
-      <div class="look-visual" style="background:#f0dfe7">🍒<span>05</span></div>
-      <div class="look-body">
-        <h3>Berry romantic</h3>
-        <p>Berry lips, rosy blush and soft romantic eye colours.</p>
-        <button onclick="chooseStyle('berry')">EXPLORE LOOK</button>
-      </div>
-    </article>
-
-    <article class="look" data-style="peach">
-      <div class="look-visual" style="background:#f8e8dc">🍑<span>06</span></div>
-      <div class="look-body">
-        <h3>Peachy natural</h3>
-        <p>Peach tones, subtle blush, light definition and glossy finishes.</p>
-        <button onclick="chooseStyle('peach')">EXPLORE LOOK</button>
-      </div>
-    </article>
-
+    <div class="look">
+      <div>✨</div>
+      <b>Douyin</b>
+      <p>Shimmer, delicate liner and glossy lips.</p>
+    </div>
+    <div class="look">
+      <div>☕</div>
+      <b>Latte</b>
+      <p>Caramel, bronze and warm brown tones.</p>
+    </div>
+    <div class="look">
+      <div>🍒</div>
+      <b>Berry</b>
+      <p>Berry lips and soft rosy blush.</p>
+    </div>
+    <div class="look">
+      <div>🕯️</div>
+      <b>Soft glam</b>
+      <p>Blended eyes and subtle definition.</p>
+    </div>
+    <div class="look">
+      <div>🍑</div>
+      <b>Peach</b>
+      <p>Peach shades and natural finishes.</p>
+    </div>
   </div>
 </section>
 
-<section class="panel" style="margin-top:27px">
-  <div class="section-heading" style="margin-top:0">
-    <div>
-      <div class="eyebrow">04 — YOUR COLOUR STORY</div>
-      <h2>Explore your palette.</h2>
-    </div>
-  </div>
-
-  <p class="disclaimer">
-    Camera colour readings are highly affected by lighting, exposure and white balance.
-    These are aesthetic colour suggestions, not a definitive seasonal colour analysis.
-  </p>
-
-  <div class="result">
-    <small>YOUR SELECTED MAKEUP PALETTE</small>
-    <h3 id="paletteTitle">Romantic rose</h3>
-    <p id="paletteDescription">A collection of soft shades to experiment with.</p>
-  </div>
-
+<section class="section panel">
+  <div class="eyebrow">04 — COLOUR STORY</div>
+  <h2>Your makeup palette.</h2>
+  <p>Tap a shade to change the makeup preview colour.</p>
   <div class="palette" id="palette"></div>
 </section>
-
-<section class="panel" style="margin-top:20px">
-  <div class="eyebrow">05 — HAIR INSPIRATION</div>
-  <h2 style="font:500 25px 'Playfair Display',serif;margin:7px 0">
-    Your hair, your way.
-  </h2>
-  <p class="disclaimer">
-    Hair density and texture cannot be reliably measured by this face-landmark camera.
-    Select your hair characteristics to receive more relevant styling ideas.
-  </p>
-
-  <div class="metrics">
-    <div>
-      <label class="control-label" for="hairLength">Hair length</label>
-      <select id="hairLength">
-        <option value="short">Short</option>
-        <option value="medium" selected>Medium</option>
-        <option value="long">Long</option>
-      </select>
-    </div>
-    <div>
-      <label class="control-label" for="hairTexture">Hair texture</label>
-      <select id="hairTexture">
-        <option value="straight">Straight</option>
-        <option value="wavy">Wavy</option>
-        <option value="curly">Curly</option>
-        <option value="coily">Coily</option>
-      </select>
-    </div>
-    <div>
-      <label class="control-label" for="hairVolume">Preferred volume</label>
-      <select id="hairVolume">
-        <option value="natural">Natural movement</option>
-        <option value="volume">Extra volume</option>
-        <option value="sleek">Sleek and smooth</option>
-      </select>
-    </div>
-    <div>
-      <label class="control-label" for="hairStyle">Style mood</label>
-      <select id="hairStyle">
-        <option value="romantic">Romantic</option>
-        <option value="classic">Classic</option>
-        <option value="edgy">Edgy</option>
-        <option value="playful">Playful</option>
-      </select>
-    </div>
-  </div>
-
-  <div class="button-row">
-    <button class="btn" id="hairButton">Create my hair ideas ✨</button>
-  </div>
-
-  <div class="feature-list" id="hairAdvice">
-    <div class="feature">
-      <b>Your hairstyle inspiration</b>
-      <p>Choose your preferences and generate your ideas.</p>
-    </div>
-  </div>
-</section>
-
-<section class="panel" style="margin-top:20px">
-  <div class="eyebrow">06 — YOUR STYLE UNIVERSE</div>
-  <h2 style="font:500 25px 'Playfair Display',serif;margin:7px 0">
-    Character energy & inspiration.
-  </h2>
-  <p class="disclaimer">
-    Rather than matching your face to a real person, explore fictional aesthetics
-    and editorial styles that you enjoy.
-  </p>
-
-  <div class="advice-grid">
-    <div class="advice">
-      <div class="icon">🩰</div>
-      <h3>The Ballet Romantic</h3>
-      <p>Soft pinks, delicate blush, rosy lips, satin ribbons and graceful details.</p>
-    </div>
-    <div class="advice">
-      <div class="icon">🕯️</div>
-      <h3>The Gothic Muse</h3>
-      <p>Muted berry shades, softly defined eyes, vintage-inspired colours and dramatic styling.</p>
-    </div>
-    <div class="advice">
-      <div class="icon">🌷</div>
-      <h3>The Vintage Darling</h3>
-      <p>Classic rosy cheeks, softly defined lips, romantic hairstyles and timeless makeup.</p>
-    </div>
-  </div>
-</section>
-
-<section class="journal" id="journal" style="margin-top:25px">
-  <div class="eyebrow">07 — YOUR PERSONAL BEAUTY JOURNAL</div>
-  <h2>A little guide to your signature look.</h2>
-  <p id="journalText">
-    Your beauty journal will grow as you explore the mirror, select your makeup
-    aesthetics and discover the styles you love.
-  </p>
-  <div class="button-row">
-    <button class="btn" id="journalButton">Update my journal</button>
-    <button class="btn secondary" id="downloadReport">Save my report</button>
-  </div>
-</section>
-
-<div class="disclaimer">
-  MIROIR is an experimental beauty and styling tool, not a medical or professional
-  facial-analysis service. Its measurements are approximate and depend on camera
-  position, lighting, facial expression and visibility. No beauty score or
-  attractiveness ranking is generated. Your camera frames are processed locally
-  in your browser and are not uploaded by this page.
-</div>
 
 </main>
 
 <footer>
-  MIROIR © YOUR PERSONAL BEAUTY STUDIO<br>
-  MADE FOR EXPERIMENTATION, CREATIVITY AND SELF-EXPRESSION.
+  MIROIR · YOUR PERSONAL BEAUTY STUDIO<br>
+  Facial landmark estimates are experimental and not professional measurements.
+  Camera processing runs locally in your browser.
 </footer>
 
 <script type="module">
@@ -974,152 +553,109 @@ import {
 const $ = id => document.getElementById(id);
 
 const video = $("video");
-const canvas = $("overlay");
+const canvas = $("canvas");
 const ctx = canvas.getContext("2d");
 
-let landmarker = null;
-let stream = null;
-let running = false;
-let busy = false;
-let lastVideoTime = -1;
-let currentLandmarks = null;
-let lastMeasurements = null;
+let faceLandmarker = null;
+let cameraStream = null;
+let active = false;
+let mode = "makeup";
+let makeup = "none";
+let style = "coquette";
+let lastTime = -1;
+let smoothed = null;
+let lastFrameTime = performance.now();
+let fps = 0;
 
-const scan = {
-  front:false,
-  sideA:false,
-  sideB:false
-};
-
-const styles = {
+const palettes = {
   coquette:{
-    name:"Coquette rose",
-    blush:"#d77f9e",
-    lips:"#bd617f",
-    liner:"#654454",
-    shades:["#f5d9e3","#e8aabd","#d47f9e","#b86c86","#83586c"],
-    labels:["Petal pink","Rose","Dusty pink","Berry rose","Mauve"],
-    description:"Romantic rose tones, soft pink blush and delicate finishes."
+    blush:"#df8eaa",
+    lips:"#bd6688",
+    liner:"#654354",
+    shades:["#f4dce6","#e7a9bf","#d982a1","#b86c89","#87566c"]
   },
   douyin:{
-    name:"Douyin inspired",
-    blush:"#d8899b",
-    lips:"#c56c82",
-    liner:"#563b4b",
-    shades:["#f0d4dd","#d994a6","#c87991","#9e6b83","#e8b5c4"],
-    labels:["Soft pink","Rose","Cherry","Mauve","Shimmer pink"],
-    description:"Soft shimmer, rosy colours and glossy romantic finishes."
+    blush:"#df91a8",
+    lips:"#ca718d",
+    liner:"#493444",
+    shades:["#f5dce6","#e9b1c3","#d78ba5","#b76a88","#87536d"]
   },
   latte:{
-    name:"Latte makeup",
-    blush:"#c78c73",
-    lips:"#a96e5c",
-    liner:"#65483b",
-    shades:["#e8d3bd","#c69b7c","#a9795d","#785847","#d8b29b"],
-    labels:["Cream","Caramel","Cinnamon","Espresso","Warm nude"],
-    description:"Warm browns, caramel shades and soft bronze-inspired tones."
-  },
-  soft:{
-    name:"Soft glam",
-    blush:"#cf8c98",
-    lips:"#ae727f",
-    liner:"#59434d",
-    shades:["#eed9d8","#d8adb1","#b9818b","#926d78","#d9b9a9"],
-    labels:["Blush nude","Mauve","Rosewood","Plum","Champagne"],
-    description:"Blended neutrals, soft definition and polished rosy tones."
+    blush:"#c58b72",
+    lips:"#aa715d",
+    liner:"#604438",
+    shades:["#e8d3bd","#c69b7c","#a9795d","#785847","#d8b29b"]
   },
   berry:{
-    name:"Berry romantic",
-    blush:"#b96f89",
-    lips:"#914b68",
+    blush:"#c47794",
+    lips:"#944c70",
     liner:"#523b4b",
-    shades:["#e6c5d0","#c77f9b","#a65378","#773c60","#d3a1b3"],
-    labels:["Petal","Berry pink","Raspberry","Plum","Dusty rose"],
-    description:"Berry colours, romantic blush and softly defined eyes."
+    shades:["#e6c5d0","#c77f9b","#a65378","#773c60","#d3a1b3"]
+  },
+  soft:{
+    blush:"#d08e9c",
+    lips:"#b47885",
+    liner:"#59434d",
+    shades:["#eed9d8","#d8adb1","#b9818b","#926d78","#d9b9a9"]
   },
   peach:{
-    name:"Peachy natural",
     blush:"#e5a184",
     lips:"#c98172",
     liner:"#735044",
-    shades:["#f5dfca","#e9b59c","#d9957e","#b97868","#e9c1a6"],
-    labels:["Cream peach","Apricot","Peach rose","Terracotta","Warm nude"],
-    description:"Peachy shades, soft warmth and natural-looking finishes."
+    shades:["#f5dfca","#e9b59c","#d9957e","#b97868","#e9c1a6"]
   }
 };
 
-let selectedStyle = "coquette";
-let selectedMakeup = "off";
-let latestReport = null;
-
-function setStatus(message, active=false) {
-  $("status").textContent = message;
-  $("status").className = active ? "status active" : "status";
+function setStatus(text,ok=false) {
+  $("status").textContent=text;
+  $("status").className="status"+(ok?" active":"");
 }
 
-function setAngleStatus(message) {
-  $("angleStatus").textContent = message;
-}
+async function createTracker() {
+  if(faceLandmarker) return;
 
-function setScanUI() {
-  const ids = {
-    front:"frontStep",
-    sideA:"sideAStep",
-    sideB:"sideBStep"
-  };
+  setStatus("Loading the face tracking model...");
 
-  Object.entries(ids).forEach(([key,id]) => {
-    $(id).className = "scan-step" + (scan[key] ? " done" : "");
-  });
-
-  const total = Object.values(scan).filter(Boolean).length;
-  $("scanCount").textContent = total + " of 3 angles";
-}
-
-function distance(a,b) {
-  return Math.hypot(a.x-b.x,a.y-b.y);
-}
-
-function midpoint(a,b) {
-  return {x:(a.x+b.x)/2,y:(a.y+b.y)/2};
-}
-
-function clamp(v,min,max) {
-  return Math.max(min,Math.min(max,v));
-}
-
-async function loadModel() {
-  if(landmarker) return;
-
-  setStatus("Preparing the facial landmark model...");
-
-  const vision = await FilesetResolver.forVisionTasks(
+  const vision=await FilesetResolver.forVisionTasks(
     "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm"
   );
 
-  landmarker = await FaceLandmarker.createFromOptions(vision,{
+  const options={
     baseOptions:{
       modelAssetPath:
       "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
-      delegate:"CPU"
+      delegate:"GPU"
     },
     runningMode:"VIDEO",
     numFaces:1,
-    outputFaceBlendshapes:false,
-    outputFacialTransformationMatrixes:false
-  });
+    minFaceDetectionConfidence:.55,
+    minFacePresenceConfidence:.55,
+    minTrackingConfidence:.55,
+    outputFaceBlendshapes:false
+  };
+
+  try {
+    faceLandmarker=await FaceLandmarker.createFromOptions(vision,options);
+  } catch(error) {
+    console.warn("GPU unavailable. Switching to CPU.",error);
+
+    options.baseOptions.delegate="CPU";
+
+    faceLandmarker=await FaceLandmarker.createFromOptions(vision,options);
+  }
 }
 
 async function startCamera() {
   try {
-    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      throw new Error("Camera access requires HTTPS or localhost.");
+    $("start").disabled=true;
+
+    if(!navigator.mediaDevices?.getUserMedia) {
+      throw new Error("Use your HTTPS GitHub Pages website to access the camera.");
     }
 
-    $("start").disabled = true;
-    await loadModel();
+    await createTracker();
 
-    stream = await navigator.mediaDevices.getUserMedia({
+    cameraStream=await navigator.mediaDevices.getUserMedia({
       audio:false,
       video:{
         facingMode:"user",
@@ -1128,651 +664,450 @@ async function startCamera() {
       }
     });
 
-    video.srcObject = stream;
-    await video.play();
+    video.srcObject=cameraStream;
 
-    video.style.display = "block";
-    $("placeholder").style.display = "none";
-
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-
-    running = true;
-    lastVideoTime = -1;
-
-    $("cameraLabel").textContent = "LIVE BEAUTY MIRROR";
-    $("cameraTip").textContent = "Keep your face comfortably in frame";
-
-    ["captureFront","captureSideA","captureSideB"].forEach(id=>{
-      $(id).disabled = false;
+    await new Promise(resolve=>{
+      video.onloadedmetadata=resolve;
     });
 
-    setStatus("Mirror activated. Position your face in the centre.",true);
-    $("scanStatus").textContent = "CAMERA ACTIVE";
+    await video.play();
 
-    requestAnimationFrame(renderLoop);
+    canvas.width=video.videoWidth;
+    canvas.height=video.videoHeight;
+
+    video.style.display="block";
+    $("placeholder").style.display="none";
+
+    active=true;
+    lastTime=-1;
+    smoothed=null;
+
+    $("tag").textContent="LIVE FACIAL TRACKING";
+    setStatus("Mirror active. Looking for your face...",true);
+
+    requestAnimationFrame(trackFrame);
 
   } catch(error) {
     console.error(error);
-    setStatus("Unable to activate the camera: " + error.message);
-    $("start").disabled = false;
+    setStatus("Camera error: "+error.message);
+    $("start").disabled=false;
   }
 }
 
 function stopCamera() {
-  running = false;
+  active=false;
 
-  if(stream) {
-    stream.getTracks().forEach(track=>track.stop());
-    stream = null;
+  if(cameraStream) {
+    cameraStream.getTracks().forEach(t=>t.stop());
+    cameraStream=null;
   }
 
-  video.srcObject = null;
-  video.style.display = "none";
+  video.srcObject=null;
+  video.style.display="none";
+
+  $("placeholder").style.display="flex";
+  $("tag").textContent="WAITING FOR CAMERA";
+  $("tip").textContent="Your reflection will appear here";
 
   ctx.clearRect(0,0,canvas.width,canvas.height);
-  $("placeholder").style.display = "flex";
-  $("cameraLabel").textContent = "MIRROR MODE";
-  $("cameraTip").textContent = "Your reflection will appear here";
 
-  $("start").disabled = false;
-  $("scanStatus").textContent = "WAITING FOR CAMERA";
+  $("detection").textContent="Camera off";
+  $("landmarkCount").textContent="0 detected";
 
-  ["captureFront","captureSideA","captureSideB"].forEach(id=>{
-    $(id).disabled = true;
-  });
+  $("start").disabled=false;
 
-  setStatus("Camera turned off.");
+  setStatus("Camera disconnected.");
 }
 
-function estimatePose(lm) {
-  const leftEye = midpoint(lm[33],lm[133]);
-  const rightEye = midpoint(lm[362],lm[263]);
-  const eyeMid = midpoint(leftEye,rightEye);
+function smoothLandmarks(newPoints) {
+  if(!smoothed || smoothed.length!==newPoints.length) {
+    smoothed=newPoints.map(p=>({...p}));
+    return smoothed;
+  }
 
-  const eyeWidth = distance(leftEye,rightEye);
-  const nose = lm[1];
+  const factor=.55;
 
-  const yaw = (nose.x-eyeMid.x)/(eyeWidth || 1);
-  const roll = Math.atan2(
-    rightEye.y-leftEye.y,
-    rightEye.x-leftEye.x
-  ) * 180/Math.PI;
+  for(let i=0;i<newPoints.length;i++) {
+    smoothed[i].x += (newPoints[i].x-smoothed[i].x)*factor;
+    smoothed[i].y += (newPoints[i].y-smoothed[i].y)*factor;
+    smoothed[i].z += (newPoints[i].z-smoothed[i].z)*factor;
+  }
 
-  const eyeLine = eyeMid.y;
-  const nosePosition = (nose.y-eyeLine)/(lm[152].y-eyeLine || 1);
+  return smoothed;
+}
 
-  let direction = "Facing forward";
-
-  if(yaw > .12) direction = "Turn slightly to one side";
-  if(yaw < -.12) direction = "Turn slightly to the other side";
-
+function point(index,lm) {
   return {
-    yaw,
-    roll,
-    pitch:nosePosition,
-    direction
+    x:lm[index].x*canvas.width,
+    y:lm[index].y*canvas.height
   };
 }
 
-function estimateFeatures(lm) {
-  const faceLength = distance(lm[10],lm[152]);
-  const cheekWidth = distance(lm[234],lm[454]);
-  const foreheadWidth = distance(lm[127],lm[356]);
-  const jawWidth = distance(lm[172],lm[397]);
+function trace(indices,lm,close=false) {
+  if(!indices.length) return;
 
-  const noseWidth = distance(lm[98],lm[327]);
-
-  const leftEyeWidth = distance(lm[33],lm[133]);
-  const rightEyeWidth = distance(lm[362],lm[263]);
-  const innerEyeDistance = distance(lm[133],lm[362]);
-
-  const ratio = faceLength/(cheekWidth || 1);
-  const foreheadRatio = foreheadWidth/(cheekWidth || 1);
-  const jawRatio = jawWidth/(cheekWidth || 1);
-  const noseRatio = noseWidth/(cheekWidth || 1);
-  const eyeRatio = innerEyeDistance/((leftEyeWidth+rightEyeWidth)/2 || 1);
-
-  let shape = "Balanced proportions";
-
-  if(ratio > 1.48) shape = "Long / oblong";
-  else if(ratio < 1.13 && jawRatio > .83) shape = "Square-like";
-  else if(ratio < 1.22) shape = "Round-like";
-  else if(foreheadRatio > jawRatio*1.12) shape = "Heart-like";
-  else if(jawRatio > foreheadRatio*1.12) shape = "Triangle-like";
-  else shape = "Oval-like";
-
-  return {
-    faceLength,
-    cheekWidth,
-    foreheadWidth,
-    jawWidth,
-    noseWidth,
-    ratio,
-    foreheadRatio,
-    jawRatio,
-    noseRatio,
-    eyeRatio,
-    shape
-  };
-}
-
-function drawPath(points, close=false) {
-  if(!points.length) return;
+  const first=point(indices[0],lm);
 
   ctx.beginPath();
-  ctx.moveTo(points[0].x*canvas.width,points[0].y*canvas.height);
+  ctx.moveTo(first.x,first.y);
 
-  for(let i=1;i<points.length;i++) {
-    ctx.lineTo(points[i].x*canvas.width,points[i].y*canvas.height);
+  for(let i=1;i<indices.length;i++) {
+    const p=point(indices[i],lm);
+    ctx.lineTo(p.x,p.y);
   }
 
   if(close) ctx.closePath();
 }
 
-function drawBlush(lm,color) {
-  const cheeks = [lm[205],lm[425]];
+function drawConnections(connections,lm,color,width=1) {
+  ctx.beginPath();
 
-  cheeks.forEach(point=>{
-    const x=point.x*canvas.width;
-    const y=point.y*canvas.height;
+  for(const connection of connections) {
+    const a=point(connection.start,lm);
+    const b=point(connection.end,lm);
 
-    const gradient=ctx.createRadialGradient(x,y,2,x,y,canvas.width*.075);
-    gradient.addColorStop(0,color+"88");
-    gradient.addColorStop(.55,color+"38");
-    gradient.addColorStop(1,color+"00");
-
-    ctx.fillStyle=gradient;
-    ctx.beginPath();
-    ctx.ellipse(
-      x,y,
-      canvas.width*.075,
-      canvas.height*.055,
-      -.2,0,Math.PI*2
-    );
-    ctx.fill();
-  });
-}
-
-function drawLiner(lm,color) {
-  ctx.strokeStyle=color;
-  ctx.lineWidth=Math.max(2,canvas.width*.004);
-  ctx.lineCap="round";
-  ctx.lineJoin="round";
-
-  // Approximate upper lash-line guides.
-  const paths=[
-    [33,160,158,157,133],
-    [362,385,387,386,263]
-  ];
-
-  paths.forEach(indices=>{
-    drawPath(indices.map(i=>lm[i]));
-    ctx.stroke();
-  });
-
-  // Small outer wing guides.
-  [[33,130],[263,359]].forEach(pair=>{
-    drawPath(pair.map(i=>lm[i]));
-    ctx.lineTo(
-      (lm[pair[1]].x+(lm[pair[1]].x-lm[pair[0]].x)*.35)*canvas.width,
-      (lm[pair[1]].y+(lm[pair[1]].y-lm[pair[0]].y)*.35)*canvas.height
-    );
-    ctx.stroke();
-  });
-}
-
-function drawLips(lm,color) {
-  const indices=[
-    61,185,40,39,37,0,267,269,270,409,
-    291,375,321,405,314,17,84,181,91
-  ];
-
-  drawPath(indices.map(i=>lm[i]),true);
-  ctx.fillStyle=color+"77";
-  ctx.fill();
+    ctx.moveTo(a.x,a.y);
+    ctx.lineTo(b.x,b.y);
+  }
 
   ctx.strokeStyle=color;
-  ctx.lineWidth=Math.max(1,canvas.width*.0015);
+  ctx.lineWidth=width;
   ctx.stroke();
 }
 
-function drawMakeup(lm) {
-  const style=styles[selectedStyle];
+function drawMesh(lm) {
+  drawConnections(
+    FaceLandmarker.FACE_LANDMARKS_TESSELATION,
+    lm,
+    "rgba(255,255,255,.30)",
+    .65
+  );
 
-  if(selectedMakeup==="off") return;
+  drawConnections(
+    FaceLandmarker.FACE_LANDMARKS_FACE_OVAL,
+    lm,
+    "rgba(235,155,183,.95)",
+    2
+  );
 
-  if(selectedMakeup==="blush" || selectedMakeup==="full") {
-    drawBlush(lm,style.blush);
-  }
+  drawConnections(
+    FaceLandmarker.FACE_LANDMARKS_LEFT_EYE,
+    lm,
+    "#ffffff",
+    1.5
+  );
 
-  if(selectedMakeup==="liner" || selectedMakeup==="full") {
-    drawLiner(lm,style.liner);
-  }
+  drawConnections(
+    FaceLandmarker.FACE_LANDMARKS_RIGHT_EYE,
+    lm,
+    "#ffffff",
+    1.5
+  );
 
-  if(selectedMakeup==="lips" || selectedMakeup==="full") {
-    drawLips(lm,style.lips);
+  drawConnections(
+    FaceLandmarker.FACE_LANDMARKS_LIPS,
+    lm,
+    "#ef8caa",
+    2
+  );
+
+  drawConnections(
+    FaceLandmarker.FACE_LANDMARKS_LEFT_EYEBROW,
+    lm,
+    "#dfc2d0",
+    2
+  );
+
+  drawConnections(
+    FaceLandmarker.FACE_LANDMARKS_RIGHT_EYEBROW,
+    lm,
+    "#dfc2d0",
+    2
+  );
+}
+
+function drawPoints(lm) {
+  for(let i=0;i<lm.length;i++) {
+    const p=point(i,lm);
+
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,1.3,0,Math.PI*2);
+    ctx.fillStyle="rgba(255,255,255,.85)";
+    ctx.fill();
   }
 }
 
-function drawFaceGuides(lm) {
-  const oval=[
-    10,338,297,332,284,251,389,356,454,323,
-    361,288,397,365,379,378,400,377,152,
-    148,176,149,150,136,172,58,132,93,
-    234,127,162,21,54,103,67,109
+function gradientBlush(centerX,centerY,rx,ry,color) {
+  const gradient=ctx.createRadialGradient(
+    centerX,centerY,2,
+    centerX,centerY,rx
+  );
+
+  gradient.addColorStop(0,color+"99");
+  gradient.addColorStop(.5,color+"55");
+  gradient.addColorStop(1,color+"00");
+
+  ctx.fillStyle=gradient;
+  ctx.beginPath();
+  ctx.ellipse(centerX,centerY,rx,ry,0,0,Math.PI*2);
+  ctx.fill();
+}
+
+function drawBlush(lm) {
+  const c=palettes[style].blush;
+
+  // Cheek landmarks, dynamically anchored to the face.
+  const left=point(205,lm);
+  const right=point(425,lm);
+
+  const width=canvas.width*.075;
+  const height=canvas.height*.055;
+
+  gradientBlush(left.x,left.y,width,height,c);
+  gradientBlush(right.x,right.y,width,height,c);
+}
+
+function drawLips(lm) {
+  const c=palettes[style].lips;
+
+  const outer=[
+    61,185,40,39,37,0,267,269,270,409,
+    291,375,321,405,314,17,84,181,91,146
   ];
 
-  drawPath(oval.map(i=>lm[i]),true);
-  ctx.strokeStyle="#ffffff99";
+  trace(outer,lm,true);
+
+  ctx.fillStyle=c+"99";
+  ctx.fill();
+
+  ctx.strokeStyle=c;
   ctx.lineWidth=1.5;
   ctx.stroke();
 
-  [33,133,362,263,1,98,327,152].forEach(i=>{
-    ctx.beginPath();
-    ctx.arc(lm[i].x*canvas.width,lm[i].y*canvas.height,3,0,Math.PI*2);
-    ctx.fillStyle="#fff";
-    ctx.fill();
+  // Inner lip definition.
+  drawConnections(
+    FaceLandmarker.FACE_LANDMARKS_LIPS,
+    lm,
+    c,
+    1
+  );
+}
+
+function drawLiner(lm) {
+  const c=palettes[style].liner;
+
+  // Upper eyelid points follow the moving eyes.
+  const eyes=[
+    [33,160,158,157,173,133],
+    [362,385,387,386,398,263]
+  ];
+
+  ctx.lineWidth=Math.max(2,canvas.width*.003);
+  ctx.lineCap="round";
+  ctx.lineJoin="round";
+  ctx.strokeStyle=c;
+
+  eyes.forEach(indices=>{
+    trace(indices,lm);
+    ctx.stroke();
+  });
+
+  // Wings follow the outer eye corners.
+  const wings=[
+    [33,130,247],
+    [263,359,467]
+  ];
+
+  ctx.lineWidth=Math.max(2,canvas.width*.004);
+
+  wings.forEach(indices=>{
+    trace(indices,lm);
+    ctx.stroke();
   });
 }
 
-function updateLiveAnalysis(lm) {
-  const pose=estimatePose(lm);
+function drawMakeup(lm) {
+  if(makeup==="none") return;
 
-  $("headPosition").textContent=pose.direction;
-
-  $("poseText").textContent=
-    "Head orientation is estimated from facial landmarks. " +
-    "Keep your head comfortable and move slowly.";
-
-  $("poseBar").style.width=
-    clamp(Math.abs(pose.yaw)*180,0,100)+"%";
-
-  if(Math.abs(pose.yaw)<.12) {
-    $("cameraTip").textContent="Front view detected · capture your front scan";
-  } else {
-    $("cameraTip").textContent="Side angle detected · you can capture this view";
-  }
-
-  return pose;
+  if(makeup==="blush" || makeup==="full") drawBlush(lm);
+  if(makeup==="lips" || makeup==="full") drawLips(lm);
+  if(makeup==="liner" || makeup==="full") drawLiner(lm);
 }
 
-function renderLoop() {
-  if(!running || busy) return;
+function estimate(lm) {
+  const d=(a,b)=>Math.hypot(
+    lm[a].x-lm[b].x,
+    lm[a].y-lm[b].y
+  );
 
-  if(video.readyState>=2 && video.currentTime!==lastVideoTime) {
-    lastVideoTime=video.currentTime;
+  const length=d(10,152);
+  const width=d(234,454);
+  const noseWidth=d(98,327);
+  const eyeGap=d(133,362);
+  const eyeWidth=(d(33,133)+d(362,263))/2;
+
+  const ratio=length/(width||1);
+
+  let shape="Balanced proportions";
+
+  if(ratio>1.48) shape="Long / oblong";
+  else if(ratio<1.13) shape="Round or square-like";
+  else if(ratio>1.28) shape="Oval-like";
+
+  $("shape").textContent=shape+" · "+ratio.toFixed(2)+" ratio";
+  $("nose").textContent=(noseWidth/(width||1)*100).toFixed(1)+"% of cheek width";
+  $("eyes").textContent=(eyeGap/(eyeWidth||1)).toFixed(2)+" relative units";
+}
+
+function orientation(lm) {
+  const left={x:(lm[33].x+lm[133].x)/2,y:(lm[33].y+lm[133].y)/2};
+  const right={x:(lm[362].x+lm[263].x)/2,y:(lm[362].y+lm[263].y)/2};
+
+  const mid={x:(left.x+right.x)/2,y:(left.y+right.y)/2};
+  const eyeWidth=Math.abs(right.x-left.x)||1;
+  const yaw=(lm[1].x-mid.x)/eyeWidth;
+
+  if(yaw>.13) return "Turned to one side";
+  if(yaw<-.13) return "Turned to the other side";
+
+  return "Facing forward";
+}
+
+function render(lm) {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  if(mode==="mesh") {
+    drawMesh(lm);
+    return;
+  }
+
+  if(mode==="points") {
+    drawPoints(lm);
+    return;
+  }
+
+  if(mode==="contours") {
+    drawConnections(
+      FaceLandmarker.FACE_LANDMARKS_FACE_OVAL,
+      lm,"#d77f9e",3
+    );
+
+    drawConnections(
+      FaceLandmarker.FACE_LANDMARKS_LEFT_EYE,
+      lm,"#fff",2
+    );
+
+    drawConnections(
+      FaceLandmarker.FACE_LANDMARKS_RIGHT_EYE,
+      lm,"#fff",2
+    );
+
+    drawConnections(
+      FaceLandmarker.FACE_LANDMARKS_LIPS,
+      lm,"#d77f9e",2
+    );
+
+    return;
+  }
+
+  drawMakeup(lm);
+}
+
+function trackFrame() {
+  if(!active) return;
+
+  if(video.readyState>=2 && video.currentTime!==lastTime) {
+    lastTime=video.currentTime;
 
     try {
-      const results=landmarker.detectForVideo(video,performance.now());
+      const results=faceLandmarker.detectForVideo(
+        video,
+        performance.now()
+      );
 
-      ctx.clearRect(0,0,canvas.width,canvas.height);
+      if(results.faceLandmarks?.length) {
+        const raw=results.faceLandmarks[0];
+        const lm=smoothLandmarks(raw);
 
-      if(results.faceLandmarks && results.faceLandmarks.length) {
-        const lm=results.faceLandmarks[0];
+        $("detection").textContent="Face detected ✓";
+        $("landmarkCount").textContent=lm.length+" landmarks tracked";
+        $("orientation").textContent=orientation(lm);
 
-        currentLandmarks=lm;
+        $("tip").textContent="Your facial landmarks are being tracked live";
 
-        const pose=updateLiveAnalysis(lm);
+        render(lm);
+        estimate(lm);
 
-        drawFaceGuides(lm);
-        drawMakeup(lm);
+        const now=performance.now();
+        const elapsed=now-lastFrameTime;
 
-        $("scanStatus").textContent="FACE DETECTED";
+        if(elapsed>0) fps=Math.round(1000/elapsed);
 
-        if(!lastMeasurements && Math.abs(pose.yaw)<.12) {
-          lastMeasurements=estimateFeatures(lm);
-          updateReport(lastMeasurements);
-        }
+        lastFrameTime=now;
+
+        $("fps").textContent=fps+" estimated FPS";
 
       } else {
-        currentLandmarks=null;
-        $("scanStatus").textContent="LOOKING FOR FACE";
-        $("cameraTip").textContent="Move into the centre of the mirror";
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+
+        $("detection").textContent="No face detected";
+        $("landmarkCount").textContent="0 detected";
+        $("orientation").textContent="Waiting...";
+        $("tip").textContent="Move into the centre of the mirror";
       }
+
     } catch(error) {
       console.error(error);
+      setStatus("Tracking error: "+error.message);
     }
   }
 
-  requestAnimationFrame(renderLoop);
-}
-
-function captureAngle(type) {
-  if(!currentLandmarks) {
-    setAngleStatus("No face detected. Position your face in the mirror first.");
-    return;
-  }
-
-  const pose=estimatePose(currentLandmarks);
-
-  if(type==="front" && Math.abs(pose.yaw)>.15) {
-    setAngleStatus("Please face the camera directly for your front scan.");
-    return;
-  }
-
-  if(type!=="front" && Math.abs(pose.yaw)<.10) {
-    setAngleStatus("Turn your head slightly to the side before capturing this angle.");
-    return;
-  }
-
-  scan[type]=true;
-
-  if(type==="front") {
-    lastMeasurements=estimateFeatures(currentLandmarks);
-    updateReport(lastMeasurements);
-  }
-
-  setScanUI();
-
-  const messages={
-    front:"Front scan captured. Now turn slightly to one side.",
-    sideA:"First side angle captured. Turn gently to the opposite side.",
-    sideB:"Second side angle captured. Your three-angle scan is complete."
-  };
-
-  setAngleStatus(messages[type]);
-
-  if(scan.front && scan.sideA && scan.sideB) {
-    $("profileTitle").textContent="Your scan is complete.";
-    $("profileText").textContent=
-      "You have captured your front and two side angles. " +
-      "Side views can help you explore your profile, but they are not a professional 3D measurement.";
-  }
-}
-
-function updateReport(data) {
-  $("faceShape").textContent=data.shape;
-
-  $("faceDescription").textContent=
-    "This is an approximate classification based on the proportions visible in your front-facing camera view.";
-
-  $("faceRatio").textContent=data.ratio.toFixed(2)+" : 1";
-  $("jawRatio").textContent=
-    "Forehead "+data.foreheadRatio.toFixed(2)+" · Jaw "+data.jawRatio.toFixed(2);
-
-  $("eyeRatio").textContent=
-    data.eyeRatio.toFixed(2)+" relative units";
-
-  $("noseRatio").textContent=
-    (data.noseRatio*100).toFixed(1)+"% of cheek width";
-
-  $("profileTitle").textContent=data.shape+" profile";
-
-  $("profileText").textContent=
-    "Your facial measurements are estimates from visible landmarks. " +
-    "Small changes in camera angle can change the results.";
-
-  let blush="Experiment with blush placed on the upper cheeks, then blend outward.";
-  let contour="Try soft contour placement near the outer cheek area, blending gently.";
-  let eyes="Explore eyeliner shapes with different angles and finishes.";
-
-  if(data.shape==="Long / oblong") {
-    blush="Try a softly blended blush across the cheeks for a horizontal, diffused effect.";
-    contour="Experiment with subtle shading near the upper forehead and lower cheek area.";
-    eyes="Softly extended eye makeup can create an interesting horizontal design.";
-  }
-
-  if(data.shape==="Round-like") {
-    blush="Try high, softly diffused blush placement toward the temples.";
-    contour="Explore gentle cheek definition without harsh lines.";
-    eyes="Try softly extended liner or lifted outer-corner eyeshadow.";
-  }
-
-  if(data.shape==="Square-like") {
-    blush="Try rounded, diffused blush placement on the cheeks.";
-    contour="If you enjoy contour, experiment with soft blending rather than sharp lines.";
-    eyes="Smudged liner and softly blended shadow can create beautiful definition.";
-  }
-
-  if(data.shape==="Heart-like") {
-    blush="Try soft blush across the upper cheeks.";
-    contour="Experiment with very subtle, diffused shading around the outer forehead.";
-    eyes="Explore soft winged liner and balanced eye looks.";
-  }
-
-  if(data.shape==="Oval-like") {
-    blush="Experiment with cheek-centred blush or a softly lifted placement.";
-    contour="You can experiment with several placements because the proportions are relatively balanced.";
-    eyes="Try a variety of eyeliner shapes and eyeshadow placements.";
-  }
-
-  $("featureAdvice").innerHTML=`
-    <div class="feature">
-      <b>♡ Blush placement</b>
-      <p>${blush}</p>
-    </div>
-    <div class="feature">
-      <b>♡ Contour exploration</b>
-      <p>${contour}</p>
-    </div>
-    <div class="feature">
-      <b>♡ Eye makeup</b>
-      <p>${eyes}</p>
-    </div>
-  `;
-
-  latestReport=data;
-  updateJournal();
+  requestAnimationFrame(trackFrame);
 }
 
 function updatePalette() {
-  const style=styles[selectedStyle];
-
-  $("paletteTitle").textContent=style.name;
-  $("paletteDescription").textContent=style.description;
-
   $("palette").innerHTML="";
 
-  style.shades.forEach((shade,index)=>{
-    const item=document.createElement("div");
-    item.className="swatch-wrap";
-
-    const swatch=document.createElement("div");
+  palettes[style].shades.forEach(color=>{
+    const swatch=document.createElement("button");
     swatch.className="swatch";
-    swatch.style.background=shade;
+    swatch.style.background=color;
+    swatch.title=color;
 
-    const label=document.createElement("span");
-    label.textContent=style.labels[index];
+    swatch.addEventListener("click",()=>{
+      palettes[style].blush=color;
+      palettes[style].lips=color;
+      setStatus("Makeup preview colour updated.",true);
+    });
 
-    item.append(swatch,label);
-    $("palette").append(item);
+    $("palette").append(swatch);
   });
-}
-
-window.chooseStyle=function(style) {
-  if(!styles[style]) return;
-
-  selectedStyle=style;
-  $("makeupStyle").value=style;
-
-  document.querySelectorAll(".look").forEach(card=>{
-    card.classList.toggle("selected",card.dataset.style===style);
-  });
-
-  updatePalette();
-  updateJournal();
-};
-
-function updateJournal() {
-  const style=styles[selectedStyle];
-
-  const shape=latestReport ? latestReport.shape : "not yet measured";
-
-  $("journalText").textContent=
-    "Your current beauty direction is "+style.name+". "+
-    "Your estimated face shape is "+shape+". "+
-    "Explore "+style.description+
-    " Treat these suggestions as creative inspiration, not rules. "+
-    "Your favourite look is the one you enjoy wearing.";
-}
-
-function createHairIdeas() {
-  const length=$("hairLength").value;
-  const texture=$("hairTexture").value;
-  const volume=$("hairVolume").value;
-  const mood=$("hairStyle").value;
-
-  const lengths={
-    short:"short hair",
-    medium:"medium-length hair",
-    long:"long hair"
-  };
-
-  const textures={
-    straight:"straight texture",
-    wavy:"wavy texture",
-    curly:"curly texture",
-    coily:"coily texture"
-  };
-
-  let idea1,idea2,idea3;
-
-  if(volume==="volume") {
-    idea1="Try soft layers or styling techniques that create movement around the crown.";
-    idea2="Experiment with a blowout-inspired shape or diffused texture, depending on your hair.";
-  } else if(volume==="sleek") {
-    idea1="Explore smooth, polished styling with a centre or side part.";
-    idea2="Try a sleek low bun or a simple tucked-behind-the-ear style.";
-  } else {
-    idea1="Explore natural movement and a cut that works with your hair's own texture.";
-    idea2="Try a soft half-up style or relaxed layers.";
-  }
-
-  if(mood==="romantic") {
-    idea3="Try delicate ribbons, soft face-framing pieces, loose curls or a romantic half-up hairstyle.";
-  } else if(mood==="classic") {
-    idea3="Explore a polished blowout, timeless side part or elegant low bun.";
-  } else if(mood==="edgy") {
-    idea3="Try a more defined part, textured layers or an intentionally undone finish.";
-  } else {
-    idea3="Experiment with playful clips, braids, ribbons or a fun half-up hairstyle.";
-  }
-
-  if(length==="short") {
-    idea3+=" Shorter styles can also be accessorised with clips, headbands and small bows.";
-  }
-
-  $("hairAdvice").innerHTML=`
-    <div class="feature">
-      <b>YOUR HAIR PROFILE</b>
-      <p>${lengths[length]} with ${textures[texture]}.</p>
-    </div>
-    <div class="feature">
-      <b>VOLUME & MOVEMENT</b>
-      <p>${idea1} ${idea2}</p>
-    </div>
-    <div class="feature">
-      <b>YOUR STYLE DIRECTION</b>
-      <p>${idea3}</p>
-    </div>
-  `;
-
-  updateJournal();
-}
-
-function captureReflection() {
-  if(!running || !currentLandmarks) {
-    setStatus("Activate the mirror and position your face before capturing.");
-    return;
-  }
-
-  const output=document.createElement("canvas");
-  output.width=video.videoWidth;
-  output.height=video.videoHeight;
-
-  const out=output.getContext("2d");
-
-  // Mirror the actual video in the saved image.
-  out.translate(output.width,0);
-  out.scale(-1,1);
-  out.drawImage(video,0,0,output.width,output.height);
-
-  // Draw a corresponding mirrored makeup preview.
-  const overlay=document.createElement("canvas");
-  overlay.width=canvas.width;
-  overlay.height=canvas.height;
-  overlay.getContext("2d").drawImage(canvas,0,0);
-
-  out.drawImage(overlay,0,0,output.width,output.height);
-
-  const link=document.createElement("a");
-  link.download="miroir-reflection.png";
-  link.href=output.toDataURL("image/png");
-  link.click();
-
-  setStatus("Your reflection has been saved to your device.",true);
-}
-
-function downloadReport() {
-  const style=styles[selectedStyle];
-  const measurements=latestReport;
-
-  const textReport=`
-MIROIR — YOUR BEAUTY JOURNAL
-
-Selected makeup aesthetic: ${style.name}
-
-${style.description}
-
-Estimated face shape:
-${measurements ? measurements.shape : "Not scanned"}
-
-Approximate face length / width:
-${measurements ? measurements.ratio.toFixed(2) : "Not available"}
-
-Approximate forehead / cheek ratio:
-${measurements ? measurements.foreheadRatio.toFixed(2) : "Not available"}
-
-Approximate jaw / cheek ratio:
-${measurements ? measurements.jawRatio.toFixed(2) : "Not available"}
-
-Approximate nose / cheek ratio:
-${measurements ? measurements.noseRatio.toFixed(2) : "Not available"}
-
-Hair preferences:
-${$("hairLength").value}, ${$("hairTexture").value}, ${$("hairVolume").value}, ${$("hairStyle").value}
-
-Reminder:
-These are approximate visual estimates and creative styling suggestions.
-They are not professional measurements or medical assessments.
-`;
-
-  const blob=new Blob([textReport],{type:"text/plain"});
-  const url=URL.createObjectURL(blob);
-  const link=document.createElement("a");
-
-  link.href=url;
-  link.download="miroir-beauty-journal.txt";
-  link.click();
-
-  URL.revokeObjectURL(url);
 }
 
 $("start").addEventListener("click",startCamera);
 $("stop").addEventListener("click",stopCamera);
 
-$("captureFront").addEventListener("click",()=>captureAngle("front"));
-$("captureSideA").addEventListener("click",()=>captureAngle("sideA"));
-$("captureSideB").addEventListener("click",()=>captureAngle("sideB"));
-
-$("takePhoto").addEventListener("click",captureReflection);
-
-$("makeupMode").addEventListener("change",event=>{
-  selectedMakeup=event.target.value;
+$("makeup").addEventListener("change",event=>{
+  makeup=event.target.value;
+  $("selected").textContent=event.target.selectedOptions[0].text;
 });
 
-$("makeupStyle").addEventListener("change",event=>{
-  chooseStyle(event.target.value);
+$("aesthetic").addEventListener("change",event=>{
+  style=event.target.value;
+  updatePalette();
 });
 
-$("hairButton").addEventListener("click",createHairIdeas);
-$("journalButton").addEventListener("click",updateJournal);
-$("downloadReport").addEventListener("click",downloadReport);
+document.querySelectorAll("[data-tracking]").forEach(button=>{
+  button.addEventListener("click",()=>{
+    mode=button.dataset.tracking;
+
+    document.querySelectorAll("[data-tracking]").forEach(b=>{
+      b.classList.toggle("selected",b===button);
+    });
+  });
+});
 
 updatePalette();
-setScanUI();
-updateJournal();
 
 </script>
 </body>
