@@ -1,0 +1,1295 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIROIR — Your Beauty Intelligence</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap');
+
+:root {
+  --pink:#d99bb1;
+  --pink-light:#f8e8ed;
+  --purple:#a899c7;
+  --cream:#fffaf7;
+  --ink:#453640;
+  --muted:#998590;
+  --border:#eddee5;
+}
+
+* {box-sizing:border-box}
+
+body {
+  margin:0;
+  background:
+    radial-gradient(circle at 10% 10%,#f7e2e9,transparent 35%),
+    radial-gradient(circle at 90% 30%,#e9e3f4,transparent 35%),
+    var(--cream);
+  color:var(--ink);
+  font-family:'DM Sans',sans-serif;
+}
+
+header {
+  padding:25px 6%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid var(--border);
+}
+
+.logo {
+  font-family:'Playfair Display',serif;
+  font-size:32px;
+  letter-spacing:3px;
+}
+
+.logo span {color:var(--pink)}
+
+.header-right {
+  font-size:11px;
+  letter-spacing:2px;
+  color:var(--muted);
+}
+
+main {
+  max-width:1250px;
+  margin:auto;
+  padding:35px 22px 70px;
+}
+
+.intro {
+  text-align:center;
+  margin-bottom:35px;
+}
+
+.intro h1 {
+  font:500 clamp(35px,5vw,55px) 'Playfair Display',serif;
+  margin:0 0 10px;
+}
+
+.intro h1 em {color:var(--pink)}
+
+.intro p {
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.7;
+}
+
+.layout {
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:22px;
+}
+
+.panel {
+  background:#ffffffc9;
+  border:1px solid white;
+  border-radius:23px;
+  padding:21px;
+  box-shadow:0 15px 45px #79546b12;
+}
+
+.panel-title {
+  font:500 22px 'Playfair Display',serif;
+  margin:0 0 5px;
+}
+
+.eyebrow {
+  font-size:10px;
+  letter-spacing:2px;
+  color:var(--pink);
+  font-weight:700;
+  margin-bottom:9px;
+}
+
+.camera {
+  position:relative;
+  background:#e9dce5;
+  border-radius:17px;
+  overflow:hidden;
+  aspect-ratio:4/3;
+  margin-top:16px;
+}
+
+video {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transform:scaleX(-1);
+  display:none;
+}
+
+#overlay {
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  transform:scaleX(-1);
+  pointer-events:none;
+}
+
+.placeholder {
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:25px;
+  color:#8e7185;
+}
+
+.placeholder .symbol {font-size:55px}
+
+.placeholder p {
+  font-size:12px;
+  line-height:1.7;
+  max-width:250px;
+}
+
+button {
+  border:0;
+  padding:13px 19px;
+  border-radius:12px;
+  background:var(--pink);
+  color:white;
+  font-weight:700;
+  cursor:pointer;
+  font-family:inherit;
+}
+
+button:disabled {opacity:.5;cursor:not-allowed}
+
+.buttons {
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:14px;
+}
+
+button.secondary {
+  background:var(--pink-light);
+  color:#81596d;
+}
+
+.status {
+  font-size:11px;
+  color:var(--muted);
+  margin-top:13px;
+  min-height:18px;
+}
+
+.status.active {color:#648d72}
+
+.scan-indicator {
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  background:#f5e9ef;
+  color:#946a7d;
+  padding:7px 12px;
+  border-radius:20px;
+  font-size:10px;
+  letter-spacing:1px;
+}
+
+.dot {
+  width:7px;
+  height:7px;
+  background:#d6a0b2;
+  border-radius:50%;
+}
+
+.result {
+  background:linear-gradient(130deg,#f9eaf0,#f1edf8);
+  padding:20px;
+  border-radius:17px;
+  margin-top:16px;
+}
+
+.result small {
+  color:#9b7789;
+  font-size:10px;
+  letter-spacing:1.5px;
+  font-weight:700;
+}
+
+.result h2 {
+  font:500 29px 'Playfair Display',serif;
+  margin:8px 0;
+}
+
+.result p {
+  color:#887582;
+  font-size:12px;
+  line-height:1.7;
+  margin:0;
+}
+
+.mini-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:13px;
+}
+
+.mini {
+  padding:14px;
+  border:1px solid var(--border);
+  background:white;
+  border-radius:14px;
+  min-height:95px;
+}
+
+.mini b {
+  display:block;
+  font-size:12px;
+  margin-bottom:7px;
+}
+
+.mini span {
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.6;
+}
+
+.full {
+  margin-top:22px;
+}
+
+.cards {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:13px;
+  margin-top:17px;
+}
+
+.advice {
+  background:white;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:17px;
+}
+
+.advice .emoji {font-size:25px}
+
+.advice h3 {
+  font:500 18px 'Playfair Display',serif;
+  margin:10px 0 7px;
+}
+
+.advice p {
+  font-size:11px;
+  line-height:1.7;
+  color:var(--muted);
+  margin:0;
+}
+
+.palette {
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin:17px 0;
+}
+
+.colour {
+  width:65px;
+  text-align:center;
+  font-size:10px;
+  color:var(--muted);
+}
+
+.swatch {
+  width:57px;
+  height:57px;
+  border-radius:50%;
+  margin:0 auto 7px;
+  border:4px solid white;
+  box-shadow:0 0 0 1px var(--border);
+}
+
+.report {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.report-item {
+  padding:16px;
+  border-radius:15px;
+  background:#faf4f7;
+}
+
+.report-item b {
+  display:block;
+  font-size:12px;
+  margin-bottom:7px;
+}
+
+.report-item p {
+  font-size:11px;
+  line-height:1.7;
+  color:var(--muted);
+  margin:0;
+}
+
+footer {
+  text-align:center;
+  padding:30px;
+  color:#a18d99;
+  font-size:10px;
+  line-height:1.8;
+}
+
+@media(max-width:800px) {
+  .layout {grid-template-columns:1fr}
+  .cards {grid-template-columns:1fr 1fr}
+}
+
+@media(max-width:520px) {
+  header {padding:18px}
+  .header-right {display:none}
+  main {padding:25px 13px}
+  .panel {padding:16px}
+  .cards {grid-template-columns:1fr}
+  .report {grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">MIROIR<span>.</span></div>
+  <div class="header-right">YOUR PERSONAL BEAUTY INTELLIGENCE</div>
+</header>
+
+<main>
+
+<div class="intro">
+  <div class="eyebrow">THE DIGITAL BEAUTY STUDIO</div>
+  <h1>Meet your <em>reflection.</em></h1>
+  <p>
+    Your features. Your colours. Your style.<br>
+    A personal beauty experience powered by computer vision.
+  </p>
+</div>
+
+<div class="layout">
+
+<!-- CAMERA -->
+
+<section class="panel">
+
+  <div class="eyebrow">01 — LIVE MIRROR</div>
+  <h2 class="panel-title">Your reflection</h2>
+
+  <div class="scan-indicator">
+    <span class="dot"></span>
+    <span id="scanStatus">WAITING FOR CAMERA</span>
+  </div>
+
+  <div class="camera">
+
+    <video id="video" autoplay muted playsinline></video>
+
+    <canvas id="overlay"></canvas>
+
+    <div class="placeholder" id="placeholder">
+      <div class="symbol">🪞</div>
+      <b>Your mirror is waiting</b>
+      <p>
+        Activate your camera to begin your automatic
+        facial analysis.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="buttons">
+    <button id="start">Activate my mirror ✨</button>
+    <button class="secondary" id="stop">Turn off</button>
+  </div>
+
+  <div class="status" id="status">
+    Camera access is only requested when you activate your mirror.
+  </div>
+
+</section>
+
+
+<!-- ANALYSIS -->
+
+<section class="panel">
+
+  <div class="eyebrow">02 — FACIAL INTELLIGENCE</div>
+  <h2 class="panel-title">Your facial profile</h2>
+
+  <div class="result">
+    <small>FACE SHAPE ESTIMATE</small>
+    <h2 id="faceShape">Awaiting analysis</h2>
+    <p id="faceDescription">
+      Your facial proportions will appear here once your face is detected.
+    </p>
+  </div>
+
+  <div class="mini-grid">
+
+    <div class="mini">
+      <b>Face proportions</b>
+      <span id="proportions">Waiting for detection...</span>
+    </div>
+
+    <div class="mini">
+      <b>Skin colour estimate</b>
+      <span id="skin">Waiting for detection...</span>
+    </div>
+
+    <div class="mini">
+      <b>Colour undertone estimate</b>
+      <span id="undertone">Waiting for detection...</span>
+    </div>
+
+    <div class="mini">
+      <b>Styling direction</b>
+      <span id="direction">Your suggestions will appear here.</span>
+    </div>
+
+  </div>
+
+  <div class="result">
+    <small>ANALYSIS STATUS</small>
+    <h2 id="confidence">Not started</h2>
+    <p id="confidenceText">
+      Position your face in the centre of the mirror.
+    </p>
+  </div>
+
+</section>
+
+</div>
+
+
+<!-- HAIR -->
+
+<section class="panel full">
+
+  <div class="eyebrow">03 — HAIR INTELLIGENCE</div>
+  <h2 class="panel-title">Your hair styling studio</h2>
+
+  <div class="cards">
+
+    <div class="advice">
+      <div class="emoji">💇🏻‍♀️</div>
+      <h3>Face framing</h3>
+      <p id="hairFrame">
+        Your face-shape-based hairstyle suggestions will appear here.
+      </p>
+    </div>
+
+    <div class="advice">
+      <div class="emoji">🪄</div>
+      <h3>Volume & movement</h3>
+      <p id="volume">
+        Discover styling directions that you can experiment with.
+      </p>
+    </div>
+
+    <div class="advice">
+      <div class="emoji">🎀</div>
+      <h3>Hairstyle inspiration</h3>
+      <p id="hairstyle">
+        Your personalised hairstyle ideas will appear here.
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- MAKEUP -->
+
+<section class="panel full">
+
+  <div class="eyebrow">04 — MAKEUP INTELLIGENCE</div>
+  <h2 class="panel-title">Your makeup recommendations</h2>
+
+  <div class="cards">
+
+    <div class="advice">
+      <div class="emoji">🌸</div>
+      <h3>Blush placement</h3>
+      <p id="blush">
+        Your face shape will help guide different blush placements.
+      </p>
+    </div>
+
+    <div class="advice">
+      <div class="emoji">👁️</div>
+      <h3>Eye makeup</h3>
+      <p id="eyes">
+        Discover eye makeup styles to experiment with.
+      </p>
+    </div>
+
+    <div class="advice">
+      <div class="emoji">💋</div>
+      <h3>Lip colours</h3>
+      <p id="lips">
+        Your colour palette will inspire your lip colour suggestions.
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- COLOUR ANALYSIS -->
+
+<section class="panel full">
+
+  <div class="eyebrow">05 — COLOUR INTELLIGENCE</div>
+  <h2 class="panel-title">Your personal colour palette</h2>
+
+  <p style="font-size:12px;color:#998590;line-height:1.7">
+    Estimated from visible cheek colour in your current camera lighting.
+    Lighting, camera processing and surrounding colours can affect the result.
+  </p>
+
+  <div class="palette" id="palette">
+    <div class="colour">
+      <div class="swatch" style="background:#ead0d4"></div>
+      Awaiting scan
+    </div>
+  </div>
+
+  <div class="report">
+
+    <div class="report-item">
+      <b>Recommended makeup colours</b>
+      <p id="makeupColours">Waiting for analysis...</p>
+    </div>
+
+    <div class="report-item">
+      <b>Colour interpretation</b>
+      <p id="colourDescription">Waiting for analysis...</p>
+    </div>
+
+    <div class="report-item">
+      <b>Colour combinations</b>
+      <p id="combinations">Waiting for analysis...</p>
+    </div>
+
+    <div class="report-item">
+      <b>Important lighting note</b>
+      <p>
+        Colour estimates are less reliable in artificial lighting,
+        shadows and coloured environments.
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+</main>
+
+<footer>
+  MIROIR BEAUTY INTELLIGENCE © 2026<br>
+  Your camera feed is processed locally in your browser.
+  No face photographs are uploaded or saved by this page.<br>
+  Styling suggestions are creative inspiration, not assessments of attractiveness,
+  health or skin condition.
+</footer>
+
+
+<script type="module">
+
+import {
+  FaceLandmarker,
+  FilesetResolver
+} from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14";
+
+const $ = id => document.getElementById(id);
+
+const video = $("video");
+const canvas = $("overlay");
+const ctx = canvas.getContext("2d");
+
+const sampleCanvas = document.createElement("canvas");
+sampleCanvas.width = 640;
+sampleCanvas.height = 480;
+const sampleCtx = sampleCanvas.getContext("2d", {
+  willReadFrequently:true
+});
+
+let landmarker;
+let stream;
+let active = false;
+let lastDetection = 0;
+let lastShape = "";
+
+const recommendations = {
+
+  oval: {
+    hair:"Curtain bangs, long layers, soft waves and different partings. Experiment with volume around the crown or sides.",
+    volume:"Try root lift, a blowout with soft movement, or loose waves. The amount of volume is entirely your choice.",
+    style:"Butterfly layers, a soft blowout, a sleek bun or a romantic half-up hairstyle.",
+    blush:"Experiment with blush across the cheeks or blended outward toward the temples.",
+    eyes:"Soft eyeliner, mascara, champagne shimmer and diffused eyeshadow.",
+    lips:"Rose pink, peach, berry and soft nude shades."
+  },
+
+  round: {
+    hair:"Long layers, curtain bangs and side-parted styles are options to experiment with.",
+    volume:"Try root lift at the crown or loose waves through the lengths.",
+    style:"Long butterfly layers, side-swept styling or a textured half-up hairstyle.",
+    blush:"Try blush slightly higher on the cheeks and blend outward.",
+    eyes:"A soft elongated eyeliner wing, mascara and shimmer.",
+    lips:"Rosewood, pink, mauve and soft berry."
+  },
+
+  square: {
+    hair:"Soft layers, loose waves and face-framing pieces can introduce movement.",
+    volume:"Try soft volume around the sides and textured waves.",
+    style:"Romantic waves, layered haircuts or wispy fringe.",
+    blush:"Experiment with diffused blush on the cheeks.",
+    eyes:"Soft smoky eyes, brown eyeliner and shimmer.",
+    lips:"Rose, peach, mauve and warm pink."
+  },
+
+  heart: {
+    hair:"Curtain fringe, chin-length layers and soft waves are worth experimenting with.",
+    volume:"Try movement through the lower lengths and soft crown volume.",
+    style:"Curtain bangs, layered blowouts or a romantic low bun.",
+    blush:"Try blush on the cheeks, blended softly outward.",
+    eyes:"Soft eyeliner, champagne shimmer and defined lashes.",
+    lips:"Rose pink, coral, mauve and berry."
+  },
+
+  diamond: {
+    hair:"Side-swept fringe, chin-length layers and soft waves can frame the face.",
+    volume:"Experiment with soft volume around the lower lengths.",
+    style:"Layered waves, a soft bob or a side-parted hairstyle.",
+    blush:"Try blush on the apples of the cheeks, blended softly.",
+    eyes:"Defined lashes, soft liner and subtle shimmer.",
+    lips:"Mauve, rosewood, berry and soft pink."
+  },
+
+  oblong: {
+    hair:"Curtain bangs, layers and side-swept styles offer different framing options.",
+    volume:"Try volume around the sides, soft waves and layered movement.",
+    style:"A layered blowout, curtain fringe or a soft wavy bob.",
+    blush:"Experiment with blush blended horizontally across the cheeks.",
+    eyes:"Soft eyeliner, mascara and diffused eyeshadow.",
+    lips:"Rose, coral, berry and pink nude."
+  }
+
+};
+
+
+// INITIALISE AI
+
+async function initialiseAI() {
+
+  $("status").textContent = "Loading facial intelligence...";
+
+  try {
+
+    const vision = await FilesetResolver.forVisionTasks(
+      "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm"
+    );
+
+    landmarker = await FaceLandmarker.createFromOptions(
+      vision,
+      {
+        baseOptions: {
+          modelAssetPath:
+            "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
+
+          delegate:"GPU"
+        },
+
+        runningMode:"VIDEO",
+        numFaces:1,
+
+        outputFaceBlendshapes:true
+      }
+    );
+
+    $("status").textContent = "AI ready. Activate your mirror.";
+
+  } catch(error) {
+
+    console.error(error);
+
+    $("status").textContent =
+      "Could not load the AI model. Check your internet connection and refresh.";
+
+  }
+
+}
+
+
+// CAMERA
+
+async function startCamera() {
+
+  if (!navigator.mediaDevices?.getUserMedia) {
+    $("status").textContent =
+      "Camera requires HTTPS or localhost. Open this page through GitHub Pages.";
+    return;
+  }
+
+  try {
+
+    $("start").disabled = true;
+
+    if (!landmarker) await initialiseAI();
+
+    if (!landmarker) {
+      $("start").disabled = false;
+      return;
+    }
+
+    stream = await navigator.mediaDevices.getUserMedia({
+
+      video: {
+        facingMode:"user",
+        width:{ideal:1280},
+        height:{ideal:960}
+      },
+
+      audio:false
+
+    });
+
+    video.srcObject = stream;
+
+    await video.play();
+
+    video.style.display = "block";
+    $("placeholder").style.display = "none";
+
+    active = true;
+
+    $("scanStatus").textContent = "LIVE FACIAL ANALYSIS";
+
+    $("status").textContent =
+      "Mirror active. Centre your face in the frame.";
+
+    $("status").classList.add("active");
+
+    $("start").disabled = false;
+
+    requestAnimationFrame(detect);
+
+  } catch(error) {
+
+    console.error(error);
+
+    $("status").textContent =
+      error.name === "NotAllowedError"
+      ? "Camera permission denied. Allow access in browser settings."
+      : "Unable to open camera.";
+
+    $("start").disabled = false;
+
+  }
+
+}
+
+
+// FACE GEOMETRY
+
+function distance(a,b) {
+
+  return Math.hypot(
+    a.x-b.x,
+    a.y-b.y
+  );
+
+}
+
+
+function analyseFace(points) {
+
+  const height = distance(points[10],points[152]);
+
+  const cheekWidth = distance(points[234],points[454]);
+
+  const jawWidth = distance(points[172],points[397]);
+
+  const foreheadWidth = distance(points[127],points[356]);
+
+  const ratio = height/cheekWidth;
+
+  const jawRatio = jawWidth/cheekWidth;
+
+  const foreheadRatio = foreheadWidth/cheekWidth;
+
+  let shape;
+
+  if (ratio > 1.48) {
+
+    shape = "oblong";
+
+  } else if (ratio < 1.13 && jawRatio > 0.80) {
+
+    shape = "round";
+
+  } else if (jawRatio > 0.87 && foreheadRatio > 0.85) {
+
+    shape = "square";
+
+  } else if (foreheadRatio > 1.02 && jawRatio < 0.80) {
+
+    shape = "heart";
+
+  } else if (jawRatio < 0.72 && foreheadRatio < 0.86) {
+
+    shape = "diamond";
+
+  } else {
+
+    shape = "oval";
+
+  }
+
+  return {
+    shape,
+    height,
+    cheekWidth,
+    jawRatio,
+    foreheadRatio,
+    ratio
+  };
+
+}
+
+
+// SKIN COLOUR ESTIMATION
+
+function sampleSkin(points) {
+
+  if (!video.videoWidth) return null;
+
+  sampleCanvas.width = video.videoWidth;
+  sampleCanvas.height = video.videoHeight;
+
+  sampleCtx.drawImage(
+    video,
+    0,0,
+    sampleCanvas.width,
+    sampleCanvas.height
+  );
+
+  // Approximate cheek regions.
+  const locations = [123,352];
+
+  let totalR = 0;
+  let totalG = 0;
+  let totalB = 0;
+  let samples = 0;
+
+  locations.forEach(index => {
+
+    const point = points[index];
+
+    const x = Math.floor(point.x * sampleCanvas.width);
+    const y = Math.floor(point.y * sampleCanvas.height);
+
+    const radius = 5;
+
+    if (
+      x-radius < 0 ||
+      y-radius < 0 ||
+      x+radius >= sampleCanvas.width ||
+      y+radius >= sampleCanvas.height
+    ) return;
+
+    const data = sampleCtx.getImageData(
+      x-radius,
+      y-radius,
+      radius*2,
+      radius*2
+    ).data;
+
+    for(let i=0;i<data.length;i+=4) {
+
+      const r=data[i];
+      const g=data[i+1];
+      const b=data[i+2];
+
+      // Skip very dark or extremely bright pixels.
+      const brightness=(r+g+b)/3;
+
+      if(brightness < 45 || brightness > 245) continue;
+
+      totalR+=r;
+      totalG+=g;
+      totalB+=b;
+
+      samples++;
+
+    }
+
+  });
+
+  if(samples < 10) return null;
+
+  return {
+    r:Math.round(totalR/samples),
+    g:Math.round(totalG/samples),
+    b:Math.round(totalB/samples)
+  };
+
+}
+
+
+function classifyColour(rgb) {
+
+  if (!rgb) return null;
+
+  const {r,g,b}=rgb;
+
+  const brightness=(r+g+b)/3;
+
+  let depth;
+
+  if(brightness>190) depth="Light visible colour range";
+  else if(brightness>155) depth="Light-medium visible colour range";
+  else if(brightness>120) depth="Medium visible colour range";
+  else if(brightness>85) depth="Tan / deeper visible colour range";
+  else depth="Deep visible colour range";
+
+  let undertone;
+
+  const difference=r-b;
+
+  if(difference>24 && r>g) {
+    undertone="Warm-leaning appearance";
+  } else if(difference < 5) {
+    undertone="Cool-leaning appearance";
+  } else {
+    undertone="Neutral / uncertain appearance";
+  }
+
+  return {
+    depth,
+    undertone,
+    rgb
+  };
+
+}
+
+
+// COLOUR PALETTE
+
+function createPalette(type) {
+
+  const palettes = {
+
+    warm:[
+      ["Peach","#efb29c"],
+      ["Terracotta","#bb765c"],
+      ["Warm rose","#cb858b"],
+      ["Bronze","#a87948"],
+      ["Coral","#ed927f"],
+      ["Caramel","#c99a6b"]
+    ],
+
+    cool:[
+      ["Dusty rose","#c78b9f"],
+      ["Mauve","#a47eaa"],
+      ["Berry","#9c536f"],
+      ["Plum","#79516f"],
+      ["Cool pink","#e5a8bd"],
+      ["Rosewood","#a76b7e"]
+    ],
+
+    neutral:[
+      ["Rosewood","#b87f88"],
+      ["Soft coral","#db9889"],
+      ["Mauve","#a989a8"],
+      ["Pink beige","#d7aeb0"],
+      ["Soft berry","#a65d79"],
+      ["Rose","#c77f92"]
+    ]
+
+  };
+
+  const chosen = palettes[type] || palettes.neutral;
+
+  $("palette").innerHTML="";
+
+  chosen.forEach(([name,color])=>{
+
+    const item=document.createElement("div");
+
+    item.className="colour";
+
+    const swatch=document.createElement("div");
+
+    swatch.className="swatch";
+
+    swatch.style.background=color;
+
+    const label=document.createElement("span");
+
+    label.textContent=name;
+
+    item.append(swatch,label);
+
+    $("palette").appendChild(item);
+
+  });
+
+  $("makeupColours").textContent =
+    chosen.map(item=>item[0]).join(", ");
+
+  $("combinations").textContent =
+    "Try combining soft rose, mauve, peach and berry tones.";
+
+}
+
+
+// DRAW FACE GUIDE
+
+function drawFace(points) {
+
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  const outline=[
+    10,338,297,332,284,251,389,356,454,
+    323,361,288,397,365,379,378,400,377,
+    152,148,176,149,150,136,172,58,132,
+    93,234,127,162,21,54,103,67,109,10
+  ];
+
+  ctx.beginPath();
+
+  outline.forEach((index,i)=>{
+
+    const point=points[index];
+
+    const x=point.x*canvas.width;
+    const y=point.y*canvas.height;
+
+    if(i===0) ctx.moveTo(x,y);
+    else ctx.lineTo(x,y);
+
+  });
+
+  ctx.strokeStyle="rgba(255,255,255,.85)";
+  ctx.lineWidth=2;
+  ctx.stroke();
+
+  // Eye guides
+
+  [33,263].forEach(index=>{
+
+    const point=points[index];
+
+    ctx.beginPath();
+
+    ctx.arc(
+      point.x*canvas.width,
+      point.y*canvas.height,
+      4,0,Math.PI*2
+    );
+
+    ctx.fillStyle="#fff";
+    ctx.fill();
+
+  });
+
+}
+
+
+// DISPLAY ANALYSIS
+
+function displayAnalysis(data,colour) {
+
+  const shape=data.shape;
+
+  const tips=recommendations[shape];
+
+  $("faceShape").textContent =
+    shape.charAt(0).toUpperCase()+shape.slice(1);
+
+  $("faceDescription").textContent =
+    "Your visible facial proportions currently resemble a "+
+    shape+
+    " face shape. This is an approximate classification, not a fixed identity.";
+
+  $("proportions").textContent =
+    "Face height / cheek width: "+
+    data.ratio.toFixed(2)+
+    ". Jaw and forehead proportions are also considered.";
+
+  $("direction").textContent =
+    "Explore styles designed around your "+
+    shape+
+    " facial proportions.";
+
+  $("hairFrame").textContent=tips.hair;
+
+  $("volume").textContent=tips.volume;
+
+  $("hairstyle").textContent=tips.style;
+
+  $("blush").textContent=tips.blush;
+
+  $("eyes").textContent=tips.eyes;
+
+  $("lips").textContent=tips.lips;
+
+  if(colour) {
+
+    $("skin").textContent=colour.depth;
+
+    $("undertone").textContent=colour.undertone;
+
+    const type =
+      colour.undertone.startsWith("Warm") ? "warm" :
+      colour.undertone.startsWith("Cool") ? "cool" :
+      "neutral";
+
+    createPalette(type);
+
+    $("colourDescription").textContent =
+      colour.depth+
+      " with a "+colour.undertone.toLowerCase()+
+      ". This is a camera-based colour estimate and may be affected by lighting.";
+
+  }
+
+  $("confidence").textContent="Face detected";
+
+  $("confidenceText").textContent=
+    "Facial landmarks are visible. Results are estimates and can change with camera position and lighting.";
+
+}
+
+
+// MAIN AI LOOP
+
+function detect() {
+
+  if(!active || !landmarker) return;
+
+  if(video.readyState >= 2) {
+
+    const now=performance.now();
+
+    if(now-lastDetection > 90) {
+
+      lastDetection=now;
+
+      const result=landmarker.detectForVideo(video,now);
+
+      canvas.width=video.videoWidth;
+      canvas.height=video.videoHeight;
+
+      if(result.faceLandmarks.length > 0) {
+
+        const points=result.faceLandmarks[0];
+
+        drawFace(points);
+
+        const analysis=analyseFace(points);
+
+        const rgb=sampleSkin(points);
+
+        const colour=classifyColour(rgb);
+
+        if(analysis.shape !== lastShape) {
+
+          lastShape=analysis.shape;
+
+          displayAnalysis(analysis,colour);
+
+        } else if(colour) {
+
+          $("skin").textContent=colour.depth;
+
+          $("undertone").textContent=colour.undertone;
+
+        }
+
+        $("scanStatus").textContent="FACE DETECTED · ANALYSING";
+
+        $("status").textContent=
+          "Your mirror is tracking your facial landmarks.";
+
+      } else {
+
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+
+        $("scanStatus").textContent="SEARCHING FOR FACE";
+
+        $("status").textContent=
+          "Move into the centre of the frame and face the camera.";
+
+      }
+
+    }
+
+  }
+
+  requestAnimationFrame(detect);
+
+}
+
+
+// STOP CAMERA
+
+function stopCamera() {
+
+  active=false;
+
+  if(stream) {
+
+    stream.getTracks().forEach(track=>track.stop());
+
+    stream=null;
+
+  }
+
+  video.srcObject=null;
+
+  video.style.display="none";
+
+  $("placeholder").style.display="flex";
+
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  $("scanStatus").textContent="WAITING FOR CAMERA";
+
+  $("status").textContent="Your mirror is off.";
+
+  $("status").classList.remove("active");
+
+  $("start").disabled=false;
+
+  lastShape="";
+
+}
+
+
+$("start").addEventListener("click",startCamera);
+
+$("stop").addEventListener("click",stopCamera);
+
+window.addEventListener("beforeunload",stopCamera);
+
+</script>
+
+</body>
+</html>
