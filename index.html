@@ -4,160 +4,229 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MIROIR — Your Beauty Studio</title>
+<title>MIROIR — Your Beauty Mirror</title>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap');
 
 :root {
-  --rose: #c789a0;
-  --rose-light: #f3e1e9;
-  --ink: #463740;
-  --muted: #927e89;
-  --paper: #fffafc;
-  --line: #f0e3e9;
+  --cream: #f7f3ed;
+  --paper: #fffdf9;
+  --pink: #d9859d;
+  --pink-light: #f3dce2;
+  --ink: #443b39;
+  --muted: #968984;
+  --line: #e9dfd8;
 }
 
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
-  background: #fbf5f8;
+  background: var(--cream);
   color: var(--ink);
-  font-family: "DM Sans", sans-serif;
+  font-family: 'DM Sans', sans-serif;
 }
 
-button, select, input { font: inherit; }
-button { cursor: pointer; }
+button, select { font: inherit; }
+
+.app {
+  min-height: 100vh;
+  max-width: 1600px;
+  margin: auto;
+  padding: 24px clamp(16px, 3vw, 44px) 36px;
+}
 
 header {
-  height: 76px;
-  padding: 0 4vw;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  background: var(--paper);
+  align-items: center;
+  padding-bottom: 20px;
   border-bottom: 1px solid var(--line);
 }
 
-.logo {
-  font: 28px "Playfair Display", serif;
+.brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 30px;
   letter-spacing: 5px;
 }
 
-.logo small {
+.brand small {
   display: block;
-  text-align: center;
-  font: 9px "DM Sans", sans-serif;
+  font: 9px 'DM Sans', sans-serif;
   letter-spacing: 3px;
   color: var(--muted);
   margin-top: 3px;
 }
 
-.status {
-  font-size: 10px;
-  letter-spacing: 1.5px;
+.header-right {
+  font-size: 11px;
+  letter-spacing: 2px;
   color: var(--muted);
 }
 
 main {
-  max-width: 1500px;
-  margin: auto;
-  padding: 28px 4vw;
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(320px, .8fr);
-  gap: 24px;
+  grid-template-columns: minmax(0, 1.65fr) minmax(310px, .85fr);
+  gap: 22px;
+  margin-top: 24px;
+}
+
+.mirror-column { min-width: 0; }
+
+.mirror-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-bottom: 12px;
 }
 
 .eyebrow {
   font-size: 10px;
-  letter-spacing: 2px;
+  letter-spacing: 2.5px;
+  color: var(--pink);
   text-transform: uppercase;
-  color: var(--rose);
 }
 
-h1 {
-  font: 36px "Playfair Display", serif;
-  font-weight: 400;
-  margin: 7px 0 20px;
+h1, h2, h3, p { margin-top: 0; }
+
+.mirror-heading h1 {
+  font: 32px 'Playfair Display', serif;
+  margin: 5px 0 0;
 }
 
-h2 {
-  font: 24px "Playfair Display", serif;
-  font-weight: 400;
-  margin: 7px 0 14px;
+.camera-status {
+  font-size: 11px;
+  color: var(--muted);
 }
 
-.mirror {
+.mirror-frame {
   position: relative;
-  aspect-ratio: 4 / 3;
-  background: linear-gradient(140deg, #e8d9e1, #cbb9c8);
-  border-radius: 22px;
   overflow: hidden;
-  box-shadow: 0 15px 45px #76546714;
+  background: #e8dfd8;
+  border: 9px solid #fffdf9;
+  border-radius: 190px 190px 24px 24px;
+  box-shadow: 0 15px 45px #55443b14, inset 0 0 0 1px #e7dcd5;
+  aspect-ratio: 4 / 4.35;
+  min-height: 420px;
 }
 
-#video, #overlay {
+#video, #overlay, #drawLayer, .light-layer {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+}
+
+#video {
   object-fit: cover;
   transform: scaleX(-1);
+  filter: brightness(1) contrast(1);
 }
 
-#video { display: none; }
-#overlay { pointer-events: none; }
+#overlay, #drawLayer {
+  pointer-events: none;
+}
 
-.placeholder {
+#drawLayer { z-index: 4; }
+
+.light-layer {
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+}
+
+.light-layer.warm {
+  opacity: .13;
+  background: #ffbd78;
+  mix-blend-mode: screen;
+}
+
+.light-layer.cool {
+  opacity: .13;
+  background: #9cb9e8;
+  mix-blend-mode: screen;
+}
+
+.light-layer.soft {
+  opacity: .08;
+  background: #fff;
+  mix-blend-mode: screen;
+}
+
+.mirror-placeholder {
   position: absolute;
   inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  place-content: center;
   text-align: center;
-  padding: 20px;
-  color: #785f6d;
+  gap: 12px;
+  padding: 25px;
+  color: #8f7f77;
 }
 
-.placeholder .monogram {
-  font: 70px "Playfair Display", serif;
-  opacity: .6;
+.mirror-placeholder .symbol {
+  font: 55px 'Playfair Display', serif;
+  color: #c28d99;
 }
 
-.placeholder p {
-  font-size: 12px;
-  line-height: 1.8;
+.mirror-placeholder p {
+  font: italic 19px 'Playfair Display', serif;
+  margin: 0;
 }
 
-.mirror-tag {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  background: #fffaf0d9;
-  padding: 8px 12px;
-  border-radius: 25px;
+.mirror-placeholder small {
   font-size: 10px;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
+  line-height: 1.7;
+}
+
+.mirror-top {
+  position: absolute;
+  z-index: 5;
+  top: 20px;
+  left: 22px;
+  right: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+}
+
+.live-label {
+  background: #fffdf9d9;
+  padding: 8px 12px;
+  border-radius: 30px;
+  font-size: 9px;
+  letter-spacing: 2px;
+}
+
+.live-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: #c98291;
+  border-radius: 50%;
+  margin-right: 6px;
 }
 
 .mirror-bottom {
   position: absolute;
-  bottom: 14px;
-  left: 14px;
-  right: 14px;
+  z-index: 5;
+  bottom: 18px;
+  left: 18px;
+  right: 18px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 8px;
+  pointer-events: none;
 }
 
-.mirror-bottom button {
-  border: 1px solid #fff9;
-  background: #fffaf0e8;
-  color: var(--ink);
-  border-radius: 25px;
-  padding: 10px 13px;
+.mirror-bottom span {
+  background: #fffdf9d9;
+  padding: 8px 11px;
+  border-radius: 30px;
   font-size: 10px;
 }
 
@@ -165,404 +234,518 @@ h2 {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 12px;
+  margin-top: 14px;
 }
 
-.btn {
+.control-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.control-label {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  margin-right: 3px;
+}
+
+button {
   border: 1px solid var(--line);
-  background: #fff;
+  background: var(--paper);
   color: var(--ink);
   border-radius: 30px;
-  padding: 11px 15px;
-  font-size: 11px;
+  padding: 9px 13px;
+  font-size: 10px;
+  cursor: pointer;
+  transition: .2s ease;
 }
 
-.btn.active, .btn:hover {
-  background: var(--rose-light);
-  border-color: #e4bdcd;
+button:hover, button.active {
+  background: var(--pink-light);
+  border-color: #e8bdc9;
 }
 
-.btn.primary {
-  background: var(--rose);
+button.primary {
+  background: var(--ink);
   color: white;
-  border-color: var(--rose);
+  border-color: var(--ink);
 }
 
-.panel {
-  background: #fffdfd;
+button.primary:hover { background: #665653; }
+
+.side-panel {
+  background: var(--paper);
   border: 1px solid var(--line);
   border-radius: 18px;
-  padding: 20px;
-  margin-bottom: 14px;
+  padding: 23px;
+  min-width: 0;
+  align-self: start;
 }
 
-.panel p {
-  font-size: 12px;
-  line-height: 1.7;
+.panel-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.panel-top h2 {
+  font: 25px 'Playfair Display', serif;
+  margin: 4px 0 0;
+}
+
+.scan-status {
+  font-size: 9px;
   color: var(--muted);
+  letter-spacing: 1px;
 }
 
-.profile-hero {
-  background: #fbf0f4;
+.profile-card {
+  padding: 17px;
+  background: #f8f2ee;
   border-radius: 13px;
-  padding: 15px;
-  margin: 12px 0;
+  margin-bottom: 17px;
 }
 
-.big {
-  font: 27px "Playfair Display", serif;
+.profile-card h3 {
+  font: 21px 'Playfair Display', serif;
   margin: 5px 0;
 }
 
-.detail {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  border-bottom: 1px solid var(--line);
-  padding: 10px 0;
+.profile-card p {
   font-size: 11px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 0;
 }
 
-.detail span:last-child {
-  text-align: right;
-  color: var(--rose);
-}
-
-.control { margin: 15px 0; }
-
-.control label {
-  display: flex;
-  justify-content: space-between;
-  font-size: 11px;
-  margin-bottom: 8px;
-}
-
-.control input[type=range] {
-  width: 100%;
-  accent-color: var(--rose);
-}
-
-select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: white;
-  color: var(--ink);
-  font-size: 12px;
-}
-
-.palette {
-  display: flex;
+.feature-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 8px;
-  flex-wrap: wrap;
-  margin: 10px 0;
+  margin: 12px 0 18px;
 }
 
-.color {
-  width: 29px;
-  height: 29px;
-  border-radius: 50%;
-  border: 2px solid white;
-  outline: 1px solid var(--line);
+.feature {
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  padding: 12px;
 }
 
-.tutorial {
-  background: #fbf0f4;
-  border-radius: 14px;
-  padding: 14px;
+.feature span {
+  display: block;
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.feature strong {
+  display: block;
+  font: 16px 'Playfair Display', serif;
+  margin-top: 5px;
+}
+
+.section-divider {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 19px 0;
+}
+
+.guide-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 13px;
+}
+
+.guide-heading h3 {
+  font: 21px 'Playfair Display', serif;
+  margin: 0;
 }
 
 .step-count {
   font-size: 10px;
-  color: var(--rose);
-  letter-spacing: 1.5px;
+  color: var(--pink);
 }
 
-.step-title {
-  font: 20px "Playfair Display", serif;
-  margin: 5px 0;
-}
-
-.step-buttons {
+.step-list {
   display: flex;
-  gap: 8px;
   flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 15px;
 }
 
-.step-buttons .btn { padding: 9px 12px; }
-
-.small {
-  font-size: 10px !important;
-  color: #a18d97 !important;
-}
-
-footer {
-  text-align: center;
-  padding: 22px;
+.step-button {
+  padding: 8px 10px;
   font-size: 10px;
-  letter-spacing: 1.4px;
-  color: #a18d97;
 }
 
-@media(max-width: 900px) {
-  main {
-    grid-template-columns: 1fr;
-    padding: 20px 4vw;
-  }
-  h1 { font-size: 30px; }
+.instruction {
+  background: #fbf5f3;
+  border-radius: 12px;
+  padding: 16px;
+  min-height: 135px;
+}
+
+.instruction h3 {
+  font: 19px 'Playfair Display', serif;
+  margin-bottom: 8px;
+}
+
+.instruction p {
+  font-size: 11px;
+  line-height: 1.7;
+  color: #81736e;
+  margin-bottom: 12px;
+}
+
+.instruction .tip {
+  font-size: 10px;
+  color: #bb7e8e;
+  font-style: italic;
+}
+
+.instruction-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.inspiration {
+  margin-top: 17px;
+}
+
+.inspiration h3 {
+  font: 21px 'Playfair Display', serif;
+  margin: 4px 0 5px;
+}
+
+.inspiration p {
+  font-size: 10px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.celebrity-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.celebrity {
+  border: 1px solid var(--line);
+  padding: 7px 10px;
+  border-radius: 20px;
+  font-size: 10px;
+  background: #fff;
+}
+
+.celebrity-note {
+  font-size: 9px !important;
+  margin-top: 9px;
+}
+
+.bottom-note {
+  text-align: center;
+  color: var(--muted);
+  font-size: 9px;
+  letter-spacing: .5px;
+  margin-top: 25px;
+  line-height: 1.7;
+}
+
+.hidden { display: none !important; }
+
+@media(max-width: 850px) {
+  main { grid-template-columns: 1fr; }
+  .mirror-frame { min-height: 350px; }
+  .side-panel { order: 2; }
+}
+
+@media(max-width: 480px) {
+  .app { padding: 15px 12px 25px; }
+  .brand { font-size: 25px; }
+  .header-right { font-size: 9px; }
+  .mirror-heading h1 { font-size: 27px; }
+  .side-panel { padding: 17px; }
+  .mirror-frame { min-height: 330px; }
 }
 </style>
 </head>
 
 <body>
+<div class="app">
+
 <header>
-  <div class="logo">
+  <div class="brand">
     MIROIR
-    <small>YOUR PERSONAL BEAUTY STUDIO</small>
+    <small>YOUR PERSONAL BEAUTY MIRROR</small>
   </div>
-  <div class="status" id="status">YOUR MIRROR AWAITS</div>
+  <div class="header-right">A LITTLE MOMENT FOR YOU ✳</div>
 </header>
 
 <main>
-<section>
-  <div class="eyebrow">THE INTERACTIVE MIRROR</div>
-  <h1>See yourself in a new light.</h1>
+<section class="mirror-column">
 
-  <div class="mirror">
-    <video id="video" playsinline autoplay muted></video>
+  <div class="mirror-heading">
+    <div>
+      <div class="eyebrow">THE MIRROR</div>
+      <h1>Hello, beautiful.</h1>
+    </div>
+    <div class="camera-status" id="cameraStatus">Camera not started</div>
+  </div>
+
+  <div class="mirror-frame" id="mirrorFrame">
+    <video id="video" autoplay muted playsinline></video>
     <canvas id="overlay"></canvas>
+    <canvas id="drawLayer"></canvas>
+    <div class="light-layer" id="lightLayer"></div>
 
-    <div class="placeholder" id="placeholder">
-      <div class="monogram">M</div>
-      <strong style="font:22px 'Playfair Display'">Your beauty studio</strong>
-      <p>Activate your camera to begin.<br>Face and hand tracking run in your browser.</p>
+    <div class="mirror-placeholder" id="placeholder">
+      <div class="symbol">M.</div>
+      <p>Your mirror is waiting.</p>
+      <small>TURN ON YOUR CAMERA TO BEGIN<br>YOUR PERSONAL BEAUTY SESSION</small>
+      <button class="primary" id="startCamera">Turn on mirror</button>
     </div>
 
-    <div class="mirror-tag">MIROIR · LIVE</div>
+    <div class="mirror-top">
+      <span class="live-label"><span class="live-dot"></span>LIVE MIRROR</span>
+      <span class="live-label" id="guideStatus">GUIDES OFF</span>
+    </div>
 
     <div class="mirror-bottom">
-      <button id="meshToggle">FACE MESH: OFF</button>
-      <button id="clearDrawing">CLEAR MIRROR</button>
+      <span id="faceStatus">Waiting for face scan</span>
+      <span>✳ MIROIR</span>
     </div>
   </div>
 
   <div class="controls">
-    <button class="btn primary" id="cameraBtn">Activate camera</button>
-    <button class="btn" id="handBtn">Hand tracking: OFF</button>
-    <button class="btn" id="drawBtn">Air writing: OFF</button>
-    <button class="btn" id="guideBtn">Guides: ON</button>
+    <div class="control-group">
+      <span class="control-label">LIGHT</span>
+      <button class="active" data-light="natural">Natural</button>
+      <button data-light="warm">Warm</button>
+      <button data-light="cool">Cool</button>
+      <button data-light="soft">Soft studio</button>
+    </div>
   </div>
 
-  <div class="controls" id="renderModes">
-    <button class="btn active" data-mode="makeup">Makeup</button>
-    <button class="btn" data-mode="guide">Guides</button>
-    <button class="btn" data-mode="mesh">Face mesh</button>
-    <button class="btn" data-mode="all">All layers</button>
-    <button class="btn" data-mode="clean">Clean mirror</button>
+  <div class="controls">
+    <div class="control-group">
+      <span class="control-label">MIRROR</span>
+      <button id="scanButton">Scan my face</button>
+      <button id="guideToggle">Show guides</button>
+      <button id="drawToggle">Drawing mode</button>
+      <button id="clearDrawing">Clear drawing</button>
+    </div>
   </div>
 
-  <p class="small">
-    Camera processing happens locally in your browser.
-    Tracking models download from public CDNs.
-  </p>
 </section>
 
-<aside>
-  <section class="panel">
-    <div class="eyebrow">YOUR BEAUTY PROFILE</div>
-    <h2>What MIROIR sees</h2>
+<aside class="side-panel">
 
-    <div class="profile-hero">
-      <div class="eyebrow">ESTIMATED FACE SHAPE</div>
-      <div class="big" id="faceShape">Waiting for scan</div>
-      <p id="faceAdvice">Activate the camera and face the mirror.</p>
+  <div class="panel-top">
+    <div>
+      <div class="eyebrow">YOUR PERSONAL PROFILE</div>
+      <h2>The analysis.</h2>
     </div>
+    <span class="scan-status" id="scanStatus">NOT SCANNED</span>
+  </div>
 
-    <div class="detail"><span>Face proportion</span><span id="faceRatio">—</span></div>
-    <div class="detail"><span>Estimated eye type</span><span id="eyeType">—</span></div>
-    <div class="detail"><span>Eye spacing</span><span id="eyeSpacing">—</span></div>
-    <div class="detail"><span>Visible nose profile</span><span id="noseType">—</span></div>
-    <div class="detail"><span>Colour reading</span><span id="colorReading">—</span></div>
+  <div class="profile-card">
+    <div class="eyebrow">YOUR FACE SHAPE</div>
+    <h3 id="faceShape">Waiting for your scan</h3>
+    <p id="faceDescription">Your facial analysis and recommendations will appear here once your face is detected.</p>
+  </div>
 
-    <p class="small">
-      Feature labels and colour readings are estimates from a 2D webcam view.
-      Lighting, pose and camera processing can affect them.
-    </p>
-  </section>
-
-  <section class="panel">
-    <div class="eyebrow">PERSONALIZED SUGGESTIONS</div>
-    <h2>Your makeup direction</h2>
-    <div id="personalAdvice">
-      <p>Recommendations appear when a face is detected.</p>
+  <div class="feature-grid">
+    <div class="feature">
+      <span>Eye shape</span>
+      <strong id="eyeShape">—</strong>
     </div>
-
-    <div style="height:1px;background:var(--line);margin:14px 0"></div>
-    <div class="eyebrow">COLOUR IDEAS</div>
-    <div class="palette" id="palette"></div>
-    <p class="small">Try the shades in the mirror. Camera colour is only a rough guide.</p>
-  </section>
-
-  <section class="panel">
-    <div class="eyebrow">FOLLOW THE GUIDE</div>
-    <h2>Makeup steps</h2>
-
-    <div class="control">
-      <label>Choose a look</label>
-      <select id="look">
-        <option value="romantic">Soft romantic</option>
-        <option value="douyin">Douyin-inspired</option>
-        <option value="latte">Latte</option>
-        <option value="berry">Berry romantic</option>
-        <option value="peach">Peachy natural</option>
-      </select>
+    <div class="feature">
+      <span>Eye spacing</span>
+      <strong id="eyeSpacing">—</strong>
     </div>
-
-    <div class="tutorial">
-      <div class="step-count" id="stepCount">STEP 1 OF 5</div>
-      <div class="step-title" id="stepTitle">Blush placement</div>
-      <p id="stepText">Follow the guide on your cheek area.</p>
-      <div class="step-buttons">
-        <button class="btn" id="prevStep">Back</button>
-        <button class="btn primary" id="nextStep">Next step</button>
-        <button class="btn" id="toggleStepGuide">Hide guide</button>
-      </div>
+    <div class="feature">
+      <span>Nose observation</span>
+      <strong id="noseShape">—</strong>
     </div>
-
-    <div class="control">
-      <label>Blush placement</label>
-      <select id="blushPlacement">
-        <option value="auto">Adapt to detected face shape</option>
-        <option value="horizontal">Horizontal</option>
-        <option value="lifted">Lifted / diagonal</option>
-        <option value="apples">Cheek apples</option>
-      </select>
+    <div class="feature">
+      <span>Face proportions</span>
+      <strong id="proportions">—</strong>
     </div>
+  </div>
 
-    <div class="control">
-      <label>Blush intensity <span id="blushValue">42%</span></label>
-      <input id="blushIntensity" type="range" min="0" max="100" value="42">
-    </div>
+  <hr class="section-divider">
 
-    <div class="control">
-      <label>Blending <span id="blendValue">78%</span></label>
-      <input id="blend" type="range" min="10" max="100" value="78">
+  <div class="guide-heading">
+    <div>
+      <div class="eyebrow">YOUR PERSONAL TUTORIAL</div>
+      <h3>Step by step.</h3>
     </div>
+    <span class="step-count" id="stepCount">01 / 06</span>
+  </div>
 
-    <div class="control">
-      <label>Lip colour</label>
-      <select id="lipColor">
-        <option value="#bd657a">Rosewood</option>
-        <option value="#a84e68">Berry</option>
-        <option value="#cf8c87">Dusty rose</option>
-        <option value="#d58d83">Peach nude</option>
-        <option value="#914b59">Wine</option>
-      </select>
-    </div>
+  <div class="step-list" id="stepButtons"></div>
 
-    <div class="control">
-      <label>Lip intensity <span id="lipValue">60%</span></label>
-      <input id="lipIntensity" type="range" min="0" max="100" value="60">
-    </div>
+  <div class="instruction">
+    <div class="eyebrow" id="instructionLabel">YOUR FIRST STEP</div>
+    <h3 id="instructionTitle">Let's begin.</h3>
+    <p id="instructionText">Scan your face to receive personalized placement suggestions. Your mirror will show you where to apply each product using delicate pink line art.</p>
+    <div class="tip" id="instructionTip">Your reflection stays completely natural.</div>
+  </div>
 
-    <div class="control">
-      <label>Eyeliner intensity <span id="linerValue">50%</span></label>
-      <input id="linerIntensity" type="range" min="0" max="100" value="50">
+  <div class="instruction-actions">
+    <button id="previousStep">← Previous</button>
+    <button class="primary" id="nextStep">Next step →</button>
+  </div>
+
+  <hr class="section-divider">
+
+  <div class="inspiration">
+    <div class="eyebrow">A LITTLE INSPIRATION</div>
+    <h3>Your celebrity face-shape matches.</h3>
+    <p id="celebrityIntro">After your scan, we'll show you celebrities commonly associated with your estimated face shape, plus beauty inspiration to explore.</p>
+    <div class="celebrity-list" id="celebrityList">
+      <span class="celebrity">Waiting for scan</span>
     </div>
-  </section>
+    <p class="celebrity-note">These are broad face-shape inspiration references, not exact lookalike matches.</p>
+  </div>
+
 </aside>
 </main>
 
-<footer>MIROIR · EXPLORE YOUR OWN BEAUTY</footer>
+<div class="bottom-note">
+  MIROIR · YOUR FACE, YOUR FEATURES, YOUR OWN WAY<br>
+  Facial analysis is an estimate based on visible 2D features and may vary with camera angle and lighting.
+</div>
+
+</div>
 
 <script type="module">
 import {
-  FilesetResolver,
   FaceLandmarker,
-  HandLandmarker
-} from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/+esm";
+  FilesetResolver
+} from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14";
 
-const $ = id => document.getElementById(id);
-const video = $("video");
-const canvas = $("overlay");
+const video = document.getElementById("video");
+const canvas = document.getElementById("overlay");
 const ctx = canvas.getContext("2d");
+const drawLayer = document.getElementById("drawLayer");
+const dctx = drawLayer.getContext("2d");
+const mirrorFrame = document.getElementById("mirrorFrame");
 
-let faceTask = null;
-let handTask = null;
+const placeholder = document.getElementById("placeholder");
+const cameraStatus = document.getElementById("cameraStatus");
+const faceStatus = document.getElementById("faceStatus");
+const guideStatus = document.getElementById("guideStatus");
+
+let landmarker = null;
 let stream = null;
-let active = false;
-let handOn = false;
-let airWrite = false;
-let meshOn = false;
-let guidesOn = true;
-let mode = "makeup";
-let faceShape = "Oval";
-let blush = "#e88b9d";
-let step = 0;
-let lastTime = -1;
-let lastProfileUpdate = 0;
-let lastDraw = null;
-
-const drawing = document.createElement("canvas");
-const dctx = drawing.getContext("2d");
+let latestLandmarks = null;
+let guidesOn = false;
+let drawingOn = false;
+let drawing = false;
+let lastPoint = null;
+let currentStep = 0;
+let lastVideoTime = -1;
+let lastScanTime = 0;
+let scanData = null;
 
 const steps = [
   {
     name: "Blush placement",
-    text: "The cheek guide adapts to your estimated face shape. Adjust placement and blend.",
-    feature: "blush"
+    label: "STEP 01 · CHEEKS",
+    title: "Your blush placement.",
+    text: "Follow the pink curved guide across your cheek area. The line shows the direction to sweep your blush. Start near the outer cheek and move gently upwards.",
+    tip: "Use the guide as a placement reference, not a rule."
   },
   {
-    name: "Eyeshadow base",
-    text: "Follow the guide over the visible eyelid area. Try a light shade as a base.",
-    feature: "shadow"
-  },
-  {
-    name: "Crease and outer corner",
-    text: "Follow the crease and outer-corner guide. Blend softly.",
-    feature: "crease"
+    name: "Eyeshadow",
+    label: "STEP 02 · EYES",
+    title: "Eyeshadow placement.",
+    text: "The guide traces the eye area and crease region. Use it to see where a soft transition shade or a little shimmer could sit.",
+    tip: "Keep your eyes relaxed while following the guide."
   },
   {
     name: "Eyeliner",
-    text: "The guide follows your upper lash line. Try a fine line first.",
-    feature: "liner"
+    label: "STEP 03 · EYELINER",
+    title: "Your eyeliner direction.",
+    text: "A fine line follows the outer eye and points gently towards the temple. Use this as a guide for experimenting with eyeliner shapes.",
+    tip: "You can make the line shorter or longer to suit your taste."
   },
   {
-    name: "Lip colour",
-    text: "The lip guide follows your detected lip contour. Adjust colour intensity.",
-    feature: "lips"
+    name: "Nose",
+    label: "STEP 04 · NOSE",
+    title: "Nose contour guide.",
+    text: "Two fine lines mark possible contour placement along the sides of the nose. A small central guide marks a possible highlight area.",
+    tip: "These are optional makeup placement ideas, not corrections."
+  },
+  {
+    name: "Highlight",
+    label: "STEP 05 · HIGHLIGHT",
+    title: "A little light.",
+    text: "The guide marks possible highlight points around the upper cheekbones and other naturally prominent areas.",
+    tip: "A tiny amount is plenty if you enjoy a subtle look."
+  },
+  {
+    name: "Hair",
+    label: "STEP 06 · HAIR",
+    title: "Hair and face framing.",
+    text: "Explore different parts, face-framing layers and styles that you enjoy. Your face shape is only one inspiration point; hair texture, preference and comfort matter too.",
+    tip: "There is no one hairstyle you are supposed to have."
   }
 ];
 
-const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
-const point = lm => ({ x: lm.x * canvas.width, y: lm.y * canvas.height });
-const pt = (landmarks, index) => point(landmarks[index]);
+function updateStep() {
+  const step = steps[currentStep];
+  document.getElementById("stepCount").textContent =
+    String(currentStep + 1).padStart(2, "0") + " / 06";
+  document.getElementById("instructionLabel").textContent = step.label;
+  document.getElementById("instructionTitle").textContent = step.title;
+  document.getElementById("instructionText").textContent = step.text;
+  document.getElementById("instructionTip").textContent = step.tip;
 
-function distance(a, b) {
-  return Math.hypot(a.x - b.x, a.y - b.y);
+  [...document.querySelectorAll(".step-button")].forEach((button, index) => {
+    button.classList.toggle("active", index === currentStep);
+  });
+
+  guidesOn = currentStep !== 5;
+  guideStatus.textContent = guidesOn ? "GUIDES ON" : "HAIR GUIDE";
+  document.getElementById("guideToggle").classList.toggle("active", guidesOn);
+  drawGuides();
 }
 
-function setStatus(text) {
-  $("status").textContent = text.toUpperCase();
-}
+steps.forEach((step, index) => {
+  const button = document.createElement("button");
+  button.className = "step-button";
+  button.textContent = step.name;
+  button.addEventListener("click", () => {
+    currentStep = index;
+    updateStep();
+  });
+  document.getElementById("stepButtons").appendChild(button);
+});
 
-function hexRgba(hex, alpha) {
-  const value = hex.replace("#", "");
-  const r = parseInt(value.slice(0, 2), 16);
-  const g = parseInt(value.slice(2, 4), 16);
-  const b = parseInt(value.slice(4, 6), 16);
-  return `rgba(${r},${g},${b},${alpha})`;
-}
+document.getElementById("nextStep").addEventListener("click", () => {
+  currentStep = (currentStep + 1) % steps.length;
+  updateStep();
+});
 
-async function loadFaceModel() {
-  setStatus("Loading face model");
+document.getElementById("previousStep").addEventListener("click", () => {
+  currentStep = (currentStep - 1 + steps.length) % steps.length;
+  updateStep();
+});
 
+async function setupLandmarker() {
   const vision = await FilesetResolver.forVisionTasks(
     "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm"
   );
 
-  const options = {
+  landmarker = await FaceLandmarker.createFromOptions(vision, {
     baseOptions: {
       modelAssetPath:
         "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
@@ -570,659 +753,497 @@ async function loadFaceModel() {
     },
     runningMode: "VIDEO",
     numFaces: 1
-  };
-
-  try {
-    faceTask = await FaceLandmarker.createFromOptions(vision, options);
-  } catch (error) {
-    console.warn("GPU unavailable. Trying CPU.", error);
-    options.baseOptions.delegate = "CPU";
-    faceTask = await FaceLandmarker.createFromOptions(vision, options);
-  }
-}
-
-async function loadHandModel() {
-  if (handTask) return;
-
-  const vision = await FilesetResolver.forVisionTasks(
-    "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm"
-  );
-
-  handTask = await HandLandmarker.createFromOptions(vision, {
-    baseOptions: {
-      modelAssetPath:
-        "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
-      delegate: "CPU"
-    },
-    runningMode: "VIDEO",
-    numHands: 1
   });
 }
 
 async function startCamera() {
   try {
-    $("cameraBtn").disabled = true;
-
-    if (!faceTask) await loadFaceModel();
+    cameraStatus.textContent = "Starting camera...";
+    if (!landmarker) {
+      cameraStatus.textContent = "Loading face tracking...";
+      await setupLandmarker();
+    }
 
     stream = await navigator.mediaDevices.getUserMedia({
-      audio: false,
       video: {
         facingMode: "user",
         width: { ideal: 1280 },
-        height: { ideal: 960 }
-      }
+        height: { ideal: 1280 }
+      },
+      audio: false
     });
 
     video.srcObject = stream;
     await video.play();
 
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    drawing.width = canvas.width;
-    drawing.height = canvas.height;
+    placeholder.classList.add("hidden");
+    cameraStatus.textContent = "Mirror active";
+    document.getElementById("startCamera").textContent = "Mirror active";
 
-    video.style.display = "block";
-    $("placeholder").style.display = "none";
-
-    active = true;
-    $("cameraBtn").textContent = "Camera active";
-    setStatus("Mirror active");
-    requestAnimationFrame(render);
+    resizeCanvases();
+    requestAnimationFrame(renderLoop);
   } catch (error) {
     console.error(error);
-    setStatus("Camera unavailable");
-    alert("MIROIR could not start. Allow camera access and use your HTTPS GitHub Pages address. If it still fails, check the browser Console.");
-  } finally {
-    $("cameraBtn").disabled = false;
+    cameraStatus.textContent = "Camera unavailable";
+    alert("MIROIR couldn't start the camera. Check your browser permissions and make sure the page is using HTTPS.");
   }
 }
 
-/* Approximate feature analysis */
-function analyzeFace(lms) {
-  const xs = lms.map(p => p.x);
-  const ys = lms.map(p => p.y);
-  const width = Math.max(...xs) - Math.min(...xs);
-  const height = Math.max(...ys) - Math.min(...ys);
-  const ratio = width / height;
+document.getElementById("startCamera").addEventListener("click", startCamera);
 
-  let shape = ratio < 0.70 ? "Oblong" : ratio > 0.87 ? "Round" : "Oval";
+document.getElementById("scanButton").addEventListener("click", () => {
+  if (!latestLandmarks) {
+    alert("Start your mirror and look towards the camera first.");
+    return;
+  }
+  scanData = analyzeFace(latestLandmarks);
+  showAnalysis(scanData);
+});
 
-  const cheekWidth = distance(pt(lms, 234), pt(lms, 454));
-  const jawWidth = distance(pt(lms, 172), pt(lms, 397));
+function resizeCanvases() {
+  const rect = mirrorFrame.getBoundingClientRect();
+  const width = Math.round(rect.width);
+  const height = Math.round(rect.height);
 
-  if (shape === "Oval" && jawWidth / cheekWidth < 0.72) {
-    shape = "Heart";
-  } else if (shape === "Oval" && jawWidth / cheekWidth > 0.90) {
-    shape = "Square";
+  [canvas, drawLayer].forEach(c => {
+    c.width = width;
+    c.height = height;
+  });
+}
+window.addEventListener("resize", resizeCanvases);
+
+function point(id, landmarks = latestLandmarks) {
+  if (!landmarks || !landmarks[id]) return null;
+  return {
+    x: (1 - landmarks[id].x) * canvas.width,
+    y: landmarks[id].y * canvas.height
+  };
+}
+
+function midpoint(a, b) {
+  return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+}
+
+function line(a, b, width = 2) {
+  if (!a || !b) return;
+  ctx.beginPath();
+  ctx.moveTo(a.x, a.y);
+  ctx.lineTo(b.x, b.y);
+  ctx.lineWidth = width;
+  ctx.stroke();
+}
+
+function curve(points, width = 2) {
+  if (!points.every(Boolean)) return;
+  ctx.beginPath();
+  ctx.moveTo(points[0].x, points[0].y);
+  for (let i = 1; i < points.length - 1; i++) {
+    const mid = midpoint(points[i], points[i + 1]);
+    ctx.quadraticCurveTo(points[i].x, points[i].y, mid.x, mid.y);
+  }
+  const last = points[points.length - 1];
+  ctx.lineTo(last.x, last.y);
+  ctx.lineWidth = width;
+  ctx.stroke();
+}
+
+function label(text, p, dx = 0, dy = 0) {
+  if (!p) return;
+  ctx.save();
+  ctx.font = "10px DM Sans";
+  ctx.fillStyle = "#c97891";
+  ctx.fillText(text, p.x + dx, p.y + dy);
+  ctx.restore();
+}
+
+function arrow(a, b) {
+  if (!a || !b) return;
+  const angle = Math.atan2(b.y - a.y, b.x - a.x);
+  const size = 7;
+  ctx.beginPath();
+  ctx.moveTo(b.x, b.y);
+  ctx.lineTo(
+    b.x - size * Math.cos(angle - Math.PI / 6),
+    b.y - size * Math.sin(angle - Math.PI / 6)
+  );
+  ctx.moveTo(b.x, b.y);
+  ctx.lineTo(
+    b.x - size * Math.cos(angle + Math.PI / 6),
+    b.y - size * Math.sin(angle + Math.PI / 6)
+  );
+  ctx.stroke();
+}
+
+function drawGuides() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  if (!guidesOn || !latestLandmarks) return;
+
+  ctx.save();
+  ctx.strokeStyle = "#e28ba5";
+  ctx.fillStyle = "#e28ba5";
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.setLineDash([]);
+
+  const leftEyeOuter = point(33);
+  const leftEyeInner = point(133);
+  const rightEyeInner = point(362);
+  const rightEyeOuter = point(263);
+  const noseTip = point(1);
+  const noseBridge = point(6);
+  const leftCheek = point(205);
+  const rightCheek = point(425);
+  const leftTemple = point(127);
+  const rightTemple = point(356);
+  const chin = point(152);
+  const forehead = point(10);
+
+  if (currentStep === 0) {
+    // Blush: placement strokes only, never a filled area.
+    const l1 = point(50);
+    const l2 = point(101);
+    const r1 = point(280);
+    const r2 = point(330);
+
+    if (l1 && leftTemple && leftCheek) {
+      curve([
+        { x: l1.x + 5, y: l1.y + 14 },
+        { x: l1.x + 18, y: l1.y + 4 },
+        { x: leftCheek.x + 5, y: leftCheek.y - 9 },
+        { x: leftTemple.x + 5, y: leftTemple.y + 15 }
+      ], 2.3);
+      arrow(leftCheek, leftTemple);
+      label("BLUSH", l1, -10, -5);
+    }
+    if (r1 && rightTemple && rightCheek) {
+      curve([
+        { x: r1.x - 5, y: r1.y + 14 },
+        { x: r1.x - 18, y: r1.y + 4 },
+        { x: rightCheek.x - 5, y: rightCheek.y - 9 },
+        { x: rightTemple.x - 5, y: rightTemple.y + 15 }
+      ], 2.3);
+      arrow(rightCheek, rightTemple);
+    }
+    if (l2) {
+      ctx.beginPath();
+      ctx.arc(l2.x, l2.y, 3, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    if (r2) {
+      ctx.beginPath();
+      ctx.arc(r2.x, r2.y, 3, 0, Math.PI * 2);
+      ctx.fill();
+    }
   }
 
-  const leftEyeWidth = distance(pt(lms, 33), pt(lms, 133));
-  const rightEyeWidth = distance(pt(lms, 362), pt(lms, 263));
-  const eyeGap = distance(pt(lms, 133), pt(lms, 362));
-  const averageEyeWidth = (leftEyeWidth + rightEyeWidth) / 2;
-  const spacingRatio = eyeGap / averageEyeWidth;
+  if (currentStep === 1) {
+    curve([leftEyeOuter, point(159), leftEyeInner], 2);
+    curve([rightEyeInner, point(386), rightEyeOuter], 2);
+    const l = point(159);
+    const r = point(386);
+    if (l) label("CREASE", l, -22, -13);
+    if (r) label("CREASE", r, 7, -13);
+  }
 
-  const lidHeight = distance(pt(lms, 159), pt(lms, 145));
-  const eyeAspect = lidHeight / leftEyeWidth;
+  if (currentStep === 2) {
+    const l = point(33);
+    const r = point(263);
+    const li = point(133);
+    const ri = point(362);
+    if (l && li) {
+      curve([l, point(160), li], 2);
+      const end = { x: l.x - 17, y: l.y - 9 };
+      line(l, end, 2);
+      arrow(l, end);
+    }
+    if (r && ri) {
+      curve([ri, point(385), r], 2);
+      const end = { x: r.x + 17, y: r.y - 9 };
+      line(r, end, 2);
+      arrow(r, end);
+    }
+    if (l) label("FOLLOW YOUR LASH LINE", l, -35, -23);
+  }
 
-  let eyeType = "Almond";
-  if (eyeAspect > 0.31) eyeType = "Round-leaning";
-  if (eyeAspect < 0.19) eyeType = "Narrow / almond";
+  if (currentStep === 3) {
+    const leftNose = point(129);
+    const rightNose = point(358);
+    const noseBase = point(2);
+    if (leftNose && noseBridge) {
+      curve([
+        { x: noseBridge.x - 9, y: noseBridge.y + 8 },
+        { x: leftNose.x - 3, y: leftNose.y - 8 },
+        { x: noseBase.x - 7, y: noseBase.y + 1 }
+      ], 2);
+    }
+    if (rightNose && noseBridge) {
+      curve([
+        { x: noseBridge.x + 9, y: noseBridge.y + 8 },
+        { x: rightNose.x + 3, y: rightNose.y - 8 },
+        { x: noseBase.x + 7, y: noseBase.y + 1 }
+      ], 2);
+    }
+    line(
+      { x: noseBridge.x, y: noseBridge.y + 3 },
+      { x: noseTip.x, y: noseTip.y - 5 },
+      1.5
+    );
+    label("HIGHLIGHT", noseBridge, 12, -8);
+    label("CONTOUR", leftNose, -50, 2);
+  }
 
-  let eyeSpacing = "Average spacing estimate";
-  if (spacingRatio < 0.78) eyeSpacing = "Close-set estimate";
-  if (spacingRatio > 1.12) eyeSpacing = "Wide-set estimate";
+  if (currentStep === 4) {
+    const l = point(117);
+    const r = point(346);
+    const nose = point(1);
+    if (l) {
+      ctx.beginPath();
+      ctx.arc(l.x, l.y, 7, 0, Math.PI * 2);
+      ctx.stroke();
+      label("HIGHLIGHT", l, -30, -15);
+    }
+    if (r) {
+      ctx.beginPath();
+      ctx.arc(r.x, r.y, 7, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    if (nose) {
+      ctx.beginPath();
+      ctx.arc(nose.x, nose.y, 4, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    const brow = point(10);
+    if (brow) {
+      ctx.beginPath();
+      ctx.arc(brow.x, brow.y + 20, 5, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+  }
 
-  const noseWidth = distance(pt(lms, 98), pt(lms, 327));
-  const noseLength = distance(pt(lms, 168), pt(lms, 2));
-  const noseRatio = noseWidth / noseLength;
+  if (currentStep === 5) {
+    // Hair guide: a suggested parting line, not a hair detector.
+    const center = midpoint(leftTemple, rightTemple);
+    if (forehead && center) {
+      curve([
+        { x: center.x, y: center.y - 40 },
+        { x: center.x - 2, y: center.y - 15 },
+        { x: center.x, y: forehead.y + 15 }
+      ], 2);
+      label("PARTING IDEAS", center, 10, -25);
+    }
+  }
 
-  let noseType = "Balanced visible base";
-  if (noseRatio > 0.72) noseType = "Wider visible base";
-  if (noseRatio < 0.48) noseType = "Narrower visible base";
+  ctx.restore();
+}
+
+function analyzeFace(lm) {
+  const p = id => point(id, lm);
+  const left = p(234);
+  const right = p(454);
+  const top = p(10);
+  const bottom = p(152);
+  const jawL = p(172);
+  const jawR = p(397);
+
+  const width = Math.abs(right.x - left.x);
+  const height = Math.abs(bottom.y - top.y);
+  const ratio = height / width;
+  const jawWidth = Math.abs(jawR.x - jawL.x) / width;
+
+  let shape = "Oval";
+  if (ratio > 1.48) shape = "Oblong";
+  else if (ratio < 1.23 && jawWidth > .78) shape = "Round";
+  else if (jawWidth < .69) shape = "Heart";
+  else if (jawWidth > .87) shape = "Square";
+
+  const eyeLeft = p(33);
+  const eyeLeftInner = p(133);
+  const eyeRightInner = p(362);
+  const eyeRight = p(263);
+
+  const eyeWidth = (
+    Math.abs(eyeLeft.x - eyeLeftInner.x) +
+    Math.abs(eyeRight.x - eyeRightInner.x)
+  ) / 2;
+
+  const eyeHeight = (
+    Math.abs(p(159).y - p(145).y) +
+    Math.abs(p(386).y - p(374).y)
+  ) / 2;
+
+  const eyeRatio = eyeWidth / Math.max(eyeHeight, 1);
+  const eyeShape = eyeRatio > 3.3 ? "Almond-like" : "Round-like";
+
+  const gap = Math.abs(eyeRightInner.x - eyeLeftInner.x);
+  const spacing = gap > eyeWidth * 1.05
+    ? "Wide-set estimate"
+    : gap < eyeWidth * .75
+      ? "Close-set estimate"
+      : "Average estimate";
+
+  const noseWidth = Math.abs(p(129).x - p(358).x);
+  const noseObservation = noseWidth / width > .23
+    ? "Wider base"
+    : "Narrower base";
 
   return {
     shape,
-    ratio,
-    eyeType,
-    eyeSpacing,
-    noseType
+    eyeShape,
+    spacing,
+    noseObservation,
+    ratio
   };
 }
 
-function updateProfile(lms) {
-  const a = analyzeFace(lms);
-  faceShape = a.shape;
+function showAnalysis(data) {
+  document.getElementById("scanStatus").textContent = "SCAN COMPLETE";
+  document.getElementById("faceShape").textContent = data.shape;
+  document.getElementById("eyeShape").textContent = data.eyeShape;
+  document.getElementById("eyeSpacing").textContent = data.spacing;
+  document.getElementById("noseShape").textContent = data.noseObservation;
+  document.getElementById("proportions").textContent =
+    data.ratio > 1.4 ? "Longer" : data.ratio < 1.25 ? "Shorter" : "Balanced";
 
-  $("faceShape").textContent = a.shape;
-  $("faceRatio").textContent = a.ratio.toFixed(2);
-  $("eyeType").textContent = a.eyeType;
-  $("eyeSpacing").textContent = a.eyeSpacing;
-  $("noseType").textContent = a.noseType;
-  $("colorReading").textContent = "Camera-based palette";
-
-  const faceAdvice = {
-    Oblong: "Your visible proportions appear longer than wide. Experiment with horizontally balanced blush.",
-    Round: "Your visible proportions appear relatively similar in width and height. Explore lifted or diagonal blush.",
-    Heart: "Your visible proportions suggest a narrower lower face. Try softly diffused cheek colour.",
-    Square: "Your visible jaw and cheek widths appear similar. Experiment with softly rounded blush.",
-    Oval: "Your visible proportions appear fairly balanced. Explore different placements."
+  const descriptions = {
+    Oval: "Your scan suggests an oval face shape. You can experiment with a wide range of blush placements, eye looks and hair parts.",
+    Oblong: "Your scan suggests an oblong face shape. Explore softer horizontal blush placement, varied hair parts and face-framing styles.",
+    Round: "Your scan suggests a round face shape. Try experimenting with lifted blush placement, elongated eyeliner and different hair silhouettes.",
+    Heart: "Your scan suggests a heart-shaped face. Explore soft cheek placement, balanced eye looks and different face-framing layers.",
+    Square: "Your scan suggests a square face shape. You can experiment with softly angled blush placement, different eye shapes and varied hair parts."
   };
 
-  $("faceAdvice").textContent = faceAdvice[a.shape] || faceAdvice.Oval;
+  document.getElementById("faceDescription").textContent =
+    descriptions[data.shape];
 
-  const blushAdvice = {
-    Oblong: "Try a more horizontal, softly diffused cheek placement.",
-    Round: "Try a diagonal or lifted blush placement toward the temples.",
-    Heart: "Try diffused blush around the outer apples, blending toward the cheekbones.",
-    Square: "Try softly rounded blush placement with gentle blending.",
-    Oval: "Experiment with cheekbone or apple-of-cheek placement."
+  const celebrities = {
+    Oval: ["Beyoncé", "Jessica Alba", "Bella Hadid"],
+    Oblong: ["Sarah Jessica Parker", "Liv Tyler", "Gisele Bündchen"],
+    Round: ["Mila Kunis", "Selena Gomez", "Ginnifer Goodwin"],
+    Heart: ["Reese Witherspoon", "Lily Collins", "Kourtney Kardashian"],
+    Square: ["Keira Knightley", "Olivia Wilde", "Angelina Jolie"]
   };
 
-  const eyeAdvice = a.eyeType.includes("Round")
-    ? "Try a softly elongated shadow shape and fine outer liner."
-    : a.eyeType.includes("Narrow")
-    ? "Try a light wash on the visible lid and a softly smudged lash-line accent."
-    : "Try a gradient across the lid and follow your natural lash line.";
-
-  const noseAdvice = a.noseType === "Wider visible base"
-    ? "Optional contour can be softly blended along the visible sides."
-    : a.noseType === "Narrower visible base"
-    ? "Try a very soft contour or diffused highlight, if you enjoy it."
-    : "Experiment with subtle, blended contour or highlight.";
-
-  $("personalAdvice").innerHTML = `
-    <p><b>For your estimated ${a.shape.toLowerCase()} face:</b> ${blushAdvice[a.shape]}</p>
-    <p><b>For your ${a.eyeType.toLowerCase()} eyes:</b> ${eyeAdvice}</p>
-    <p><b>Eye spacing:</b> ${a.eyeSpacing}. Experiment with where you concentrate depth or brightness.</p>
-    <p><b>Nose:</b> ${a.noseType.toLowerCase()}. ${noseAdvice}</p>
-  `;
-
-  const colors = [
-    "#d99a9d", "#c67e91", "#e4b4a2",
-    "#b77f78", "#b79bbd", "#d7a8b5"
-  ];
-
-  $("palette").innerHTML = colors.map(color =>
-    `<button class="color" style="background:${color}" title="${color}" aria-label="Try ${color}"></button>`
-  ).join("");
-
-  $("palette").querySelectorAll("button").forEach(button => {
-    button.onclick = () => blush = button.title;
+  const list = document.getElementById("celebrityList");
+  list.innerHTML = "";
+  celebrities[data.shape].forEach(name => {
+    const item = document.createElement("span");
+    item.className = "celebrity";
+    item.textContent = name;
+    list.appendChild(item);
   });
+
+  document.getElementById("celebrityIntro").textContent =
+    `Some celebrities commonly described as having ${data.shape.toLowerCase()} face shapes. Explore their makeup and hairstyle choices for inspiration.`;
+
+  currentStep = 0;
+  updateStep();
 }
 
-/* Face-attached blush */
-function cheekRegion(lms, side) {
-  const ids = side === "L"
-    ? [50, 101, 118, 119, 120, 121, 126, 142, 205, 187]
-    : [280, 330, 347, 348, 349, 350, 355, 371, 425, 411];
+function renderLoop() {
+  if (video.readyState >= 2 && video.currentTime !== lastVideoTime) {
+    lastVideoTime = video.currentTime;
 
-  const polygon = ids.map(i => pt(lms, i));
-  const xs = polygon.map(p => p.x);
-  const ys = polygon.map(p => p.y);
-
-  const cx = (Math.min(...xs) + Math.max(...xs)) / 2;
-  const cy = (Math.min(...ys) + Math.max(...ys)) / 2;
-
-  let rx = (Math.max(...xs) - Math.min(...xs)) * 0.72;
-  let ry = (Math.max(...ys) - Math.min(...ys)) * 0.60;
-  let angle = 0;
-
-  const placement = $("blushPlacement").value === "auto"
-    ? faceShape
-    : $("blushPlacement").value;
-
-  if (placement === "Oblong" || placement === "horizontal") {
-    rx *= 1.2;
-    ry *= 0.72;
-    angle = side === "L" ? -0.04 : 0.04;
-  } else if (placement === "Round" || placement === "lifted") {
-    rx *= 0.92;
-    ry *= 0.82;
-    angle = side === "L" ? -0.42 : 0.42;
-  } else if (placement === "Heart") {
-    rx *= 0.9;
-    ry *= 0.82;
-    angle = side === "L" ? -0.2 : 0.2;
-  } else if (placement === "apples") {
-    rx *= 0.7;
-    ry *= 0.8;
-  } else {
-    rx *= 0.98;
-    ry *= 0.8;
-    angle = side === "L" ? -0.16 : 0.16;
-  }
-
-  return { polygon, cx, cy, rx, ry, angle };
-}
-
-function drawBlush(lms) {
-  const intensity = Number($("blushIntensity").value) / 100;
-  const blend = Number($("blend").value) / 100;
-  if (intensity <= 0) return;
-
-  for (const side of ["L", "R"]) {
-    const r = cheekRegion(lms, side);
-
-    ctx.save();
-    ctx.beginPath();
-    ctx.moveTo(r.polygon[0].x, r.polygon[0].y);
-
-    for (let i = 1; i < r.polygon.length; i++) {
-      const a = r.polygon[i - 1];
-      const b = r.polygon[i];
-
-      ctx.quadraticCurveTo(
-        a.x, a.y,
-        (a.x + b.x) / 2,
-        (a.y + b.y) / 2
-      );
-    }
-
-    ctx.closePath();
-    ctx.clip();
-    ctx.translate(r.cx, r.cy);
-    ctx.rotate(r.angle);
-
-    const gradient = ctx.createRadialGradient(
-      0, 0, r.rx * 0.05,
-      0, 0, r.rx
-    );
-
-    const alpha = intensity * (0.18 + blend * 0.42);
-
-    gradient.addColorStop(0, hexRgba(blush, alpha));
-    gradient.addColorStop(0.4, hexRgba(blush, alpha * 0.7));
-    gradient.addColorStop(0.76, hexRgba(blush, alpha * 0.18));
-    gradient.addColorStop(1, hexRgba(blush, 0));
-
-    ctx.fillStyle = gradient;
-    ctx.beginPath();
-    ctx.ellipse(0, 0, r.rx, r.ry, 0, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.restore();
-  }
-}
-
-/* Tracked lips */
-const lipIds = [
-  61, 185, 40, 39, 37, 0, 267, 269, 270, 409,
-  291, 375, 321, 405, 314, 17, 84, 181, 91, 146
-];
-
-function drawLips(lms, guide = false) {
-  const points = lipIds.map(i => pt(lms, i));
-
-  ctx.save();
-  ctx.beginPath();
-  ctx.moveTo(points[0].x, points[0].y);
-
-  points.slice(1).forEach(p => ctx.lineTo(p.x, p.y));
-  ctx.closePath();
-
-  if (guide) {
-    ctx.strokeStyle = "rgba(255,255,255,.95)";
-    ctx.lineWidth = 2;
-    ctx.setLineDash([5, 4]);
-    ctx.stroke();
-  } else {
-    const alpha = Number($("lipIntensity").value) / 100;
-    ctx.fillStyle = hexRgba($("lipColor").value, alpha * 0.52);
-    ctx.fill();
-    ctx.strokeStyle = hexRgba($("lipColor").value, alpha * 0.75);
-    ctx.lineWidth = 1.2;
-    ctx.stroke();
-  }
-
-  ctx.restore();
-}
-
-/* Eye and eyeliner tracking */
-function eyePoints(lms, side) {
-  const ids = side === "L"
-    ? [33, 160, 158, 157, 173, 133]
-    : [362, 385, 387, 386, 398, 263];
-
-  return ids.map(i => pt(lms, i));
-}
-
-function drawEyes(lms, guide = false) {
-  for (const side of ["L", "R"]) {
-    const points = eyePoints(lms, side);
-
-    ctx.save();
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-    ctx.beginPath();
-    ctx.moveTo(points[0].x, points[0].y);
-    points.slice(1).forEach(p => ctx.lineTo(p.x, p.y));
-
-    if (guide) {
-      ctx.strokeStyle = "rgba(255,255,255,.95)";
-      ctx.lineWidth = 2.5;
-      ctx.setLineDash([5, 4]);
-      ctx.stroke();
-    } else {
-      const alpha = Number($("linerIntensity").value) / 100;
-      ctx.strokeStyle = hexRgba("#46313c", alpha * 0.9);
-      ctx.lineWidth = Math.max(1.5, canvas.width * 0.0026);
-      ctx.stroke();
-    }
-
-    ctx.restore();
-  }
-}
-
-/* Eyelid placement guide */
-function drawShadowGuide(lms) {
-  for (const side of ["L", "R"]) {
-    const points = eyePoints(lms, side);
-    const middle = points.reduce(
-      (sum, p) => ({
-        x: sum.x + p.x / points.length,
-        y: sum.y + p.y / points.length
-      }),
-      { x: 0, y: 0 }
-    );
-
-    ctx.save();
-    ctx.strokeStyle = "rgba(255,255,255,.9)";
-    ctx.lineWidth = 2;
-    ctx.setLineDash([4, 4]);
-    ctx.beginPath();
-    ctx.moveTo(points[0].x, points[0].y - 8);
-    ctx.quadraticCurveTo(
-      middle.x, middle.y - 18,
-      points[points.length - 1].x,
-      points[points.length - 1].y - 8
-    );
-    ctx.stroke();
-    ctx.restore();
-  }
-}
-
-/* Nose guide */
-function drawNoseGuide(lms) {
-  const ids = [168, 6, 197, 195, 5, 4, 1, 2];
-  const points = ids.map(i => pt(lms, i));
-
-  ctx.save();
-  ctx.strokeStyle = "rgba(255,255,255,.8)";
-  ctx.lineWidth = 2;
-  ctx.setLineDash([4, 5]);
-  ctx.beginPath();
-  ctx.moveTo(points[0].x, points[0].y);
-  points.slice(1).forEach(p => ctx.lineTo(p.x, p.y));
-  ctx.stroke();
-  ctx.restore();
-}
-
-function drawMesh(lms) {
-  ctx.save();
-  ctx.fillStyle = "rgba(255,255,255,.6)";
-
-  for (let i = 0; i < lms.length; i += 2) {
-    const p = pt(lms, i);
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, 1.1, 0, Math.PI * 2);
-    ctx.fill();
-  }
-
-  ctx.restore();
-}
-
-function drawGuides(lms) {
-  if (!guidesOn) return;
-
-  const feature = steps[step].feature;
-
-  if (feature === "blush") {
-    for (const side of ["L", "R"]) {
-      const r = cheekRegion(lms, side);
-
-      ctx.save();
-      ctx.strokeStyle = "rgba(255,255,255,.9)";
-      ctx.lineWidth = 2;
-      ctx.setLineDash([5, 4]);
-      ctx.beginPath();
-      ctx.ellipse(
-        r.cx, r.cy,
-        r.rx * 0.7, r.ry * 0.7,
-        r.angle, 0, Math.PI * 2
-      );
-      ctx.stroke();
-      ctx.restore();
-    }
-  }
-
-  if (feature === "shadow" || feature === "crease") {
-    drawShadowGuide(lms);
-  }
-
-  if (feature === "liner") drawEyes(lms, true);
-  if (feature === "lips") drawLips(lms, true);
-}
-
-/* Hand tracking:
-   Open/separated fingers = move cursor.
-   Closed fingers or pinch = draw. */
-function drawHand(results) {
-  const hands = results.landmarks;
-
-  if (!hands || !hands.length) {
-    lastDraw = null;
-    return;
-  }
-
-  const hand = hands[0];
-  const index = hand[8];
-  const x = index.x * canvas.width;
-  const y = index.y * canvas.height;
-
-  const extended = [
-    [8, 6], [12, 10], [16, 14], [20, 18]
-  ].filter(([tip, pip]) => hand[tip].y < hand[pip].y).length;
-
-  const closed = extended <= 1;
-  const thumb = hand[4];
-
-  const pinching = Math.hypot(
-    index.x - thumb.x,
-    index.y - thumb.y
-  ) < 0.055;
-
-  const drawNow = airWrite && (closed || pinching);
-
-  ctx.save();
-  ctx.beginPath();
-  ctx.arc(x, y, 10, 0, Math.PI * 2);
-  ctx.fillStyle = drawNow ? "#c789a0" : "#fff";
-  ctx.fill();
-  ctx.strokeStyle = "#c789a0";
-  ctx.lineWidth = 3;
-  ctx.stroke();
-  ctx.restore();
-
-  if (drawNow && lastDraw) {
-    dctx.beginPath();
-    dctx.moveTo(lastDraw.x, lastDraw.y);
-    dctx.lineTo(x, y);
-    dctx.strokeStyle = "#c789a0";
-    dctx.lineWidth = 5;
-    dctx.lineCap = "round";
-    dctx.stroke();
-  }
-
-  lastDraw = drawNow ? { x, y } : null;
-}
-
-function render() {
-  if (!active) return;
-
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  if (video.readyState >= 2 && video.currentTime !== lastTime) {
-    lastTime = video.currentTime;
-
-    const result = faceTask.detectForVideo(video, performance.now());
+    const result = landmarker.detectForVideo(video, performance.now());
 
     if (result.faceLandmarks && result.faceLandmarks.length) {
-      const lms = result.faceLandmarks[0];
+      latestLandmarks = result.faceLandmarks[0];
+      faceStatus.textContent = "Face detected · tracking";
+      if (guidesOn) drawGuides();
 
-      if (performance.now() - lastProfileUpdate > 500) {
-        updateProfile(lms);
-        lastProfileUpdate = performance.now();
-      }
-
-      if (mode === "makeup" || mode === "all") {
-        drawBlush(lms);
-        drawLips(lms);
-        drawEyes(lms);
-      }
-
-      if (mode === "guide" || mode === "all") {
-        drawGuides(lms);
-      }
-
-      if (meshOn || mode === "mesh" || mode === "all") {
-        drawMesh(lms);
+      // Keep the scan profile refreshed only after the user requests a scan.
+      if (scanData && performance.now() - lastScanTime > 500) {
+        lastScanTime = performance.now();
+        drawGuides();
       }
     } else {
-      $("faceShape").textContent = "Face not detected";
+      latestLandmarks = null;
+      faceStatus.textContent = "Position your face in the mirror";
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
-
-    if (handOn && handTask) {
-      const handResult = handTask.detectForVideo(video, performance.now());
-      drawHand(handResult);
-    }
-
-    ctx.drawImage(drawing, 0, 0);
   }
 
-  requestAnimationFrame(render);
+  requestAnimationFrame(renderLoop);
 }
 
-/* Interface */
-$("cameraBtn").addEventListener("click", startCamera);
-
-$("meshToggle").addEventListener("click", () => {
-  meshOn = !meshOn;
-  $("meshToggle").textContent = `FACE MESH: ${meshOn ? "ON" : "OFF"}`;
-});
-
-$("clearDrawing").addEventListener("click", () => {
-  dctx.clearRect(0, 0, drawing.width, drawing.height);
-});
-
-$("guideBtn").addEventListener("click", () => {
+document.getElementById("guideToggle").addEventListener("click", () => {
   guidesOn = !guidesOn;
-  $("guideBtn").textContent = `Guides: ${guidesOn ? "ON" : "OFF"}`;
+  guideStatus.textContent = guidesOn ? "GUIDES ON" : "GUIDES OFF";
+  document.getElementById("guideToggle").classList.toggle("active", guidesOn);
+  drawGuides();
 });
 
-document.querySelectorAll("[data-mode]").forEach(button => {
-  button.addEventListener("click", () => {
-    mode = button.dataset.mode;
-
-    document.querySelectorAll("[data-mode]").forEach(b => {
-      b.classList.toggle("active", b === button);
-    });
-  });
+document.getElementById("drawToggle").addEventListener("click", () => {
+  drawingOn = !drawingOn;
+  document.getElementById("drawToggle").classList.toggle("active", drawingOn);
+  drawLayer.style.pointerEvents = drawingOn ? "auto" : "none";
+  drawLayer.style.cursor = drawingOn ? "crosshair" : "default";
 });
 
-function updateStep() {
-  const current = steps[step];
-
-  $("stepCount").textContent = `STEP ${step + 1} OF ${steps.length}`;
-  $("stepTitle").textContent = current.name;
-  $("stepText").textContent = current.text;
-  $("prevStep").disabled = step === 0;
-  $("nextStep").textContent = step === steps.length - 1
-    ? "Start again"
-    : "Next step";
-}
-
-$("prevStep").addEventListener("click", () => {
-  step = Math.max(0, step - 1);
-  updateStep();
+document.getElementById("clearDrawing").addEventListener("click", () => {
+  dctx.clearRect(0, 0, drawLayer.width, drawLayer.height);
 });
 
-$("nextStep").addEventListener("click", () => {
-  step = (step + 1) % steps.length;
-  updateStep();
-});
-
-$("toggleStepGuide").addEventListener("click", () => {
-  guidesOn = !guidesOn;
-  $("toggleStepGuide").textContent = guidesOn ? "Hide guide" : "Show guide";
-  $("guideBtn").textContent = `Guides: ${guidesOn ? "ON" : "OFF"}`;
-});
-
-[
-  ["blushIntensity", "blushValue"],
-  ["blend", "blendValue"],
-  ["lipIntensity", "lipValue"],
-  ["linerIntensity", "linerValue"]
-].forEach(([id, output]) => {
-  $(id).addEventListener("input", () => {
-    $(output).textContent = $(id).value + "%";
-  });
-});
-
-$("look").addEventListener("change", () => {
-  const looks = {
-    romantic: ["#e88b9d", "#bd657a"],
-    douyin: ["#d87987", "#a84e68"],
-    latte: ["#b97d78", "#914b59"],
-    berry: ["#c78eaa", "#914b59"],
-    peach: ["#edaa91", "#d58d83"]
+function getCanvasPoint(event) {
+  const rect = drawLayer.getBoundingClientRect();
+  return {
+    x: (event.clientX - rect.left) * drawLayer.width / rect.width,
+    y: (event.clientY - rect.top) * drawLayer.height / rect.height
   };
+}
 
-  const selected = looks[$("look").value];
-  blush = selected[0];
-  $("lipColor").value = selected[1];
+drawLayer.addEventListener("pointerdown", event => {
+  if (!drawingOn) return;
+  drawing = true;
+  lastPoint = getCanvasPoint(event);
+  drawLayer.setPointerCapture(event.pointerId);
 });
 
-$("handBtn").addEventListener("click", async () => {
-  try {
-    if (!handOn) {
-      setStatus("Loading hand model");
-      await loadHandModel();
+drawLayer.addEventListener("pointermove", event => {
+  if (!drawing || !drawingOn) return;
+  const p = getCanvasPoint(event);
+  dctx.strokeStyle = "#d77f99";
+  dctx.lineWidth = 2.5;
+  dctx.lineCap = "round";
+  dctx.lineJoin = "round";
+  dctx.beginPath();
+  dctx.moveTo(lastPoint.x, lastPoint.y);
+  dctx.lineTo(p.x, p.y);
+  dctx.stroke();
+  lastPoint = p;
+});
 
-      handOn = true;
-      $("handBtn").textContent = "Hand tracking: ON";
-      $("handBtn").classList.add("active");
-      setStatus("Hand tracking active");
-    } else {
-      handOn = false;
-      airWrite = false;
-      lastDraw = null;
+function stopDrawing() {
+  drawing = false;
+  lastPoint = null;
+}
 
-      $("handBtn").textContent = "Hand tracking: OFF";
-      $("handBtn").classList.remove("active");
-      $("drawBtn").textContent = "Air writing: OFF";
-      $("drawBtn").classList.remove("active");
+drawLayer.addEventListener("pointerup", stopDrawing);
+drawLayer.addEventListener("pointercancel", stopDrawing);
+drawLayer.addEventListener("pointerleave", stopDrawing);
 
-      setStatus("Mirror active");
+document.querySelectorAll("[data-light]").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll("[data-light]").forEach(b => b.classList.remove("active"));
+    button.classList.add("active");
+
+    const mode = button.dataset.light;
+    const layer = document.getElementById("lightLayer");
+    layer.className = "light-layer";
+
+    if (mode === "warm" || mode === "cool" || mode === "soft") {
+      layer.classList.add(mode);
     }
-  } catch (error) {
-    console.error(error);
-    alert("Hand tracking could not load. Check your internet connection and browser Console.");
-  }
-});
 
-$("drawBtn").addEventListener("click", () => {
-  if (!handOn) {
-    alert("Enable hand tracking first.");
-    return;
-  }
-
-  airWrite = !airWrite;
-  lastDraw = null;
-
-  $("drawBtn").textContent = `Air writing: ${airWrite ? "ON" : "OFF"}`;
-  $("drawBtn").classList.toggle("active", airWrite);
+    if (mode === "natural") {
+      video.style.filter = "brightness(1) contrast(1)";
+    } else if (mode === "warm") {
+      video.style.filter = "brightness(1.04) sepia(.08)";
+    } else if (mode === "cool") {
+      video.style.filter = "brightness(1.04) saturate(.9)";
+    } else {
+      video.style.filter = "brightness(1.12) contrast(.94)";
+    }
+  });
 });
 
 updateStep();
