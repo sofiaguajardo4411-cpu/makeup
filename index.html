@@ -3,1112 +3,894 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MIROIR | Face Tracking Studio</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIROIR — Your Beauty Studio</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap');
 
 :root {
-  --pink:#d99bb1;
-  --pale:#f8e9ef;
-  --purple:#b4a5d1;
-  --ink:#493c45;
-  --muted:#a28e99;
-  --cream:#fffaf7;
+  --pink:#e9b9c9;
+  --rose:#bd8198;
+  --ink:#41343b;
+  --muted:#927f88;
+  --paper:#fffafc;
+  --line:#f0e3e9;
 }
-
-* {box-sizing:border-box}
-
+* { box-sizing:border-box; }
 body {
   margin:0;
-  background:
-    radial-gradient(circle at 10% 10%,#f6e3eb,transparent 35%),
-    radial-gradient(circle at 90% 50%,#ece7f5,transparent 35%),
-    var(--cream);
-  font-family:'DM Sans',sans-serif;
   color:var(--ink);
+  background:#fcf6f9;
+  font-family:'DM Sans',sans-serif;
 }
-
+button,select { font:inherit; }
+button { cursor:pointer; }
+.app { min-height:100vh; }
 header {
-  padding:20px 6%;
+  height:76px;
+  padding:0 5%;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  border-bottom:1px solid #f0e2e8;
-  background:#fffaf5dd;
-  backdrop-filter:blur(15px);
+  border-bottom:1px solid var(--line);
+  background:#fffafc;
 }
-
 .logo {
-  font:500 30px 'Playfair Display',serif;
+  font-family:'Playfair Display',serif;
+  font-size:29px;
+  letter-spacing:5px;
+}
+.logo small {
+  display:block;
+  font:9px 'DM Sans',sans-serif;
   letter-spacing:4px;
-}
-
-.logo span {color:var(--pink)}
-
-header small {
   color:var(--muted);
-  letter-spacing:2px;
-  font-size:9px;
+  text-align:center;
+  margin-top:2px;
 }
-
+.header-right { display:flex; gap:10px; align-items:center; }
+.status {
+  font-size:11px;
+  color:var(--muted);
+  letter-spacing:1px;
+}
 main {
-  max-width:1100px;
-  padding:35px 18px 70px;
+  max-width:1450px;
   margin:auto;
-}
-
-.hero {text-align:center;margin-bottom:25px}
-
-.eyebrow {
-  color:#b77d96;
-  font-size:9px;
-  font-weight:700;
-  letter-spacing:2.5px;
-}
-
-h1 {
-  font:500 clamp(38px,6vw,62px) 'Playfair Display',serif;
-  margin:10px 0;
-}
-
-h1 em {color:var(--pink)}
-
-.hero p {
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.8;
-}
-
-.workspace {
+  padding:30px 4%;
   display:grid;
-  grid-template-columns:1fr 290px;
-  gap:16px;
+  grid-template-columns:minmax(0,1.6fr) minmax(290px,.8fr);
+  gap:25px;
 }
-
-.panel {
-  background:#ffffffdb;
-  border:1px solid white;
-  border-radius:20px;
-  padding:19px;
-  box-shadow:0 12px 40px #76516b0b;
-  min-width:0;
+.mirror-column { min-width:0; }
+.eyebrow {
+  font-size:10px;
+  letter-spacing:2.5px;
+  color:var(--rose);
+  text-transform:uppercase;
 }
-
-.camera {
+h1 {
+  font:36px 'Playfair Display',serif;
+  font-weight:400;
+  margin:8px 0 20px;
+}
+.mirror {
   position:relative;
   width:100%;
   aspect-ratio:4/3;
   overflow:hidden;
-  background:linear-gradient(135deg,#f5e0e9,#eae4f4);
-  border-radius:16px;
-  margin-top:14px;
+  border-radius:20px;
+  background:linear-gradient(135deg,#ead8e0,#c9b4c1);
+  box-shadow:0 15px 50px #73536418;
 }
-
-video {
+#video,#overlay {
   position:absolute;
   inset:0;
   width:100%;
   height:100%;
   object-fit:cover;
   transform:scaleX(-1);
-  display:none;
 }
-
-canvas {
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  transform:scaleX(-1);
-  pointer-events:none;
-}
-
-.placeholder {
+#video { display:none; }
+#overlay { pointer-events:none; }
+.camera-placeholder {
   position:absolute;
   inset:0;
   display:flex;
+  flex-direction:column;
   align-items:center;
   justify-content:center;
-  flex-direction:column;
   text-align:center;
   padding:20px;
-  color:#97768a;
+  color:#745d6a;
 }
-
-.placeholder .mirror {font-size:53px}
-
-.placeholder b {
-  font:500 22px 'Playfair Display',serif;
-  margin-top:12px;
+.camera-placeholder .mirror-icon {
+  font:70px 'Playfair Display',serif;
+  opacity:.6;
 }
-
-.placeholder p {
-  font-size:11px;
-  line-height:1.7;
-  max-width:260px;
-}
-
-.camera-tag {
+.camera-placeholder p { font-size:13px; line-height:1.7; }
+.mirror-label {
   position:absolute;
-  top:12px;
-  left:12px;
-  background:#fff9;
+  top:18px;
+  left:18px;
   padding:8px 12px;
   border-radius:30px;
-  z-index:2;
-  color:#81596d;
-  font-size:9px;
-  letter-spacing:1px;
+  background:#fffafcdd;
+  font-size:10px;
+  letter-spacing:1.5px;
 }
-
-.camera-tip {
+.mirror-actions {
   position:absolute;
-  bottom:12px;
-  left:50%;
-  transform:translateX(-50%);
-  background:#fff9;
-  padding:9px 14px;
-  border-radius:30px;
-  font-size:10px;
-  white-space:nowrap;
-  z-index:2;
-  color:#795b6e;
-}
-
-button,select {font:inherit}
-
-button {
-  border:0;
-  border-radius:10px;
-  padding:12px 15px;
-  background:var(--pink);
-  color:white;
-  font-size:10px;
-  font-weight:700;
-  cursor:pointer;
-  transition:.2s;
-}
-
-button:hover {transform:translateY(-2px)}
-
-button.secondary {
-  background:var(--pale);
-  color:#895e73;
-}
-
-button:disabled {opacity:.5;cursor:not-allowed}
-
-.buttons {
+  bottom:15px;
+  left:15px;
+  right:15px;
   display:flex;
-  gap:9px;
-  flex-wrap:wrap;
-  margin-top:13px;
-}
-
-.control {margin-top:17px}
-
-label {
-  display:block;
-  font-size:9px;
-  color:var(--muted);
-  letter-spacing:1.4px;
-  margin-bottom:7px;
-  text-transform:uppercase;
-}
-
-select {
-  width:100%;
-  padding:12px;
-  border:1px solid #f0e1e8;
-  border-radius:10px;
-  background:#fff9fb;
-  color:var(--ink);
-  font-size:11px;
-  outline:none;
-}
-
-.status {
-  color:var(--muted);
-  font-size:10px;
-  line-height:1.7;
-  margin-top:12px;
-  min-height:18px;
-}
-
-.status.active {color:#638e73}
-
-.side-title {
-  font:500 23px 'Playfair Display',serif;
-  margin:7px 0 13px;
-}
-
-.metric {
-  background:#fff;
-  border:1px solid #f0e2e8;
-  border-radius:12px;
-  padding:13px;
-  margin-top:9px;
-}
-
-.metric b {
-  font-size:10px;
-  display:block;
-  margin-bottom:6px;
-}
-
-.metric span {
-  font-size:11px;
-  color:var(--muted);
-  line-height:1.6;
-}
-
-.options {
-  display:grid;
-  grid-template-columns:1fr 1fr;
+  justify-content:space-between;
+  align-items:center;
   gap:8px;
 }
-
-.option {
-  border:1px solid #f0e1e8;
-  background:#fff;
-  padding:12px 7px;
-  border-radius:11px;
-  color:#806778;
-  font-size:10px;
-  cursor:pointer;
+.mirror-actions button {
+  border:1px solid #ffffff80;
+  background:#fffaf0e8;
+  color:var(--ink);
+  border-radius:30px;
+  padding:10px 14px;
+  font-size:11px;
 }
-
-.option.selected {
-  background:#f5dfe8;
-  border-color:#d99bb1;
-}
-
-.palette {
+.controls {
   display:flex;
-  gap:10px;
   flex-wrap:wrap;
+  gap:8px;
   margin-top:13px;
 }
-
-.swatch {
-  width:34px;
-  height:34px;
-  border-radius:50%;
-  border:3px solid white;
-  box-shadow:0 0 0 1px #e8dce3;
-  cursor:pointer;
-}
-
-.section {margin-top:24px}
-
-.section h2 {
-  font:500 26px 'Playfair Display',serif;
-  margin:6px 0;
-}
-
-.section p {
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.8;
-}
-
-.looks {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:11px;
-}
-
-.look {
+.btn {
+  border:1px solid var(--line);
   background:white;
-  border:1px solid #f0e2e8;
-  border-radius:14px;
-  padding:14px;
+  color:var(--ink);
+  border-radius:30px;
+  padding:11px 16px;
+  font-size:11px;
+  transition:.2s;
 }
-
-.look div {font-size:25px}
-
-.look b {
-  display:block;
-  font:500 17px 'Playfair Display',serif;
-  margin:7px 0;
+.btn:hover,.btn.active {
+  background:#f2dce5;
+  border-color:#e5bdcd;
 }
-
-.look p {
-  font-size:10px;
+.btn.primary {
+  background:#bd8198;
+  color:white;
+  border-color:#bd8198;
+}
+.btn:disabled { opacity:.45; cursor:not-allowed; }
+.panel {
+  background:#fffdfd;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:22px;
+  margin-bottom:15px;
+}
+.panel h2 {
+  font:23px 'Playfair Display',serif;
+  font-weight:400;
+  margin:5px 0 15px;
+}
+.panel p {
   color:var(--muted);
-  line-height:1.6;
+  font-size:12px;
+  line-height:1.7;
 }
-
+.result {
+  background:#fbf0f4;
+  border-radius:13px;
+  padding:16px;
+  margin:12px 0;
+}
+.result .shape {
+  font:27px 'Playfair Display',serif;
+  margin:5px 0;
+}
+.result p { margin:5px 0 0; }
+.detail {
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px 0;
+  border-bottom:1px solid var(--line);
+  font-size:11px;
+}
+.detail span:last-child { color:var(--rose); text-align:right; }
+.control-group { margin:17px 0; }
+.control-group label {
+  display:flex;
+  justify-content:space-between;
+  font-size:11px;
+  margin-bottom:9px;
+}
+input[type=range] { width:100%; accent-color:var(--rose); }
+select {
+  width:100%;
+  padding:11px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:white;
+  color:var(--ink);
+  font-size:12px;
+}
+.swatches { display:flex; gap:9px; flex-wrap:wrap; }
+.swatch {
+  width:29px;
+  height:29px;
+  border-radius:50%;
+  border:2px solid white;
+  outline:1px solid var(--line);
+}
+.swatch.selected { outline:2px solid var(--rose); }
+.note {
+  font-size:10px!important;
+  color:#a18d97!important;
+}
 footer {
   text-align:center;
-  padding:30px;
-  font-size:9px;
-  color:var(--muted);
-  line-height:1.8;
+  padding:25px;
+  color:#a18d97;
+  font-size:10px;
+  letter-spacing:1px;
 }
-
-@media(max-width:760px) {
-  .workspace {grid-template-columns:1fr}
-  .looks {grid-template-columns:1fr 1fr}
+@media(max-width:850px) {
+  main { grid-template-columns:1fr; padding:22px 4%; }
+  h1 { font-size:30px; }
 }
-
 </style>
 </head>
-
 <body>
-
+<div class="app">
 <header>
-  <div class="logo">MIROIR<span>.</span></div>
-  <small>YOUR DIGITAL BEAUTY STUDIO</small>
+  <div class="logo">MIROIR<small>YOUR PERSONAL BEAUTY STUDIO</small></div>
+  <div class="header-right">
+    <span class="status" id="status">YOUR MIRROR AWAITS</span>
+  </div>
 </header>
 
 <main>
+<section class="mirror-column">
+  <div class="eyebrow">THE INTERACTIVE MIRROR</div>
+  <h1>See yourself in a new light.</h1>
 
-<div class="hero">
-  <div class="eyebrow">THE FACE TRACKING EXPERIENCE</div>
-  <h1>Beauty in <em>motion.</em></h1>
-  <p>Your reflection, enhanced with interactive makeup guides.<br>
-  Move, experiment and discover your own style.</p>
-</div>
+  <div class="mirror" id="mirror">
+    <video id="video" autoplay playsinline muted></video>
+    <canvas id="overlay"></canvas>
 
-<div class="workspace">
-
-<section class="panel">
-
-  <div class="eyebrow">01 — LIVE FACE TRACKING</div>
-  <h2 class="side-title">Your mirror</h2>
-
-  <div class="camera">
-    <div class="camera-tag" id="tag">WAITING FOR CAMERA</div>
-
-    <video id="video" autoplay muted playsinline></video>
-    <canvas id="canvas"></canvas>
-
-    <div class="placeholder" id="placeholder">
-      <div class="mirror">🪞</div>
-      <b>Look into your mirror.</b>
-      <p>Activate your camera to see live facial tracking and makeup previews.</p>
+    <div class="camera-placeholder" id="placeholder">
+      <div class="mirror-icon">M</div>
+      <strong style="font:22px 'Playfair Display',serif">Your beauty studio</strong>
+      <p>Activate your camera to begin.<br>Your face analysis runs locally in your browser.</p>
     </div>
 
-    <div class="camera-tip" id="tip">
-      Your reflection will appear here
+    <div class="mirror-label">MIROIR · LIVE</div>
+    <div class="mirror-actions">
+      <button id="meshBtn">FACE MESH: OFF</button>
+      <button id="clearBtn">CLEAR DRAWING</button>
     </div>
   </div>
 
-  <div class="buttons">
-    <button id="start">Activate camera ✨</button>
-    <button class="secondary" id="stop">Turn off</button>
+  <div class="controls">
+    <button class="btn primary" id="cameraBtn">Activate camera</button>
+    <button class="btn" id="handBtn">Hand tracking: OFF</button>
+    <button class="btn" id="drawBtn">Air drawing: OFF</button>
   </div>
-
-  <div class="status" id="status">
-    Waiting for camera permission.
+  <div class="controls">
+    <button class="btn active" data-mode="makeup">Makeup preview</button>
+    <button class="btn" data-mode="mesh">Face mesh</button>
+    <button class="btn" data-mode="both">Mesh + makeup</button>
+    <button class="btn" data-mode="off">Clean mirror</button>
   </div>
-
-  <div class="control">
-    <label>Tracking display</label>
-    <div class="options">
-      <button class="option selected" data-tracking="makeup">Makeup preview</button>
-      <button class="option" data-tracking="mesh">Face mesh</button>
-      <button class="option" data-tracking="points">Landmarks</button>
-      <button class="option" data-tracking="contours">Contours</button>
-    </div>
-  </div>
-
-  <div class="control">
-    <label>Choose your makeup preview</label>
-    <select id="makeup">
-      <option value="none">Natural reflection</option>
-      <option value="blush">Blush placement</option>
-      <option value="lips">Lip colour</option>
-      <option value="liner">Eyeliner</option>
-      <option value="full">Full makeup preview</option>
-    </select>
-  </div>
-
-  <div class="control">
-    <label>Choose your Pinterest aesthetic</label>
-    <select id="aesthetic">
-      <option value="coquette">Coquette rose 🎀</option>
-      <option value="douyin">Douyin inspired ✨</option>
-      <option value="latte">Latte makeup ☕</option>
-      <option value="berry">Berry romantic 🍒</option>
-      <option value="soft">Soft glam</option>
-      <option value="peach">Peachy natural 🍑</option>
-    </select>
-  </div>
-
+  <p class="note">Camera processing happens in your browser. The camera feed is not uploaded by this page.</p>
 </section>
 
-<aside class="panel">
-  <div class="eyebrow">02 — LIVE ANALYSIS</div>
-  <h2 class="side-title">Your features.</h2>
+<aside>
+  <section class="panel">
+    <div class="eyebrow">YOUR FACE PROFILE</div>
+    <h2>The analysis</h2>
+    <div class="result">
+      <div class="eyebrow">ESTIMATED FACE SHAPE</div>
+      <div class="shape" id="faceShape">Waiting for scan...</div>
+      <p id="shapeDescription">Activate your camera and look toward the mirror.</p>
+    </div>
+    <div class="detail"><span>Face proportions</span><span id="ratio">—</span></div>
+    <div class="detail"><span>Face tracking</span><span id="tracking">Not active</span></div>
+    <div class="detail"><span>Head position</span><span id="headPosition">—</span></div>
+    <p class="note">Face shape is an approximate visual estimate based on visible proportions, not a definitive classification.</p>
+  </section>
 
-  <div class="metric">
-    <b>Face detection</b>
-    <span id="detection">Waiting for face...</span>
-  </div>
+  <section class="panel">
+    <div class="eyebrow">THE MAKEUP STUDIO</div>
+    <h2>Your makeup</h2>
 
-  <div class="metric">
-    <b>Tracking landmarks</b>
-    <span id="landmarkCount">0 detected</span>
-  </div>
+    <div class="control-group">
+      <label>Makeup style</label>
+      <select id="style">
+        <option value="custom">Custom look</option>
+        <option value="soft">Soft romantic</option>
+        <option value="douyin">Douyin inspired</option>
+        <option value="latte">Latte makeup</option>
+        <option value="berry">Berry romantic</option>
+        <option value="peach">Peachy natural</option>
+      </select>
+    </div>
 
-  <div class="metric">
-    <b>Head orientation</b>
-    <span id="orientation">Waiting...</span>
-  </div>
+    <div class="control-group">
+      <label>Blush colour</label>
+      <div class="swatches" id="swatches">
+        <button class="swatch selected" data-color="#e88b9d" style="background:#e88b9d" aria-label="Rose"></button>
+        <button class="swatch" data-color="#d87987" style="background:#d87987" aria-label="Berry"></button>
+        <button class="swatch" data-color="#edaa91" style="background:#edaa91" aria-label="Peach"></button>
+        <button class="swatch" data-color="#b97d78" style="background:#b97d78" aria-label="Terracotta"></button>
+        <button class="swatch" data-color="#c78eaa" style="background:#c78eaa" aria-label="Mauve"></button>
+      </div>
+    </div>
 
-  <div class="metric">
-    <b>Face proportions</b>
-    <span id="shape">Waiting...</span>
-  </div>
+    <div class="control-group">
+      <label>Blush intensity <span id="intensityValue">45%</span></label>
+      <input id="intensity" type="range" min="0" max="100" value="45">
+    </div>
+    <div class="control-group">
+      <label>Blending <span id="blendValue">75%</span></label>
+      <input id="blend" type="range" min="10" max="100" value="75">
+    </div>
+    <div class="control-group">
+      <label>Blush placement</label>
+      <select id="placement">
+        <option value="auto">Adapt to face shape</option>
+        <option value="horizontal">Horizontal</option>
+        <option value="lifted">Lifted / diagonal</option>
+        <option value="apples">Soft apples of cheeks</option>
+      </select>
+    </div>
 
-  <div class="metric">
-    <b>Nose proportions</b>
-    <span id="nose">Waiting...</span>
-  </div>
+    <div class="control-group">
+      <label>Lip colour</label>
+      <select id="lipColor">
+        <option value="#bd657a">Rosewood</option>
+        <option value="#a84e68">Berry</option>
+        <option value="#c77d76">Dusty rose</option>
+        <option value="#d58d83">Peach nude</option>
+        <option value="#914b59">Deep wine</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label>Lip intensity <span id="lipValue">65%</span></label>
+      <input id="lipIntensity" type="range" min="0" max="100" value="65">
+    </div>
+    <div class="control-group">
+      <label>Eyeliner intensity <span id="linerValue">55%</span></label>
+      <input id="linerIntensity" type="range" min="0" max="100" value="55">
+    </div>
+  </section>
 
-  <div class="metric">
-    <b>Eye spacing</b>
-    <span id="eyes">Waiting...</span>
-  </div>
-
-  <div class="metric">
-    <b>Camera performance</b>
-    <span id="fps">Waiting...</span>
-  </div>
-
-  <div class="metric">
-    <b>Selected makeup</b>
-    <span id="selected">Natural reflection</span>
-  </div>
+  <section class="panel">
+    <div class="eyebrow">YOUR BEAUTY NOTES</div>
+    <h2>Makeup suggestions</h2>
+    <div id="recommendations">
+      <p>Your personalized recommendations will appear after face detection begins.</p>
+    </div>
+  </section>
 </aside>
-
-</div>
-
-<section class="section">
-  <div class="eyebrow">03 — THE BEAUTY BOARD</div>
-  <h2>Choose your look.</h2>
-  <p>Explore different makeup aesthetics and experiment with their colour stories.</p>
-
-  <div class="looks">
-    <div class="look">
-      <div>🎀</div>
-      <b>Coquette</b>
-      <p>Petal pink, rosy cheeks and soft romantic details.</p>
-    </div>
-    <div class="look">
-      <div>✨</div>
-      <b>Douyin</b>
-      <p>Shimmer, delicate liner and glossy lips.</p>
-    </div>
-    <div class="look">
-      <div>☕</div>
-      <b>Latte</b>
-      <p>Caramel, bronze and warm brown tones.</p>
-    </div>
-    <div class="look">
-      <div>🍒</div>
-      <b>Berry</b>
-      <p>Berry lips and soft rosy blush.</p>
-    </div>
-    <div class="look">
-      <div>🕯️</div>
-      <b>Soft glam</b>
-      <p>Blended eyes and subtle definition.</p>
-    </div>
-    <div class="look">
-      <div>🍑</div>
-      <b>Peach</b>
-      <p>Peach shades and natural finishes.</p>
-    </div>
-  </div>
-</section>
-
-<section class="section panel">
-  <div class="eyebrow">04 — COLOUR STORY</div>
-  <h2>Your makeup palette.</h2>
-  <p>Tap a shade to change the makeup preview colour.</p>
-  <div class="palette" id="palette"></div>
-</section>
-
 </main>
-
-<footer>
-  MIROIR · YOUR PERSONAL BEAUTY STUDIO<br>
-  Facial landmark estimates are experimental and not professional measurements.
-  Camera processing runs locally in your browser.
-</footer>
+<footer>MIROIR · EXPLORE YOUR OWN BEAUTY</footer>
+</div>
 
 <script type="module">
-
 import {
+  FilesetResolver,
   FaceLandmarker,
-  FilesetResolver
-} from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14";
+  HandLandmarker
+} from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/+esm";
 
-const $ = id => document.getElementById(id);
-
-const video = $("video");
-const canvas = $("canvas");
+const video = document.getElementById("video");
+const canvas = document.getElementById("overlay");
 const ctx = canvas.getContext("2d");
+const placeholder = document.getElementById("placeholder");
+const status = document.getElementById("status");
 
 let faceLandmarker = null;
-let cameraStream = null;
-let active = false;
-let mode = "makeup";
-let makeup = "none";
-let style = "coquette";
-let lastTime = -1;
-let smoothed = null;
-let lastFrameTime = performance.now();
-let fps = 0;
+let handLandmarker = null;
+let stream = null;
+let running = false;
+let handEnabled = false;
+let drawingEnabled = false;
+let showMesh = false;
+let renderMode = "makeup";
+let lastVideoTime = -1;
+let facePoints = null;
+let faceShape = "Unknown";
+let blushColor = "#e88b9d";
+let lastPinch = false;
+let previousDrawPoint = null;
+let drawingCanvas = document.createElement("canvas");
+let drawingCtx = drawingCanvas.getContext("2d");
 
-const palettes = {
-  coquette:{
-    blush:"#df8eaa",
-    lips:"#bd6688",
-    liner:"#654354",
-    shades:["#f4dce6","#e7a9bf","#d982a1","#b86c89","#87566c"]
-  },
-  douyin:{
-    blush:"#df91a8",
-    lips:"#ca718d",
-    liner:"#493444",
-    shades:["#f5dce6","#e9b1c3","#d78ba5","#b76a88","#87536d"]
-  },
-  latte:{
-    blush:"#c58b72",
-    lips:"#aa715d",
-    liner:"#604438",
-    shades:["#e8d3bd","#c69b7c","#a9795d","#785847","#d8b29b"]
-  },
-  berry:{
-    blush:"#c47794",
-    lips:"#944c70",
-    liner:"#523b4b",
-    shades:["#e6c5d0","#c77f9b","#a65378","#773c60","#d3a1b3"]
-  },
-  soft:{
-    blush:"#d08e9c",
-    lips:"#b47885",
-    liner:"#59434d",
-    shades:["#eed9d8","#d8adb1","#b9818b","#926d78","#d9b9a9"]
-  },
-  peach:{
-    blush:"#e5a184",
-    lips:"#c98172",
-    liner:"#735044",
-    shades:["#f5dfca","#e9b59c","#d9957e","#b97868","#e9c1a6"]
-  }
-};
+const $ = id => document.getElementById(id);
+const clamp = (v,min,max) => Math.max(min,Math.min(max,v));
 
-function setStatus(text,ok=false) {
-  $("status").textContent=text;
-  $("status").className="status"+(ok?" active":"");
+function setStatus(message) {
+  status.textContent = message.toUpperCase();
 }
 
-async function createTracker() {
-  if(faceLandmarker) return;
-
-  setStatus("Loading the face tracking model...");
-
-  const vision=await FilesetResolver.forVisionTasks(
+async function loadFaceModel() {
+  setStatus("Loading face tracking...");
+  const vision = await FilesetResolver.forVisionTasks(
     "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm"
   );
 
-  const options={
-    baseOptions:{
-      modelAssetPath:
-      "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
-      delegate:"GPU"
-    },
-    runningMode:"VIDEO",
-    numFaces:1,
-    minFaceDetectionConfidence:.55,
-    minFacePresenceConfidence:.55,
-    minTrackingConfidence:.55,
-    outputFaceBlendshapes:false
-  };
-
   try {
-    faceLandmarker=await FaceLandmarker.createFromOptions(vision,options);
-  } catch(error) {
-    console.warn("GPU unavailable. Switching to CPU.",error);
-
-    options.baseOptions.delegate="CPU";
-
-    faceLandmarker=await FaceLandmarker.createFromOptions(vision,options);
+    faceLandmarker = await FaceLandmarker.createFromOptions(vision, {
+      baseOptions: {
+        modelAssetPath: "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
+        delegate: "GPU"
+      },
+      runningMode: "VIDEO",
+      numFaces: 1
+    });
+  } catch (gpuError) {
+    console.warn("GPU unavailable, trying CPU", gpuError);
+    faceLandmarker = await FaceLandmarker.createFromOptions(vision, {
+      baseOptions: {
+        modelAssetPath: "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
+        delegate: "CPU"
+      },
+      runningMode: "VIDEO",
+      numFaces: 1
+    });
   }
 }
 
-async function startCamera() {
+async function loadHandModel() {
+  if (handLandmarker) return;
+  const vision = await FilesetResolver.forVisionTasks(
+    "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm"
+  );
+  handLandmarker = await HandLandmarker.createFromOptions(vision, {
+    baseOptions: {
+      modelAssetPath: "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
+      delegate: "CPU"
+    },
+    runningMode: "VIDEO",
+    numHands: 1
+  });
+}
+
+async function activateCamera() {
   try {
-    $("start").disabled=true;
+    $("cameraBtn").disabled = true;
+    if (!faceLandmarker) await loadFaceModel();
 
-    if(!navigator.mediaDevices?.getUserMedia) {
-      throw new Error("Use your HTTPS GitHub Pages website to access the camera.");
-    }
-
-    await createTracker();
-
-    cameraStream=await navigator.mediaDevices.getUserMedia({
-      audio:false,
-      video:{
-        facingMode:"user",
-        width:{ideal:1280},
-        height:{ideal:960}
-      }
+    stream = await navigator.mediaDevices.getUserMedia({
+      audio: false,
+      video: { facingMode: "user", width: { ideal: 1280 }, height: { ideal: 960 } }
     });
 
-    video.srcObject=cameraStream;
-
-    await new Promise(resolve=>{
-      video.onloadedmetadata=resolve;
-    });
-
+    video.srcObject = stream;
     await video.play();
 
-    canvas.width=video.videoWidth;
-    canvas.height=video.videoHeight;
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    drawingCanvas.width = canvas.width;
+    drawingCanvas.height = canvas.height;
 
-    video.style.display="block";
-    $("placeholder").style.display="none";
-
-    active=true;
-    lastTime=-1;
-    smoothed=null;
-
-    $("tag").textContent="LIVE FACIAL TRACKING";
-    setStatus("Mirror active. Looking for your face...",true);
-
-    requestAnimationFrame(trackFrame);
-
-  } catch(error) {
+    placeholder.style.display = "none";
+    video.style.display = "block";
+    running = true;
+    $("cameraBtn").textContent = "Camera active";
+    setStatus("Mirror active");
+    requestAnimationFrame(render);
+  } catch (error) {
     console.error(error);
-    setStatus("Camera error: "+error.message);
-    $("start").disabled=false;
+    setStatus("Camera unavailable");
+    alert("MIROIR couldn't start the camera. Check camera permissions and make sure the page is using HTTPS. If it still fails, check the browser console.");
+  } finally {
+    $("cameraBtn").disabled = false;
   }
 }
 
-function stopCamera() {
-  active=false;
-
-  if(cameraStream) {
-    cameraStream.getTracks().forEach(t=>t.stop());
-    cameraStream=null;
-  }
-
-  video.srcObject=null;
-  video.style.display="none";
-
-  $("placeholder").style.display="flex";
-  $("tag").textContent="WAITING FOR CAMERA";
-  $("tip").textContent="Your reflection will appear here";
-
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-
-  $("detection").textContent="Camera off";
-  $("landmarkCount").textContent="0 detected";
-
-  $("start").disabled=false;
-
-  setStatus("Camera disconnected.");
+function point(lm) {
+  return { x: lm.x * canvas.width, y: lm.y * canvas.height };
 }
 
-function smoothLandmarks(newPoints) {
-  if(!smoothed || smoothed.length!==newPoints.length) {
-    smoothed=newPoints.map(p=>({...p}));
-    return smoothed;
-  }
-
-  const factor=.55;
-
-  for(let i=0;i<newPoints.length;i++) {
-    smoothed[i].x += (newPoints[i].x-smoothed[i].x)*factor;
-    smoothed[i].y += (newPoints[i].y-smoothed[i].y)*factor;
-    smoothed[i].z += (newPoints[i].z-smoothed[i].z)*factor;
-  }
-
-  return smoothed;
+function getPoint(points, index) {
+  return point(points[index]);
 }
 
-function point(index,lm) {
-  return {
-    x:lm[index].x*canvas.width,
-    y:lm[index].y*canvas.height
+function distance(a,b) {
+  return Math.hypot(a.x-b.x,a.y-b.y);
+}
+
+function estimateFaceShape(points) {
+  const xs = points.map(p => p.x);
+  const ys = points.map(p => p.y);
+  const width = Math.max(...xs) - Math.min(...xs);
+  const height = Math.max(...ys) - Math.min(...ys);
+  const ratio = width / height;
+
+  // This is a rough visual classification, not a definitive measurement.
+  if (ratio < 0.69) return { name:"Oblong", ratio };
+  if (ratio > 0.86) return { name:"Round", ratio };
+  return { name:"Oval", ratio };
+}
+
+function updateAnalysis(points) {
+  const shape = estimateFaceShape(points);
+  faceShape = shape.name;
+  $("faceShape").textContent = shape.name;
+  $("ratio").textContent = shape.ratio.toFixed(2);
+  $("tracking").textContent = "Active · 478 landmarks";
+
+  const descriptions = {
+    Oblong:"Your detected proportions appear longer than they are wide. You can experiment with horizontal blush placement and softly balanced makeup.",
+    Round:"Your detected proportions appear relatively similar in width and height. You can experiment with diagonal blush placement and softly lifted looks.",
+    Oval:"Your detected proportions appear relatively balanced. You have plenty of flexibility to experiment with different blush placements."
   };
+  $("shapeDescription").textContent = descriptions[faceShape] || "Your face shape is being estimated.";
+  $("headPosition").textContent = "Facing camera";
+
+  const suggestions = {
+    Oblong:"<strong>Blush:</strong> Try a diffused horizontal placement across the cheek area.<br><br><strong>Eyes:</strong> Experiment with softly extended eyeliner.<br><br><strong>Overall:</strong> Explore balanced, softly blended looks.",
+    Round:"<strong>Blush:</strong> Try a diagonal placement toward the temples.<br><br><strong>Eyes:</strong> Experiment with lifted eyeliner.<br><br><strong>Overall:</strong> Explore softly elongated makeup shapes.",
+    Oval:"<strong>Blush:</strong> Experiment with cheekbone or apple-of-cheek placement.<br><br><strong>Eyes:</strong> Try both soft and more defined eyeliner.<br><br><strong>Overall:</strong> Explore different styles and placements."
+  };
+  $("recommendations").innerHTML = suggestions[faceShape];
 }
 
-function trace(indices,lm,close=false) {
-  if(!indices.length) return;
+function cheekPath(points, side, placement) {
+  // Landmark groups form a rough cheek-area mask.
+  // The colour is clipped to this region, rather than drawn as a floating circle.
+  const ids = side === "left"
+    ? [50,101,118,119,120,121,126,142,205,187]
+    : [280,330,347,348,349,350,355,371,425,411];
 
-  const first=point(indices[0],lm);
+  const p = ids.map(i => getPoint(points,i));
+  if (p.some(v => !Number.isFinite(v.x) || !Number.isFinite(v.y))) return null;
 
-  ctx.beginPath();
-  ctx.moveTo(first.x,first.y);
+  const xs = p.map(v=>v.x), ys = p.map(v=>v.y);
+  const cx = (Math.min(...xs)+Math.max(...xs))/2;
+  const cy = (Math.min(...ys)+Math.max(...ys))/2;
+  const w = Math.max(...xs)-Math.min(...xs);
+  const h = Math.max(...ys)-Math.min(...ys);
 
-  for(let i=1;i<indices.length;i++) {
-    const p=point(indices[i],lm);
-    ctx.lineTo(p.x,p.y);
+  // Shape and direction are adapted to the detected face profile.
+  let rx = w * 0.72;
+  let ry = h * 0.58;
+  let angle = 0;
+
+  const selected = $("placement").value;
+  const mode = selected === "auto" ? faceShape : selected;
+
+  if (mode === "Oblong" || mode === "horizontal") {
+    rx *= 1.15;
+    ry *= 0.72;
+    angle = side === "left" ? -0.05 : 0.05;
+  } else if (mode === "Round" || mode === "lifted") {
+    rx *= 0.9;
+    ry *= 0.8;
+    angle = side === "left" ? -0.48 : 0.48;
+  } else if (mode === "apples") {
+    rx *= 0.72;
+    ry *= 0.8;
+  } else if (mode === "Oval") {
+    rx *= 0.95;
+    ry *= 0.78;
+    angle = side === "left" ? -0.18 : 0.18;
   }
 
-  if(close) ctx.closePath();
+  return { cx,cy,rx,ry,angle, polygon:p };
 }
 
-function drawConnections(connections,lm,color,width=1) {
-  ctx.beginPath();
+function drawBlush(points) {
+  const intensity = Number($("intensity").value) / 100;
+  if (intensity <= 0) return;
 
-  for(const connection of connections) {
-    const a=point(connection.start,lm);
-    const b=point(connection.end,lm);
+  const blend = Number($("blend").value) / 100;
+  const sides = ["left","right"];
 
-    ctx.moveTo(a.x,a.y);
-    ctx.lineTo(b.x,b.y);
-  }
+  for (const side of sides) {
+    const region = cheekPath(points,side);
+    if (!region) continue;
 
-  ctx.strokeStyle=color;
-  ctx.lineWidth=width;
-  ctx.stroke();
-}
+    const {cx,cy,rx,ry,angle,polygon} = region;
 
-function drawMesh(lm) {
-  drawConnections(
-    FaceLandmarker.FACE_LANDMARKS_TESSELATION,
-    lm,
-    "rgba(255,255,255,.30)",
-    .65
-  );
+    ctx.save();
 
-  drawConnections(
-    FaceLandmarker.FACE_LANDMARKS_FACE_OVAL,
-    lm,
-    "rgba(235,155,183,.95)",
-    2
-  );
-
-  drawConnections(
-    FaceLandmarker.FACE_LANDMARKS_LEFT_EYE,
-    lm,
-    "#ffffff",
-    1.5
-  );
-
-  drawConnections(
-    FaceLandmarker.FACE_LANDMARKS_RIGHT_EYE,
-    lm,
-    "#ffffff",
-    1.5
-  );
-
-  drawConnections(
-    FaceLandmarker.FACE_LANDMARKS_LIPS,
-    lm,
-    "#ef8caa",
-    2
-  );
-
-  drawConnections(
-    FaceLandmarker.FACE_LANDMARKS_LEFT_EYEBROW,
-    lm,
-    "#dfc2d0",
-    2
-  );
-
-  drawConnections(
-    FaceLandmarker.FACE_LANDMARKS_RIGHT_EYEBROW,
-    lm,
-    "#dfc2d0",
-    2
-  );
-}
-
-function drawPoints(lm) {
-  for(let i=0;i<lm.length;i++) {
-    const p=point(i,lm);
-
+    // Clip to the detected cheek region.
     ctx.beginPath();
-    ctx.arc(p.x,p.y,1.3,0,Math.PI*2);
-    ctx.fillStyle="rgba(255,255,255,.85)";
+    ctx.moveTo(polygon[0].x,polygon[0].y);
+    for (let i=1;i<polygon.length;i++) {
+      const prev = polygon[i-1];
+      const curr = polygon[i];
+      const mx = (prev.x+curr.x)/2;
+      const my = (prev.y+curr.y)/2;
+      ctx.quadraticCurveTo(prev.x,prev.y,mx,my);
+    }
+    ctx.closePath();
+    ctx.clip();
+
+    ctx.translate(cx,cy);
+    ctx.rotate(angle);
+
+    const gradient = ctx.createRadialGradient(0,0,rx*.08,0,0,rx);
+    const alpha = intensity * (0.20 + blend * 0.42);
+    gradient.addColorStop(0,hexToRgba(blushColor,alpha));
+    gradient.addColorStop(.35,hexToRgba(blushColor,alpha*.75));
+    gradient.addColorStop(.7,hexToRgba(blushColor,alpha*.24));
+    gradient.addColorStop(1,hexToRgba(blushColor,0));
+
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.ellipse(0,0,rx,ry,0,0,Math.PI*2);
     ctx.fill();
+
+    ctx.restore();
   }
 }
 
-function gradientBlush(centerX,centerY,rx,ry,color) {
-  const gradient=ctx.createRadialGradient(
-    centerX,centerY,2,
-    centerX,centerY,rx
-  );
+function hexToRgba(hex,alpha) {
+  const value = hex.replace("#","");
+  const r = parseInt(value.substring(0,2),16);
+  const g = parseInt(value.substring(2,4),16);
+  const b = parseInt(value.substring(4,6),16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
 
-  gradient.addColorStop(0,color+"99");
-  gradient.addColorStop(.5,color+"55");
-  gradient.addColorStop(1,color+"00");
+const OUTER_LIPS = [61,185,40,39,37,0,267,269,270,409,291,375,321,405,314,17,84,181,91,146];
 
-  ctx.fillStyle=gradient;
+function drawLips(points) {
+  const opacity = Number($("lipIntensity").value)/100;
+  if (opacity <= 0) return;
+
+  const lipPoints = OUTER_LIPS.map(i=>getPoint(points,i));
+  ctx.save();
   ctx.beginPath();
-  ctx.ellipse(centerX,centerY,rx,ry,0,0,Math.PI*2);
-  ctx.fill();
-}
+  ctx.moveTo(lipPoints[0].x,lipPoints[0].y);
+  for (let i=1;i<lipPoints.length;i++) {
+    ctx.lineTo(lipPoints[i].x,lipPoints[i].y);
+  }
+  ctx.closePath();
 
-function drawBlush(lm) {
-  const c=palettes[style].blush;
-
-  // Cheek landmarks, dynamically anchored to the face.
-  const left=point(205,lm);
-  const right=point(425,lm);
-
-  const width=canvas.width*.075;
-  const height=canvas.height*.055;
-
-  gradientBlush(left.x,left.y,width,height,c);
-  gradientBlush(right.x,right.y,width,height,c);
-}
-
-function drawLips(lm) {
-  const c=palettes[style].lips;
-
-  const outer=[
-    61,185,40,39,37,0,267,269,270,409,
-    291,375,321,405,314,17,84,181,91,146
-  ];
-
-  trace(outer,lm,true);
-
-  ctx.fillStyle=c+"99";
+  ctx.fillStyle = hexToRgba($("lipColor").value,opacity*.58);
   ctx.fill();
 
-  ctx.strokeStyle=c;
-  ctx.lineWidth=1.5;
+  ctx.lineWidth = 1.5;
+  ctx.strokeStyle = hexToRgba($("lipColor").value,opacity*.8);
   ctx.stroke();
-
-  // Inner lip definition.
-  drawConnections(
-    FaceLandmarker.FACE_LANDMARKS_LIPS,
-    lm,
-    c,
-    1
-  );
+  ctx.restore();
 }
 
-function drawLiner(lm) {
-  const c=palettes[style].liner;
+function drawEyeLiner(points) {
+  const alpha = Number($("linerIntensity").value)/100;
+  if (alpha <= 0) return;
 
-  // Upper eyelid points follow the moving eyes.
-  const eyes=[
+  const eyes = [
     [33,160,158,157,173,133],
     [362,385,387,386,398,263]
   ];
 
-  ctx.lineWidth=Math.max(2,canvas.width*.003);
-  ctx.lineCap="round";
-  ctx.lineJoin="round";
-  ctx.strokeStyle=c;
+  ctx.save();
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.strokeStyle = `rgba(57,38,48,${alpha*.8})`;
+  ctx.lineWidth = Math.max(2,canvas.width*.0025);
 
-  eyes.forEach(indices=>{
-    trace(indices,lm);
+  for (const ids of eyes) {
+    const pts = ids.map(i=>getPoint(points,i));
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x,pts[0].y);
+    for (let i=1;i<pts.length;i++) ctx.lineTo(pts[i].x,pts[i].y);
+    const first = pts[0], last = pts[pts.length-1];
+    const dx = last.x-first.x, dy = last.y-first.y;
+    ctx.lineTo(last.x+dx*.13,last.y+dy*.13-5);
     ctx.stroke();
-  });
-
-  // Wings follow the outer eye corners.
-  const wings=[
-    [33,130,247],
-    [263,359,467]
-  ];
-
-  ctx.lineWidth=Math.max(2,canvas.width*.004);
-
-  wings.forEach(indices=>{
-    trace(indices,lm);
-    ctx.stroke();
-  });
+  }
+  ctx.restore();
 }
 
-function drawMakeup(lm) {
-  if(makeup==="none") return;
-
-  if(makeup==="blush" || makeup==="full") drawBlush(lm);
-  if(makeup==="lips" || makeup==="full") drawLips(lm);
-  if(makeup==="liner" || makeup==="full") drawLiner(lm);
+function drawMesh(points) {
+  // Draw a subtle point mesh using the face landmarks.
+  ctx.save();
+  ctx.fillStyle = "rgba(255,255,255,.62)";
+  for (const p of points) {
+    ctx.beginPath();
+    ctx.arc(p.x*canvas.width,p.y*canvas.height,1.15,0,Math.PI*2);
+    ctx.fill();
+  }
+  ctx.restore();
 }
 
-function estimate(lm) {
-  const d=(a,b)=>Math.hypot(
-    lm[a].x-lm[b].x,
-    lm[a].y-lm[b].y
-  );
-
-  const length=d(10,152);
-  const width=d(234,454);
-  const noseWidth=d(98,327);
-  const eyeGap=d(133,362);
-  const eyeWidth=(d(33,133)+d(362,263))/2;
-
-  const ratio=length/(width||1);
-
-  let shape="Balanced proportions";
-
-  if(ratio>1.48) shape="Long / oblong";
-  else if(ratio<1.13) shape="Round or square-like";
-  else if(ratio>1.28) shape="Oval-like";
-
-  $("shape").textContent=shape+" · "+ratio.toFixed(2)+" ratio";
-  $("nose").textContent=(noseWidth/(width||1)*100).toFixed(1)+"% of cheek width";
-  $("eyes").textContent=(eyeGap/(eyeWidth||1)).toFixed(2)+" relative units";
-}
-
-function orientation(lm) {
-  const left={x:(lm[33].x+lm[133].x)/2,y:(lm[33].y+lm[133].y)/2};
-  const right={x:(lm[362].x+lm[263].x)/2,y:(lm[362].y+lm[263].y)/2};
-
-  const mid={x:(left.x+right.x)/2,y:(left.y+right.y)/2};
-  const eyeWidth=Math.abs(right.x-left.x)||1;
-  const yaw=(lm[1].x-mid.x)/eyeWidth;
-
-  if(yaw>.13) return "Turned to one side";
-  if(yaw<-.13) return "Turned to the other side";
-
-  return "Facing forward";
-}
-
-function render(lm) {
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-
-  if(mode==="mesh") {
-    drawMesh(lm);
+function drawHand(results) {
+  if (!results.landmarks || !results.landmarks.length) {
+    lastPinch = false;
+    previousDrawPoint = null;
     return;
   }
 
-  if(mode==="points") {
-    drawPoints(lm);
-    return;
-  }
+  const hand = results.landmarks[0];
+  const index = hand[8];
+  const thumb = hand[4];
+  const wrist = hand[0];
 
-  if(mode==="contours") {
-    drawConnections(
-      FaceLandmarker.FACE_LANDMARKS_FACE_OVAL,
-      lm,"#d77f9e",3
-    );
+  const x = index.x*canvas.width;
+  const y = index.y*canvas.height;
+  const pinching = Math.hypot(index.x-thumb.x,index.y-thumb.y) < 0.055;
 
-    drawConnections(
-      FaceLandmarker.FACE_LANDMARKS_LEFT_EYE,
-      lm,"#fff",2
-    );
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(x,y,10,0,Math.PI*2);
+  ctx.fillStyle = pinching ? "#c47d98" : "#fff";
+  ctx.fill();
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = "#bd8198";
+  ctx.stroke();
+  ctx.restore();
 
-    drawConnections(
-      FaceLandmarker.FACE_LANDMARKS_RIGHT_EYE,
-      lm,"#fff",2
-    );
+  const screenX = canvas.getBoundingClientRect().left + (1-index.x)*canvas.clientWidth;
+  const screenY = canvas.getBoundingClientRect().top + index.y*canvas.clientHeight;
 
-    drawConnections(
-      FaceLandmarker.FACE_LANDMARKS_LIPS,
-      lm,"#d77f9e",2
-    );
-
-    return;
-  }
-
-  drawMakeup(lm);
-}
-
-function trackFrame() {
-  if(!active) return;
-
-  if(video.readyState>=2 && video.currentTime!==lastTime) {
-    lastTime=video.currentTime;
-
-    try {
-      const results=faceLandmarker.detectForVideo(
-        video,
-        performance.now()
-      );
-
-      if(results.faceLandmarks?.length) {
-        const raw=results.faceLandmarks[0];
-        const lm=smoothLandmarks(raw);
-
-        $("detection").textContent="Face detected ✓";
-        $("landmarkCount").textContent=lm.length+" landmarks tracked";
-        $("orientation").textContent=orientation(lm);
-
-        $("tip").textContent="Your facial landmarks are being tracked live";
-
-        render(lm);
-        estimate(lm);
-
-        const now=performance.now();
-        const elapsed=now-lastFrameTime;
-
-        if(elapsed>0) fps=Math.round(1000/elapsed);
-
-        lastFrameTime=now;
-
-        $("fps").textContent=fps+" estimated FPS";
-
-      } else {
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-
-        $("detection").textContent="No face detected";
-        $("landmarkCount").textContent="0 detected";
-        $("orientation").textContent="Waiting...";
-        $("tip").textContent="Move into the centre of the mirror";
-      }
-
-    } catch(error) {
-      console.error(error);
-      setStatus("Tracking error: "+error.message);
+  if (pinching && !lastPinch && !drawingEnabled) {
+    const target = document.elementFromPoint(screenX,screenY);
+    const button = target?.closest("button,select");
+    if (button && button.id !== "handBtn" && button.id !== "drawBtn") {
+      button.click();
     }
   }
 
-  requestAnimationFrame(trackFrame);
+  if (drawingEnabled) {
+    if (!pinching) {
+      if (previousDrawPoint) {
+        drawingCtx.beginPath();
+        drawingCtx.moveTo(previousDrawPoint.x,previousDrawPoint.y);
+        drawingCtx.lineTo(x,y);
+        drawingCtx.strokeStyle = "#bd8198";
+        drawingCtx.lineWidth = 5;
+        drawingCtx.lineCap = "round";
+        drawingCtx.stroke();
+      }
+      previousDrawPoint = {x,y};
+    } else {
+      previousDrawPoint = null;
+    }
+  }
+
+  lastPinch = pinching;
 }
 
-function updatePalette() {
-  $("palette").innerHTML="";
+function render() {
+  if (!running) return;
 
-  palettes[style].shades.forEach(color=>{
-    const swatch=document.createElement("button");
-    swatch.className="swatch";
-    swatch.style.background=color;
-    swatch.title=color;
+  if (video.readyState >= 2 && video.currentTime !== lastVideoTime) {
+    lastVideoTime = video.currentTime;
 
-    swatch.addEventListener("click",()=>{
-      palettes[style].blush=color;
-      palettes[style].lips=color;
-      setStatus("Makeup preview colour updated.",true);
-    });
+    ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    $("palette").append(swatch);
-  });
+    if (faceLandmarker) {
+      const result = faceLandmarker.detectForVideo(video,performance.now());
+
+      if (result.faceLandmarks?.length) {
+        facePoints = result.faceLandmarks[0];
+        updateAnalysis(facePoints);
+
+        if (renderMode === "makeup" || renderMode === "both") {
+          drawBlush(facePoints);
+          drawLips(facePoints);
+          drawEyeLiner(facePoints);
+        }
+
+        if (renderMode === "mesh" || renderMode === "both" || showMesh) {
+          drawMesh(facePoints);
+        }
+      } else {
+        $("tracking").textContent = "Face not found";
+      }
+    }
+
+    if (handEnabled && handLandmarker) {
+      const hands = handLandmarker.detectForVideo(video,performance.now());
+      drawHand(hands);
+    }
+
+    ctx.drawImage(drawingCanvas,0,0);
+  }
+
+  requestAnimationFrame(render);
 }
 
-$("start").addEventListener("click",startCamera);
-$("stop").addEventListener("click",stopCamera);
+// UI controls
+$("cameraBtn").addEventListener("click",activateCamera);
 
-$("makeup").addEventListener("change",event=>{
-  makeup=event.target.value;
-  $("selected").textContent=event.target.selectedOptions[0].text;
+$("meshBtn").addEventListener("click",()=>{
+  showMesh = !showMesh;
+  $("meshBtn").textContent = `FACE MESH: ${showMesh ? "ON" : "OFF"}`;
 });
 
-$("aesthetic").addEventListener("change",event=>{
-  style=event.target.value;
-  updatePalette();
+$("clearBtn").addEventListener("click",()=>{
+  drawingCtx.clearRect(0,0,drawingCanvas.width,drawingCanvas.height);
 });
 
-document.querySelectorAll("[data-tracking]").forEach(button=>{
+document.querySelectorAll("[data-mode]").forEach(button=>{
   button.addEventListener("click",()=>{
-    mode=button.dataset.tracking;
-
-    document.querySelectorAll("[data-tracking]").forEach(b=>{
-      b.classList.toggle("selected",b===button);
-    });
+    renderMode = button.dataset.mode;
+    document.querySelectorAll("[data-mode]").forEach(b=>b.classList.remove("active"));
+    button.classList.add("active");
   });
 });
 
-updatePalette();
+$("swatches").querySelectorAll("button").forEach(button=>{
+  button.addEventListener("click",()=>{
+    blushColor = button.dataset.color;
+    $("swatches").querySelectorAll("button").forEach(b=>b.classList.remove("selected"));
+    button.classList.add("selected");
+  });
+});
 
+[
+  ["intensity","intensityValue"],
+  ["blend","blendValue"],
+  ["lipIntensity","lipValue"],
+  ["linerIntensity","linerValue"]
+].forEach(([input,label])=>{
+  $(input).addEventListener("input",()=>{
+    $(label).textContent = $(input).value+"%";
+  });
+});
+
+$("style").addEventListener("change",()=>{
+  const styles = {
+    soft:{blush:"#e88b9d",lip:"#bd657a"},
+    douyin:{blush:"#d87987",lip:"#a84e68"},
+    latte:{blush:"#b97d78",lip:"#914b59"},
+    berry:{blush:"#c78eaa",lip:"#914b59"},
+    peach:{blush:"#edaa91",lip:"#d58d83"}
+  };
+  const choice = styles[$("style").value];
+  if (!choice) return;
+  blushColor = choice.blush;
+  $("lipColor").value = choice.lip;
+  $("swatches").querySelectorAll("button").forEach(b=>{
+    b.classList.toggle("selected",b.dataset.color===blushColor);
+  });
+});
+
+$("handBtn").addEventListener("click",async()=>{
+  try {
+    if (!handEnabled) {
+      setStatus("Loading hand tracking...");
+      await loadHandModel();
+      handEnabled = true;
+      $("handBtn").textContent = "Hand tracking: ON";
+      $("handBtn").classList.add("active");
+      setStatus("Hand tracking active");
+    } else {
+      handEnabled = false;
+      $("handBtn").textContent = "Hand tracking: OFF";
+      $("handBtn").classList.remove("active");
+      lastPinch = false;
+      previousDrawPoint = null;
+      setStatus("Mirror active");
+    }
+  } catch (error) {
+    console.error(error);
+    alert("Hand tracking could not load. Check your internet connection and try again.");
+  }
+});
+
+$("drawBtn").addEventListener("click",()=>{
+  drawingEnabled = !drawingEnabled;
+  $("drawBtn").textContent = `Air drawing: ${drawingEnabled ? "ON" : "OFF"}`;
+  $("drawBtn").classList.toggle("active",drawingEnabled);
+  if (drawingEnabled && !handEnabled) {
+    alert("Turn on hand tracking first. Then move your index finger to draw in the mirror.");
+    drawingEnabled = false;
+    $("drawBtn").textContent = "Air drawing: OFF";
+    $("drawBtn").classList.remove("active");
+  }
+});
 </script>
 </body>
 </html>
+
